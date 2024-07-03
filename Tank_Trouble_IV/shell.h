@@ -7,7 +7,14 @@ enum shell_name={"普通子弹","爆炸弹","穿透弹","穿墙跟踪弹"}
 
 class shell
 {
-public:
+    shell_name name;//炮弹名称
+    int ID;//编号便于记录
+    int ATK;//攻击力
+    int shell_speed;//子弹速度
+    int width;//子弹宽度，间接定义碰撞体积
+    double shell_x;
+    double shell_y;//炮弹的坐标
+    bool status;//是否存在的状态
     //构造函数
     //子弹目前尚不存在
     shell(shell_name sn,int ID,bool ifexist = 0) :name(sn),ID(ID),status(ifexist)
@@ -42,14 +49,7 @@ public:
     void mousePressEvent(QMouseEvent *event);
     bool shouldRemove();
 
-    shell_name name;//炮弹名称
-    int ID;//编号便于记录
-    int ATK;//攻击力
-    int shell_speed;//子弹速度
-    int width;//子弹宽度，间接定义碰撞体积
-    double shell_x;
-    double shell_y;//炮弹的坐标
-    bool status;//是否存在的状态
+    
 };
 
 // 更新子弹位置
