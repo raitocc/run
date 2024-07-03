@@ -6,6 +6,7 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     , ui(new Ui::SingleGameWidget)
 {
     ui->setupUi(this);
+    map.createMap();
 }
 
 SingleGameWidget::~SingleGameWidget()
