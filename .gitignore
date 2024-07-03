@@ -12,6 +12,8 @@ bin-release/
 *.air
 *.ipa
 *.apk
+build-Tank_Trouble_IV-Desktop_Qt_6_6_1_MinGW_64_bit-Debug
+
 
 # Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
 # should NOT be excluded as they contain compiler settings and other important
