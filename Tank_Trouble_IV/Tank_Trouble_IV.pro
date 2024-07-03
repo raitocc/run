@@ -12,13 +12,17 @@ SOURCES += \
     loginwidget.cpp \
     main.cpp \
     mainwindow.cpp \
+    shell.cpp \
     singlegamewidget.cpp \
+    tank.cpp \
     welcomewidget.cpp
 
 HEADERS += \
     loginwidget.h \
     mainwindow.h \
+    shell.h \
     singlegamewidget.h \
+    tank.h \
     welcomewidget.h
 
 FORMS += \
