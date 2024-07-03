@@ -2,6 +2,7 @@
 #define LOGINWIDGET_H
 
 #include <QWidget>
+#include "QMessageBox"
 
 namespace Ui {
 class LoginWidget;
@@ -17,6 +18,8 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+
+    void on_btnExit_clicked();
 
 private:
     Ui::LoginWidget *ui;

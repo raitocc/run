@@ -18,3 +18,12 @@ void LoginWidget::on_pushButton_clicked()
     emit signalLogin();
 }
 
+
+void LoginWidget::on_btnExit_clicked()
+{
+    if(QMessageBox::Yes == QMessageBox::question(0, tr("Exit"),QString(tr("Exit the Game?")),QMessageBox::Yes | QMessageBox::No))
+    {
+        this->parentWidget()->close();
+    }
+}
+

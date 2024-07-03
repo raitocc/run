@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="btnSingle">
    <property name="geometry">
     <rect>
      <x>190</x>
@@ -26,7 +26,7 @@
     <string>Single Player</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_2">
+  <widget class="QPushButton" name="btnDouble">
    <property name="geometry">
     <rect>
      <x>190</x>
@@ -39,7 +39,7 @@
     <string>Double Players</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_3">
+  <widget class="QPushButton" name="btnBack">
    <property name="geometry">
     <rect>
      <x>490</x>
