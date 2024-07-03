@@ -47,4 +47,21 @@ void MainWindow::slotSinglePause()//单人游戏暂停
 {
     mPauseWidget = new PauseWidget(this);
     mPauseWidget->show();
+    connect(mPauseWidget,&PauseWidget::signalBackToGame,this,&MainWindow::slotBackToGame);
+    connect(mPauseWidget,&PauseWidget::signalExitToMenu,this,&MainWindow::slotExitToMenu);
+}
+
+void MainWindow::slotBackToGame()//暂停时返回游戏
+{
+    if(mPauseWidget)delete mPauseWidget;
+}
+
+void MainWindow::slotExitToMenu()
+{
+    if(mPauseWidget)delete mPauseWidget;
+    if(mSingleGameWidget)delete mSingleGameWidget;
+    mWelcomeWidget = new WelcomeWidget(this);
+    connect(mWelcomeWidget,&WelcomeWidget::signalBackLogin,this,&MainWindow::slotBackToLogin);
+    connect(mWelcomeWidget,&WelcomeWidget::signalSingleStart,this,&MainWindow::slotSingleStart);
+    mWelcomeWidget->show();
 }

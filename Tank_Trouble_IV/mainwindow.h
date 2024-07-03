@@ -38,5 +38,9 @@ private slots:
     void slotSingleStart();
 
     void slotSinglePause();
+
+    void slotBackToGame();
+
+    void slotExitToMenu();
 };
 #endif // MAINWINDOW_H

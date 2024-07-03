@@ -59,7 +59,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Exit</string>
+     <string>Back To Menu</string>
     </property>
    </widget>
    <widget class="QPushButton" name="btnBack">
@@ -72,7 +72,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Back to Game</string>
+     <string>Continue</string>
     </property>
    </widget>
   </widget>

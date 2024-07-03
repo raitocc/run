@@ -12,3 +12,18 @@ PauseWidget::~PauseWidget()
 {
     delete ui;
 }
+
+void PauseWidget::on_btnBack_clicked()
+{
+    emit signalBackToGame();
+}
+
+
+void PauseWidget::on_btnExit_clicked()
+{
+    if(QMessageBox::Yes == QMessageBox::question(0, tr("Exit"),QString(tr("Back To Menu?")),QMessageBox::Yes | QMessageBox::No))
+    {
+        emit signalExitToMenu();
+    }
+}
+
