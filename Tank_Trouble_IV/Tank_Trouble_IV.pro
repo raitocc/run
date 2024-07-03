@@ -17,12 +17,14 @@ SOURCES += \
     shell.cpp \
     tank.cpp \
     singlegamewidget.cpp \
+    welcomewidget.cpp
 
 
 HEADERS += \
     gamemap.h \
     loginwidget.h \
     mainwindow.h \
+    welcomewidget.h \
     pausewidget.h \
     singlegamewidget.h \
     tank.h \
