@@ -23,6 +23,7 @@ void GameMap::createMap()
     int numOnes = totalCells / 4;
     int numTwos = totalCells - numZeros - numOnes;
 
+    //初始化数组
     std::vector<int> cells;
     cells.insert(cells.end(), numZeros, 0);
     cells.insert(cells.end(), numOnes, 1);
@@ -33,7 +34,6 @@ void GameMap::createMap()
         int j = QRandomGenerator::global()->bounded(i + 1);
         std::swap(cells[i], cells[j]);
     }
-
     for(int i = 0; i < row; ++i)
     {
         for(int j = 0; j < col; ++j)
