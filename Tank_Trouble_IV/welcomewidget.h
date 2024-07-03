@@ -15,6 +15,17 @@ public:
     explicit WelcomeWidget(QWidget *parent = nullptr);
     ~WelcomeWidget();
 
+private slots:
+
+    void on_btnBack_clicked();
+
+    void on_btnSingle_clicked();
+
+signals:
+    void signalBackLogin();
+
+    void signalSingleStart();
+
 private:
     Ui::WelcomeWidget *ui;
 };

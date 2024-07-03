@@ -12,16 +12,19 @@ SOURCES += \
     loginwidget.cpp \
     main.cpp \
     mainwindow.cpp \
+    singlegamewidget.cpp \
     welcomewidget.cpp
 
 HEADERS += \
     loginwidget.h \
     mainwindow.h \
+    singlegamewidget.h \
     welcomewidget.h
 
 FORMS += \
     loginwidget.ui \
     mainwindow.ui \
+    singlegamewidget.ui \
     welcomewidget.ui
 
 # Default rules for deployment.

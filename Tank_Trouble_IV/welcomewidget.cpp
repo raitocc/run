@@ -12,3 +12,15 @@ WelcomeWidget::~WelcomeWidget()
 {
     delete ui;
 }
+
+void WelcomeWidget::on_btnBack_clicked()
+{
+    emit signalBackLogin();
+}
+
+
+void WelcomeWidget::on_btnSingle_clicked()
+{
+    emit signalSingleStart();
+}
+
