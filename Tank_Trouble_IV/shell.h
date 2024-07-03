@@ -12,6 +12,7 @@ class shell
     int width;//子弹宽度，间接定义碰撞体积
     double shell_x;
     double shell_Y;//炮弹的坐标
+    shell();
 
 };
 
