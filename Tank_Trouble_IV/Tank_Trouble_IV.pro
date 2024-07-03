@@ -14,10 +14,10 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     pausewidget.cpp \
+    shell.cpp \
+    tank.cpp \
     singlegamewidget.cpp \
-    welcomewidget.cpp \
-    #shell.cpp \
-    #tank.cpp
+
 
 HEADERS += \
     gamemap.h \
@@ -25,9 +25,8 @@ HEADERS += \
     mainwindow.h \
     pausewidget.h \
     singlegamewidget.h \
-    welcomewidget.h \
-    #shell.h \
-    #tank.h
+    tank.h \
+    shell.h \
 
 FORMS += \
     loginwidget.ui \
