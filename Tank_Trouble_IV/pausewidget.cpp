@@ -21,6 +21,7 @@ void PauseWidget::on_btnBack_clicked()
 
 void PauseWidget::on_btnExit_clicked()
 {
+    //再次询问确认退出
     if(QMessageBox::Yes == QMessageBox::question(0, tr("Exit"),QString(tr("Back To Menu?")),QMessageBox::Yes | QMessageBox::No))
     {
         emit signalExitToMenu();

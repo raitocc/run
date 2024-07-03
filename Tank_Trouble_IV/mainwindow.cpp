@@ -56,7 +56,7 @@ void MainWindow::slotBackToGame()//暂停时返回游戏
     if(mPauseWidget)delete mPauseWidget;
 }
 
-void MainWindow::slotExitToMenu()
+void MainWindow::slotExitToMenu()//暂停页面返回主菜单
 {
     if(mPauseWidget)delete mPauseWidget;
     if(mSingleGameWidget)delete mSingleGameWidget;
