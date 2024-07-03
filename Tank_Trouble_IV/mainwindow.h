@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "loginwidget.h"
+#include "pausewidget.h"
 #include "singlegamewidget.h"
 #include "welcomewidget.h"
 
@@ -25,6 +26,7 @@ private:
     LoginWidget* mLoginWidget;
     WelcomeWidget* mWelcomeWidget;
     SingleGameWidget* mSingleGameWidget;
+    PauseWidget* mPauseWidget;
 
     QString userName;
 
@@ -34,5 +36,11 @@ private slots:
     void slotBackToLogin();
 
     void slotSingleStart();
+
+    void slotSinglePause();
+
+    void slotBackToGame();
+
+    void slotExitToMenu();
 };
 #endif // MAINWINDOW_H
