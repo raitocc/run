@@ -39,5 +39,12 @@ void MainWindow::slotSingleStart()//开始单人游戏
 {
     if(mWelcomeWidget) delete mWelcomeWidget;
     mSingleGameWidget = new SingleGameWidget(this);
+    connect(mSingleGameWidget,&SingleGameWidget::signalPause,this,&MainWindow::slotSinglePause);
     mSingleGameWidget->show();
+}
+
+void MainWindow::slotSinglePause()//单人游戏暂停
+{
+    mPauseWidget = new PauseWidget(this);
+    mPauseWidget->show();
 }

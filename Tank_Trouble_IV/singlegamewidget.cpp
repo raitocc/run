@@ -12,3 +12,9 @@ SingleGameWidget::~SingleGameWidget()
 {
     delete ui;
 }
+
+void SingleGameWidget::on_btnPause_clicked()
+{
+    emit signalPause();
+}
+
