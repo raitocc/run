@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "loginwidget.h"
+#include "welcomewidget.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -21,5 +22,11 @@ public:
 private:
     Ui::MainWindow *ui;
     LoginWidget* mLoginWidget;
+    WelcomeWidget* mWelcomeWidget;
+
+    QString userName;
+
+private slots:
+    void slotLogin();
 };
 #endif // MAINWINDOW_H

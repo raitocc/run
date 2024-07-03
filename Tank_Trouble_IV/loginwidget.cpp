@@ -12,3 +12,9 @@ LoginWidget::~LoginWidget()
 {
     delete ui;
 }
+
+void LoginWidget::on_pushButton_clicked()
+{
+    emit signalLogin();
+}
+

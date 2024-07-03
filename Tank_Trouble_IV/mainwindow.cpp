@@ -7,9 +7,18 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     mLoginWidget = new LoginWidget(this);
+    connect(mLoginWidget,&LoginWidget::signalLogin,this,&MainWindow::slotLogin);
+    userName = "NULLNULLNULLNULL";
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::slotLogin()//登录按钮按下后处理
+{
+    mWelcomeWidget = new WelcomeWidget(this);
+    mWelcomeWidget->show();
+    if(mLoginWidget) delete mLoginWidget;
 }
