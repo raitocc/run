@@ -1,7 +1,9 @@
 #define SHELL_H
 
 #include<QMouseEvent>
+#include<QtMath>
 #define basic_shell_speed 20;
+#define basic_shell_lifespan 1000;
 #define Regular_Bullets 0;
 #define Explosive_Bullets 1;
 #define Armor_Piercing_Bullets 2;
@@ -17,11 +19,13 @@ class shell
     int width;//子弹宽度，间接定义碰撞体积
     double shell_x;
     double shell_y;//炮弹的坐标
+    float lifespan;//子弹存在时间
     bool status;//是否存在的状态
     //构造函数
     //子弹目前尚不存在
     shell(int sn,int ID,bool ifexist = 0) :name(sn),ID(ID),status(ifexist)
     {
+        lifespan=basic_shell_lifespan;
         switch(sn){
         case 0:
             ATK=2;
@@ -48,10 +52,10 @@ class shell
         }
     }
     ~shell(){};
-    void updatePosition();
+    void updatePosition(double deltaTime);
     void QMousePressEvent(QMouseEvent *event);
     void fire();
-    bool shouldRemove();
+    void hit();
 };
 
 

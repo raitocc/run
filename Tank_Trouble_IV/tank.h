@@ -15,6 +15,7 @@ using namespace std;
 
 class tank
 {
+public:
     int ID;//tank编号
     string name;
     string info;
