@@ -3,7 +3,10 @@
 #include<QMouseEvent>
 #define basic_shell_speed 20;
 
-enum shell_name={"普通子弹","爆炸弹","穿透弹","穿墙跟踪弹"}
+enum shell_name{
+    普通子弹,爆炸弹,穿透弹,穿墙跟踪弹
+};
+
 
 class shell
 {
@@ -13,7 +16,6 @@ class shell
     int shell_speed;//子弹速度
     int width;//子弹宽度，间接定义碰撞体积
     double shell_x;
-<<<<<<< HEAD
     double shell_y;//炮弹的坐标
     bool status;//是否存在的状态
     //构造函数
@@ -49,10 +51,8 @@ class shell
     void updatePosition();
     void mousePressEvent(QMouseEvent *event);
     bool shouldRemove();
-=======
     double shell_Y;//炮弹的坐标
     shell();
->>>>>>> 1ed2a62f8206d43d840e20c9d5f82445a1d3aa7d
 
     
 };
