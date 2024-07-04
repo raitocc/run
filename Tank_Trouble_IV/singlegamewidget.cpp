@@ -11,8 +11,11 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     scene = new QGraphicsScene(this);
     QGraphicsRectItem *rect = new QGraphicsRectItem(0, 0, 50, 50);
     scene->addItem(rect);
+    QGraphicsRectItem *rect1 = new QGraphicsRectItem(50, 0, 1000, 1000);
+    scene->addItem(rect1);
     ui->graphicsView->setScene(scene);
     ui->graphicsView->centerOn(200,200);
+
 
 }
 
