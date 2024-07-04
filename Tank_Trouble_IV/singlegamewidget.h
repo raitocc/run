@@ -3,6 +3,9 @@
 
 #include <QWidget>
 #include "gamemap.h"
+#include <QGraphicsScene>
+
+#include <QGraphicsRectItem>
 
 namespace Ui {
 class SingleGameWidget;
@@ -22,6 +25,7 @@ private slots:
 private:
     Ui::SingleGameWidget *ui;
     GameMap map;
+    QGraphicsScene* scene;
 
 signals:
     void signalPause();

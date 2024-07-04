@@ -10,14 +10,10 @@
 #include <QMainWindow>
 #include <QGraphicsView>
 #include <QGraphicsScene>
-#include <QKeyEvent>
 
 
 #include <QMainWindow>
-#include <QStackedWidget>
 #include "loginwidget.h"
-#include "PlayerScene.h"
-#include <QGraphicsRectItem>
 #define EMPTY 0
 #define UNBREAKABLE 1
 #define BREAKABLE 2
@@ -54,27 +50,27 @@ private:
     PauseWidget* mPauseWidget;//暂停游戏页面
 
     QString userName;//用户名
-    QStackedWidget *stackedWidget;
-    PlayerScene *playerScene;
+    //QStackedWidget *stackedWidget;
+    //PlayerScene *playerScene;
 
 
-    void setupMap();
+    //void setupMap();
 
-    QGraphicsScene *scene;
-    QGraphicsView *view;
-    const int MAP_SIZE = 10;
-    int map[10][10] = {
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-        {1, 0, 0, 0, 0, 1, 0, 0, 0, 1},
-        {1, 0, 2, 0, 0, 1, 0, 2, 0, 1},
-        {1, 0, 0, 1, 0, 0, 0, 1, 0, 1},
-        {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-        {1, 0, 0, 0, 1, 1, 0, 0, 0, 1},
-        {1, 0, 2, 0, 0, 0, 0, 2, 0, 1},
-        {1, 0, 0, 0, 1, 1, 0, 0, 0, 1},
-        {1, 0, 2, 0, 0, 1, 0, 2, 0, 1},
-        {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-    };
+    //QGraphicsScene *scene;
+    //QGraphicsView *view;
+    // const int MAP_SIZE = 10;
+    // int map[10][10] = {
+    //     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+    //     {1, 0, 0, 0, 0, 1, 0, 0, 0, 1},
+    //     {1, 0, 2, 0, 0, 1, 0, 2, 0, 1},
+    //     {1, 0, 0, 1, 0, 0, 0, 1, 0, 1},
+    //     {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+    //     {1, 0, 0, 0, 1, 1, 0, 0, 0, 1},
+    //     {1, 0, 2, 0, 0, 0, 0, 2, 0, 1},
+    //     {1, 0, 0, 0, 1, 1, 0, 0, 0, 1},
+    //     {1, 0, 2, 0, 0, 1, 0, 2, 0, 1},
+    //     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+    // };
 
 
 private slots:
