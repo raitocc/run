@@ -1,8 +1,4 @@
 #include "shell.h"
-#include "tank.h"
-
-int id;
-tank tk(id);
 
 // 更新子弹位置
 void shell::updatePosition(double deltaTime)
@@ -19,7 +15,7 @@ void shell::updatePosition(double deltaTime)
 void shell::fire(){
     status=1;
     shell_x=tk.tank_x;
-    shell_y=tk.tank_Y;
+    shell_y=tk.tank_Y-1/2*tank_length;
     double deltatime=0.01667;
     while(lifespan>0)
     {
