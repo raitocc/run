@@ -12,6 +12,7 @@ SOURCES += \
     #PlayerScene.cpp \
     bullet_s.cpp \
     gamemap.cpp \
+    griditem.cpp \
     loginwidget.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -26,6 +27,7 @@ HEADERS += \
     #PlayerScene.h \
     bullet_s.h \
     gamemap.h \
+    griditem.h \
     loginwidget.h \
     mainwindow.h \
     welcomewidget.h \
