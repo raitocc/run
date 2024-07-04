@@ -2,6 +2,7 @@
 
 #include<QMouseEvent>
 #include<QtMath>
+#include<QPixmap>
 #define basic_shell_speed 20;
 #define basic_shell_lifespan 1000;
 #define Regular_Bullets 0;
@@ -21,10 +22,13 @@ class shell
     double shell_y;//炮弹的坐标
     float lifespan;//子弹存在时间
     bool status;//是否存在的状态
+    QPixmap my_bullet;//子弹资源对象
+
     //构造函数
     //子弹目前尚不存在
     shell(int sn,int ID,bool ifexist = 0) :name(sn),ID(ID),status(ifexist)
     {
+        my_bullet.load("C:/Users/HUAWEI/Downloads/shoot.png");
         lifespan=basic_shell_lifespan;
         switch(sn){
         case 0:
