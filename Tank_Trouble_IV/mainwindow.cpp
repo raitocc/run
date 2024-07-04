@@ -3,6 +3,7 @@
 #include <QKeyEvent>
 #include "loginwidget.h"
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -59,35 +60,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     QMainWindow::keyPressEvent(event); // 调用基类的实现，如果需要的话
 }
 
-void MainWindow::setupMap()
-{
-    const int tileSize = 40; // 每个方块的大小
-    const int padding = 2; // 方块之间的间隔
-
-    for (int i = 0; i < MAP_SIZE; ++i) {
-        for (int j = 0; j < MAP_SIZE; ++j) {
-            QGraphicsRectItem *item = new QGraphicsRectItem(j * (tileSize + padding), i * (tileSize + padding), tileSize, tileSize);
-
-            switch (map[i][j]) {
-            case EMPTY:
-                item->setBrush(Qt::white);
-                break;
-            case UNBREAKABLE:
-                item->setBrush(Qt::gray);
-                break;
-            case BREAKABLE:
-                item->setBrush(Qt::darkGray);
-                break;
-            default:
-                item->setBrush(Qt::white);
-            }
-
-            scene->addItem(item);
-        }
-    }
-
-    view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
-}
 
 void MainWindow::handleLoginSuccess(const QString &username)
 {
