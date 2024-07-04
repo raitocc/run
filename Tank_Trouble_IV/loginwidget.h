@@ -21,7 +21,7 @@ private slots:
 
     void on_btnExit_clicked();
 
-private:
+public:
     Ui::LoginWidget *ui;
 
 signals:
