@@ -3,6 +3,7 @@
 
 int id;
 tank tk(id);
+
 // 更新子弹位置
 void shell::updatePosition(double deltaTime)
 {

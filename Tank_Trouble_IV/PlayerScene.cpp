@@ -1,6 +1,7 @@
 #include "PlayerScene.h"
 #include <QVBoxLayout>
 
+
 PlayerScene::PlayerScene(QWidget *parent) : QWidget(parent)
 {
     mapView = new QGraphicsView(this);
@@ -19,13 +20,6 @@ PlayerScene::~PlayerScene()
     // 如果有需要清理的资源，可以在这里添加代码
 }
 
-void PlayerScene::setupMap()
-{
-    // 在这里添加地图初始化逻辑，例如添加地图元素等
-    // 这只是一个示例，具体根据你的地图数据和需求来实现
-
-
-}
 
 void PlayerScene::setMap(const QPixmap &mapPixmap)
 {
@@ -37,6 +31,36 @@ void PlayerScene::setMap(const QPixmap &mapPixmap)
 
     // 根据需要设置视图的大小和缩放等属性
     mapView->fitInView(mapScene->sceneRect(), Qt::KeepAspectRatio);
+}
+
+void PlayerScene::setupMap()
+{
+    const int tileSize = 40; // 每个方块的大小
+    const int padding = 2; // 方块之间的间隔
+
+    for (int i = 0; i < MAP_SIZE; ++i) {
+        for (int j = 0; j < MAP_SIZE; ++j) {
+            QGraphicsRectItem *item = new QGraphicsRectItem(j * (tileSize + padding), i * (tileSize + padding), tileSize, tileSize);
+
+            switch (map[i][j]) {
+            case EMPTY:
+                item->setBrush(Qt::white);
+                break;
+            case UNBREAKABLE:
+                item->setBrush(Qt::gray);
+                break;
+            case BREAKABLE:
+                item->setBrush(Qt::darkGray);
+                break;
+            default:
+                item->setBrush(Qt::white);
+            }
+
+            scene->addItem(item);
+        }
+    }
+
+    view->fitInView(scene->sceneRect(), Qt::KeepAspectRatio);
 }
 
 void PlayerScene::updateMap()

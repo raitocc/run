@@ -4,8 +4,9 @@
 #include <QWidget>
 #include "gamemap.h"
 #include <QGraphicsScene>
-
+#include <QRandomGenerator>
 #include <QGraphicsRectItem>
+
 
 namespace Ui {
 class SingleGameWidget;

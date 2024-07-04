@@ -4,6 +4,7 @@
 #include <QKeyEvent>
 #include "loginwidget.h"
 
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -39,23 +40,7 @@ void MainWindow::slotLogin()//登录按钮按下后处理
     connect(mWelcomeWidget,&WelcomeWidget::signalSingleStart,this,&MainWindow::slotSingleStart);
 }
 
-void MainWindow::handleLoginSuccess(const QString &username)
-{
-    qDebug() << "Login successful! Username:" << username;
-    userName = username;
-    // 移除登录界面
-    //stackedWidget->removeWidget(stackedWidget->currentWidget());
 
-    // 添加并显示地图界面
-    //stackedWidget->addWidget(playerScene);
-    //stackedWidget->setCurrentWidget(playerScene);
-
-    // 加载地图图片，这里使用 QPixmap 加载地图图片，具体根据你的需求和地图数据来修改
-    //QPixmap mapPixmap(":/images/map_image.png"); // 使用资源文件加载地图图片
-
-    // 设置地图显示
-    //playerScene->setMap(mapPixmap);
-}
 
 void MainWindow::slotBackToLogin()//返回
 {
@@ -74,6 +59,25 @@ void MainWindow::slotSingleStart()//开始单人游戏
     mSingleGameWidget->show();
 }
 
+
+
+void MainWindow::handleLoginSuccess(const QString &username)
+{
+    //qDebug() << "Login successful! Username:" << username;
+
+    // 移除登录界面
+    //stackedWidget->removeWidget(stackedWidget->currentWidget());
+
+    // 添加并显示地图界面
+  //  stackedWidget->addWidget(playerScene);
+    //stackedWidget->setCurrentWidget(playerScene);
+
+    // 加载地图图片，这里使用 QPixmap 加载地图图片，具体根据你的需求和地图数据来修改
+   // QPixmap mapPixmap(":/images/map_image.png"); // 使用资源文件加载地图图片
+
+    // 设置地图显示
+    //playerScene->setMap(mapPixmap);
+}
 
 void MainWindow::slotSinglePause()//单人游戏暂停
 {
