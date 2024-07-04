@@ -11,6 +11,7 @@ RegisterDialog::RegisterDialog(QWidget *parent)
     , ui(new Ui::RegisterDialog)
 {
     ui->setupUi(this);
+    this->setWindowTitle("Register");
 }
 
 RegisterDialog::~RegisterDialog()
@@ -18,7 +19,7 @@ RegisterDialog::~RegisterDialog()
     delete ui;
 }
 
-void RegisterDialog::closeEvent(QCloseEvent *event)
+void RegisterDialog::closeEvent(QCloseEvent *event)//关闭事件
 {
     if(!ui->usernameLineEdit->text().isEmpty() || !ui->passwordLineEdit->text().isEmpty() || !ui->confirmPasswordLineEdit->text().isEmpty())
     {
@@ -28,14 +29,14 @@ void RegisterDialog::closeEvent(QCloseEvent *event)
                                        QMessageBox::No);
         if(ret == QMessageBox::No)
         {
-            event->ignore();
+            event->ignore();//阻止关闭
             return;
         }
     }
     event->accept();
 }
 
-bool RegisterDialog::isInputValid()
+bool RegisterDialog::isInputValid()//输入是否合法
 {
     QString username = ui->usernameLineEdit->text();
     QString password = ui->passwordLineEdit->text();
@@ -56,7 +57,7 @@ bool RegisterDialog::isInputValid()
     return true;
 }
 
-bool RegisterDialog::isUserRegistered(const QString &username)
+bool RegisterDialog::isUserRegistered(const QString &username)//用户名是否已经被注册过
 {
     QFile file("userdata.txt");
     if(file.open(QIODevice::ReadOnly | QIODevice::Text))
@@ -76,7 +77,7 @@ bool RegisterDialog::isUserRegistered(const QString &username)
     return false;
 }
 
-void RegisterDialog::on_registerButton_clicked()
+void RegisterDialog::on_registerButton_clicked()//注册按钮按下
 {
     if(isInputValid())
     {

@@ -15,7 +15,7 @@ LoginWidget::~LoginWidget()
     delete ui;
 }
 
-void LoginWidget::on_pushButton_clicked()
+void LoginWidget::on_pushButton_clicked()//登录按钮按下
 {
     QString username = ui->usernameLineEdit->text();
     QString password = ui->passwordLineEdit->text();
@@ -42,13 +42,13 @@ void LoginWidget::on_btnExit_clicked()
 }
 
 
-void LoginWidget::on_btnRegister_clicked()
+void LoginWidget::on_btnRegister_clicked()//弹出注册对话框
 {
     RegisterDialog registerDialog(this);
     registerDialog.exec();
 }
 
-bool LoginWidget::isLoginValid(const QString &username, const QString &password)
+bool LoginWidget::isLoginValid(const QString &username, const QString &password)//验证用户名与密码
 {
     QFile file("userdata.txt");
     if(file.open(QIODevice::ReadOnly | QIODevice::Text))

@@ -99,7 +99,7 @@ password</string>
     </rect>
    </property>
    <property name="text">
-    <string>OK</string>
+    <string>Register</string>
    </property>
   </widget>
   <widget class="QPushButton" name="cancelButton">
