@@ -1,38 +1,38 @@
 #include "shell.h"
 
-// æ›´æ–°å­å¼¹ä½ç½®
+// ¸üĞÂ×Óµ¯Î»ÖÃ
 void shell::updatePosition(double deltaTime)
 {
-    //å­å¼¹å¤„äºç©ºé—²çŠ¶æ€
+    //×Óµ¯´¦ÓÚ¿ÕÏĞ×´Ì¬
     if(status==0)
     {
         return;
     }
-    //å­å¼¹ç§»åŠ¨
+    //×Óµ¯ÒÆ¶¯
     shell_x=shell_x + cos(tk.angle)*shell_speed * deltaTime;
     shell_y=shell_y - sin(tk.angle)*shell_speed * deltaTime;
     shell_rect.moveTo(shell_x,shell_y);
-    //å­å¼¹å­˜åœ¨æ—¶é—´æ¶ˆè€—
+    //×Óµ¯´æÔÚÊ±¼äÏûºÄ
     lifespan -= deltaTime;
-    //å­å¼¹ä½ç½®è¶…å‡ºå±å¹•ï¼Œå˜ä¸ºç©ºé—²çŠ¶æ€
+    //×Óµ¯Î»ÖÃ³¬³öÆÁÄ»£¬±äÎª¿ÕÏĞ×´Ì¬
     if(shell_x<=shell_rect.width()||shell_y<=-shell_rect.height())
     {
         status=0;
     }
 }
 
-// å‘å°„å­å¼¹
+// ·¢Éä×Óµ¯
 void shell::fire(QMouseEvent *event){
     if(event->button()==Qt::LeftButton)
     {
-        //å°†å­å¼¹ä»ç©ºé—²çŠ¶æ€æ”¹ä¸ºä½¿ç”¨çŠ¶æ€
+        //½«×Óµ¯´Ó¿ÕÏĞ×´Ì¬¸ÄÎªÊ¹ÓÃ×´Ì¬
         status=1;
-        //è®¾ç½®å­å¼¹åæ ‡
+        //ÉèÖÃ×Óµ¯×ø±ê
         shell_x=tk.tank_x;
         shell_y=tk.tank_Y-1/2*tank_length;
         shell_rect.moveTo(shell_x,shell_y);
 
-        //ç»˜åˆ¶å­å¼¹
+        //»æÖÆ×Óµ¯
         shell_painter.drawPixmap(shell_x,shell_y,my_bullet);
 
         double deltatime=0.01667;
@@ -43,13 +43,13 @@ void shell::fire(QMouseEvent *event){
     }
 }
 
-//å­å¼¹ç¢°æ’æ£€æµ‹
+//×Óµ¯Åö×²¼ì²â
 void shell::collisionDetection()
 {
-    //å¦‚æœå­å¼¹çŸ©å½¢æ¡†å’Œæ•Œæ–¹å¦å…‹çŸ©å½¢æ¡†æˆ–å¢™ç›¸äº¤ï¼Œå˜ä¸ºç©ºé—²çŠ¶æ€
+    //Èç¹û×Óµ¯¾ØĞÎ¿òºÍµĞ·½Ì¹¿Ë¾ØĞÎ¿ò»òÇ½Ïà½»£¬±äÎª¿ÕÏĞ×´Ì¬
 }
 
-// å­å¼¹çˆ†ç‚¸æ•ˆæœ
+// ×Óµ¯±¬Õ¨Ğ§¹û
 void shell::hit() {
 
 }
