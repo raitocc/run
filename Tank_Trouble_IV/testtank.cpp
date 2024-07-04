@@ -8,6 +8,10 @@ testTank::testTank()
     setRect(0, 0, tankLength * 2 / 3, tankLength);
     setBrush(QBrush(Qt::red));
     setTransformOriginPoint(this->rect().width()/2,this->rect().height()/2);
+
+    head = new QGraphicsEllipseItem(-tankLength / 6, -tankLength / 6, tankLength / 3, tankLength / 3, this);
+    head->setBrush(QBrush(Qt::yellow));
+    head->setPos(rect().width() / 2, 0);
 }
 
 void testTank::keyPressEvent(QKeyEvent *event)

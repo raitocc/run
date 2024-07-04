@@ -3,6 +3,7 @@
 #include "ui_mainwindow.h"
 #include <QKeyEvent>
 #include "loginwidget.h"
+#include "ui_welcomewidget.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -34,7 +35,9 @@ void MainWindow::slotLogin()//登录按钮按下后处理
 {
     mWelcomeWidget = new WelcomeWidget(this);
     mWelcomeWidget->show();
-    handleLoginSuccess(mLoginWidget->ui->lineEdit->text());
+    userName = mLoginWidget->ui->usernameLineEdit->text();
+    mWelcomeWidget->ui->label->setText("Welcome "+userName);
+    //handleLoginSuccess(mLoginWidget->ui->usernameLineEdit->text());
     if(mLoginWidget) delete mLoginWidget;
     connect(mWelcomeWidget,&WelcomeWidget::signalBackLogin,this,&MainWindow::slotBackToLogin);
     connect(mWelcomeWidget,&WelcomeWidget::signalSingleStart,this,&MainWindow::slotSingleStart);
@@ -97,6 +100,7 @@ void MainWindow::slotExitToMenu()//暂停页面返回主菜单
     if(mPauseWidget)delete mPauseWidget;
     if(mSingleGameWidget)delete mSingleGameWidget;
     mWelcomeWidget = new WelcomeWidget(this);
+    mWelcomeWidget->ui->label->setText("Welcome "+userName);
     connect(mWelcomeWidget,&WelcomeWidget::signalBackLogin,this,&MainWindow::slotBackToLogin);
     connect(mWelcomeWidget,&WelcomeWidget::signalSingleStart,this,&MainWindow::slotSingleStart);
     mWelcomeWidget->show();

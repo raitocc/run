@@ -18,6 +18,7 @@ SOURCES += \
     mainwindow.cpp \
     pausewidget.cpp \
     #shell.cpp \
+    registerdialog.cpp \
     tank.cpp \
     singlegamewidget.cpp \
     testtank.cpp \
@@ -31,6 +32,7 @@ HEADERS += \
     griditem.h \
     loginwidget.h \
     mainwindow.h \
+    registerdialog.h \
     testtank.h \
     welcomewidget.h \
     pausewidget.h \
@@ -42,6 +44,7 @@ FORMS += \
     loginwidget.ui \
     mainwindow.ui \
     pausewidget.ui \
+    registerdialog.ui \
     singlegamewidget.ui \
     welcomewidget.ui
 

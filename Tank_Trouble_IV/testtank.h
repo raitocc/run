@@ -20,6 +20,7 @@ private:
 
     qreal speed;
     qreal rotationAngle;
+    QGraphicsEllipseItem *head; // 坦克头部
 };
 
 #endif // TANK_H

@@ -1,5 +1,7 @@
 #include "loginwidget.h"
+#include "registerdialog.h"
 #include "ui_loginwidget.h"
+#include <QFile>
 
 LoginWidget::LoginWidget(QWidget *parent)
     : QWidget(parent)
@@ -15,8 +17,18 @@ LoginWidget::~LoginWidget()
 
 void LoginWidget::on_pushButton_clicked()
 {
-    //按钮按下发送对应信号
-    emit signalLogin();
+    QString username = ui->usernameLineEdit->text();
+    QString password = ui->passwordLineEdit->text();
+
+    if(isLoginValid(username, password))
+    {
+        // 执行登录成功后的逻辑
+        emit signalLogin();
+    }
+    else
+    {
+        QMessageBox::warning(this, tr("Login Error"), tr("Invalid username or password."));
+    }
 }
 
 
@@ -27,5 +39,32 @@ void LoginWidget::on_btnExit_clicked()
     {
         this->parentWidget()->close();
     }
+}
+
+
+void LoginWidget::on_btnRegister_clicked()
+{
+    RegisterDialog registerDialog(this);
+    registerDialog.exec();
+}
+
+bool LoginWidget::isLoginValid(const QString &username, const QString &password)
+{
+    QFile file("userdata.txt");
+    if(file.open(QIODevice::ReadOnly | QIODevice::Text))
+    {
+        QTextStream in(&file);
+        while(!in.atEnd())
+        {
+            QString line = in.readLine();
+            QStringList parts = line.split(",");
+            if(parts.size() == 2 && parts[0] == username && parts[1] == password)
+            {
+                return true;
+            }
+        }
+        file.close();
+    }
+    return false;
 }
 
