@@ -77,16 +77,36 @@ void testTank::updateDirection()
 
 void testTank::advance()
 {
-    if (movingUp) {
+    if (movingUp && movingRight)
+    {
+        moveBy(speed/1.414, -speed/1.414);
+    }
+    else if (movingUp && movingLeft)
+    {
+        moveBy(-speed/1.414, -speed/1.414);
+    }
+    else if (movingDown && movingRight)
+    {
+        moveBy(speed/1.414, speed/1.414);
+    }
+    else if (movingDown && movingLeft)
+    {
+        moveBy(-speed/1.414, speed/1.414);
+    }
+    else if (movingUp)
+    {
         moveBy(0, -speed);
     }
-    if (movingDown) {
+    else if (movingDown)
+    {
         moveBy(0, speed);
     }
-    if (movingLeft) {
+    else if (movingLeft)
+    {
         moveBy(-speed, 0);
     }
-    if (movingRight) {
+    else if (movingRight)
+    {
         moveBy(speed, 0);
     }
 }
