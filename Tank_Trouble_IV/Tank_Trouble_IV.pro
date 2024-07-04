@@ -20,6 +20,7 @@ SOURCES += \
     #shell.cpp \
     tank.cpp \
     singlegamewidget.cpp \
+    testtank.cpp \
     welcomewidget.cpp
 
 
@@ -30,6 +31,7 @@ HEADERS += \
     griditem.h \
     loginwidget.h \
     mainwindow.h \
+    testtank.h \
     welcomewidget.h \
     pausewidget.h \
     singlegamewidget.h \
