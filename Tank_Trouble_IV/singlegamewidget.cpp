@@ -1,7 +1,5 @@
 #include "singlegamewidget.h"
 #include "ui_singlegamewidget.h"
-#define gridSize 50
-#define tanklength 30
 
 
 SingleGameWidget::SingleGameWidget(QWidget *parent)
@@ -10,38 +8,16 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
 {
     ui->setupUi(this);
     map.createMap();
-    tank = new testTank;
+    tank = new testTank(&map);
     scene = new QGraphicsScene(this);
-    // // 循环创建格子并添加到场景中
-    // for (int row = 0; row < numCells; ++row) {
-    //     for (int col = 0; col < numCells; ++col) {
-    //         // 计算当前格子的位置
-    //         int x = col * gridSize;
-    //         int y = row * gridSize;
-
-
-    //         QRandomGenerator *generator = QRandomGenerator::global();
-
-    //         // 生成范围在 [0, 2] 内的随机整数
-    //         int randomValue = generator->bounded(3);
-
-    //         // 使用随机数来确定 GridItem 的类型
-    //         GridItem::Type itemType = static_cast<GridItem::Type>(randomValue);
-
-
-    //         // 创建矩形项并设置位置和大小
-    //         QGraphicsRectItem *rect = new QGraphicsRectItem(x, y, gridSize, gridSize);
-    //         scene->addItem(rect);
-    //     }
-    // }
-    // QGraphicsRectItem *rect1 = new QGraphicsRectItem(50, 0, 1000, 1000);
-    // scene->addItem(rect1);
+    scene->setSceneRect(0, 0, gridSize * map.getcol(), gridSize * (map.getrow()+2)); // col和row是地图的列数和行数
     ui->graphicsView->setScene(scene);
     drawMap();
     //添加事件过滤器
     ui->graphicsView->installEventFilter(this);
+    ui->graphicsView->centerOn(0,0);
     timer = new QTimer;
-    timer->start(1000/60);
+    timer->start(1000/60);//60fps
     connect(timer,&QTimer::timeout,this,&SingleGameWidget::advance);
 }
 
@@ -101,7 +77,6 @@ void SingleGameWidget::drawMap()
             }
         }
     }
-    tank->setPos(gridSize, gridSize);
     scene->addItem(tank);
 }
 
@@ -113,5 +88,24 @@ void SingleGameWidget::on_btnPause_clicked()
 void SingleGameWidget::advance()
 {
     tank->advance();
+    centerViewOnTank();
+}
+
+void SingleGameWidget::centerViewOnTank()
+{
+    // 获取坦克的中心位置
+    QPointF tankCenter = tank->pos() + QPointF(tank->rect().width() / 2, tank->rect().height() / 2);
+
+    // 计算视图的边界
+    QRectF sceneRect = scene->sceneRect();
+    qreal halfWidth = ui->graphicsView->viewport()->width() / 2;
+    qreal halfHeight = ui->graphicsView->viewport()->height() / 2;
+
+    // 计算新的中心位置，确保不超出边界
+    qreal newCenterX = qMin(sceneRect.right() - halfWidth, qMax(sceneRect.left() + halfWidth, tankCenter.x()));
+    qreal newCenterY = qMin(sceneRect.bottom() - halfHeight, qMax(sceneRect.top() + halfHeight, tankCenter.y()));
+
+    // 设置视图的中心
+    ui->graphicsView->centerOn(newCenterX, newCenterY);
 }
 

@@ -1,6 +1,7 @@
 #ifndef TESTTANK_H
 #define TESTTANK_H
 
+#include "gamemap.h"
 #include <QGraphicsRectItem>
 #include <QKeyEvent>
 
@@ -9,7 +10,7 @@
 class testTank : public QGraphicsRectItem
 {
 public:
-    testTank();
+    testTank(GameMap *gameMap);
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
     void advance();
@@ -17,6 +18,8 @@ public:
 private:
     bool movingUp, movingDown, movingLeft, movingRight;
     void updateDirection();
+    bool checkCollision();
+    void setRandomInitialPosition(GameMap *gameMap); // 设置随机初始位置
 
     qreal speed;
     qreal rotationAngle;

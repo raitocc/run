@@ -10,6 +10,9 @@
 #include <QKeyEvent>
 #include <QTimer>
 
+#define gridSize 50
+#define tanklength 30
+
 namespace Ui {
 class SingleGameWidget;
 }
@@ -36,7 +39,10 @@ private:
     QGraphicsScene* scene;
 
     testTank* tank;
+
     QTimer* timer;
+
+    void centerViewOnTank();
 
 
 signals:
