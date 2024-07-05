@@ -5,6 +5,7 @@
 //在这里创建（声明）tank才能在析构函数里面正常析构,因为我没在widget里面放指针
 tank* tank1;//创建
 
+
 SingleGameWidget::SingleGameWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::SingleGameWidget)
@@ -78,22 +79,29 @@ void SingleGameWidget::drawMap()
     {
         for(int j = 0; j < map.getcol(); ++j)
         {
-            QGraphicsRectItem *rect = scene->addRect(j*gridSize,i*gridSize,gridSize,gridSize);
+            QGraphicsRectItem *rect = scene->addRect(j*gridSize, i*gridSize, gridSize, gridSize);
+            QPixmap wall(":/new/prefix1/wall.png");
+            QPixmap resizedwall =wall.scaled(gridSize, gridSize);
+            QPixmap box(":/new/prefix1/box.png");
+            QPixmap resizedbox =box.scaled(gridSize, gridSize);
+            // Load pixmap based on map element
             switch (map.getmap()[i][j])
             {
-            case 0:
-                rect->setBrush(QBrush(QColor(0,0,0)));
+            case 0: // 不可破坏墙
+                rect->setBrush(QBrush(resizedwall)); // 加载不可破坏墙的贴图
                 break;
-            case 1://可破坏墙体
-                rect->setBrush(QBrush(QColor(0,255,255)));
+            case 1: // 可破坏墙体
+                rect->setBrush(QBrush(resizedbox)); // 加载可破坏墙体的贴图
                 break;
-            case 2:
-                rect->setBrush(QBrush(QColor(255,255,255)));
+            case 2: // 其他类型的墙体或空白
+                rect->setBrush(QBrush(QColor(255, 255, 255))); // 或者使用默认的白色填充
                 break;
             }
         }
     }
     //scene->addItem(tank);
+
+    scene->addItem(tank); // 添加坦克或其他游戏元素
 }
 
 void SingleGameWidget::on_btnPause_clicked()
