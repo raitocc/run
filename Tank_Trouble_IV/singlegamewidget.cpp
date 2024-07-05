@@ -11,6 +11,8 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
 {
     ui->setupUi(this);
     map.createMap();
+    int tank_X,tank_Y;
+    map.setRandomInitialPosition(tank_X,tank_Y);
     //tank = new testTank(&map);
     //tank = new testTank;
     tank1 = new class tank(1000);//堆上创建
@@ -25,8 +27,8 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     ui->graphicsView->setFocusPolicy(Qt::StrongFocus);
     ui->graphicsView->setFocus();
     //坦克重生点设置
-
-    tank1->setPos(500, 300);//设置坦克出生点
+    //不好意思有点误差
+    tank1->setPos(tank_X-tank1->width/2, tank_Y-tank1->length/2);//设置坦克出生点
     tank1->setZValue(1); // 设置 tank1 的 Z 值为 1，防止被场景遮挡,这个可以有效解决其他的遮挡问题
     ui->graphicsView->installEventFilter(this);
     ui->graphicsView->centerOn(0,0);
