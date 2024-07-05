@@ -32,8 +32,9 @@ public:
     int* shell;//当前携带各种子弹及其数量
     double width;//坦克宽度
     double length;//坦克长度,间接决定坦克体积
-    qreal tank_x;  // 坦克在场景中的 x 坐标
-    qreal tank_Y;  // 坦克在场景中的 y 坐标    double tank_angle;//坦克角度，0-360
+    double tank_x;  // 坦克在场景中的 x 坐标
+    double tank_y;  // 坦克在场景中的 y 坐标
+    double tank_angle;//坦克角度，0-360
     double shell_angle;//炮筒角度，0-360
     bool movingUp, movingDown, movingLeft, movingRight;//当前移动方向
     void updateDirection();
@@ -48,8 +49,8 @@ public:
     void inital_tank(string name,string info,int HP,int tank_speed,int attck_speed,int width,int length,int shell_kind);
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
-    void mouseMoveEvent(QMouseEvent *event) ;
-    void mousePressEvent(QMouseEvent *event);
+    //void mouseMoveEvent(QMouseEvent *event) ;
+    //void mousePressEvent(QMouseEvent *event);
 
     void tank_move();//
     void resetMoving();
@@ -61,14 +62,14 @@ public:
     tank(QGraphicsItem *parent = nullptr) : QGraphicsPixmapItem(parent) {}
 
     QPointF pos() const {
-        return QPointF(tank_x, tank_Y);
+        return QPointF(tank_x, tank_y);
     }
 
 
 
     QPointF mapToScene(const QPointF& pos) const {
         // 根据 tank_x 和 tank_y 计算坦克在场景中的位置
-        QPointF scenePos(tank_x, tank_Y);
+        QPointF scenePos(tank_x, tank_y);
         return scenePos;
     }
 

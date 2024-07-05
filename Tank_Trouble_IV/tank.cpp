@@ -1,5 +1,4 @@
 #include "tank.h"
-#include "bullet.h"
 #include "qevent.h"
 #include "qpainter.h"
 
@@ -82,23 +81,23 @@ tank::tank(int ID):ID(ID),tank_angle (0), movingUp(false), movingDown(false), mo
 }
 
 
-// 假设计算角度的函数如下，这里仅作示意
-int calculateAngle(const QPoint &targetPos) {
-    // 计算炮筒应该指向鼠标位置的角度
-    QPoint tankPos = mapToScene(pos());  // 坦克在场景中的位置
-    QPoint direction = targetPos - tankPos;
-    qreal angle = qRadiansToDegrees(qAtan2(direction.y(), direction.x()));
-    return angle;
-}
+// // 假设计算角度的函数如下，这里仅作示意
+// int calculateAngle(const QPoint &targetPos) {
+//     // 计算炮筒应该指向鼠标位置的角度
+//     QPoint tankPos = mapToScene(pos());  // 坦克在场景中的位置
+//     QPoint direction = targetPos - tankPos;
+//     qreal angle = qRadiansToDegrees(qAtan2(direction.y(), direction.x()));
+//     return angle;
+// }
 
-// 更新炮筒角度的函数
-void updateCannonRotation(const QPoint &targetPos) {
-    // 计算炮筒应该指向的角度
-    // 这里假设根据鼠标位置计算炮筒角度的函数是 updateCannonRotation，具体实现视情况而定
-    // 示意性地显示如何更新炮筒的角度
-    int angle = calculateAngle(targetPos);
-    //setRotation(angle);
-}
+// // 更新炮筒角度的函数
+// void updateCannonRotation(const QPoint &targetPos) {
+//     // 计算炮筒应该指向的角度
+//     // 这里假设根据鼠标位置计算炮筒角度的函数是 updateCannonRotation，具体实现视情况而定
+//     // 示意性地显示如何更新炮筒的角度
+//     int angle = calculateAngle(targetPos);
+//     //setRotation(angle);
+// }
 
 
 void tank::setTankBodyPixmap(const QPixmap &pixmap) {
