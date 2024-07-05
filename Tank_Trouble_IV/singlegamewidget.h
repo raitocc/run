@@ -27,6 +27,7 @@ public:
 
     void drawMap();
     bool eventFilter(QObject *watched, QEvent *event);
+    void setViewFocus();
 
 public slots:
     void on_btnPause_clicked();

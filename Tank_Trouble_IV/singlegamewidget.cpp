@@ -28,6 +28,11 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     tank1->setZValue(1); // 设置 tank1 的 Z 值为 1，防止被场景遮挡,这个可以有效解决其他的遮挡问题
     ui->graphicsView->installEventFilter(this);
     ui->graphicsView->centerOn(0,0);
+
+    //强聚焦，始终接收键盘事件设置焦点策略
+    ui->graphicsView->setFocusPolicy(Qt::StrongFocus);
+    ui->graphicsView->setFocus();
+
     timer = new QTimer;
     timer->start(1000/60);//60fps
     connect(timer,&QTimer::timeout,this,&SingleGameWidget::advance);
@@ -59,6 +64,11 @@ bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
         }
     }
     return QWidget::eventFilter(watched, event);
+}
+
+void SingleGameWidget::setViewFocus()
+{
+    ui->graphicsView->setFocus();
 }
 
 
@@ -100,6 +110,7 @@ void SingleGameWidget::drawMap()
 
 void SingleGameWidget::on_btnPause_clicked()
 {
+    tank->resetMoving();
     emit signalPause();
     tank1->resetMoving();
 }
