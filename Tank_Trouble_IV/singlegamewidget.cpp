@@ -116,7 +116,6 @@ void SingleGameWidget::drawMap()
 
 void SingleGameWidget::on_btnPause_clicked()
 {
-    tank->resetMoving();
     emit signalPause();
     tank1->resetMoving();
 }
@@ -143,10 +142,5 @@ void SingleGameWidget::centerViewOnTank()
 
     // 设置视图的中心
     ui->graphicsView->centerOn(newCenterX, newCenterY);
-}
-
-void SingleGameWidget::setViewFocus()
-{
-    this->ui->graphicsView->setFocus();
 }
 
