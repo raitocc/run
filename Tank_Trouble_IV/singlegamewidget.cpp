@@ -16,6 +16,11 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     //添加事件过滤器
     ui->graphicsView->installEventFilter(this);
     ui->graphicsView->centerOn(0,0);
+
+    //强聚焦，始终接收键盘事件设置焦点策略
+    ui->graphicsView->setFocusPolicy(Qt::StrongFocus);
+    ui->graphicsView->setFocus();
+
     timer = new QTimer;
     timer->start(1000/60);//60fps
     connect(timer,&QTimer::timeout,this,&SingleGameWidget::advance);
@@ -47,6 +52,11 @@ bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
         }
     }
     return QWidget::eventFilter(watched, event);
+}
+
+void SingleGameWidget::setViewFocus()
+{
+    ui->graphicsView->setFocus();
 }
 
 
@@ -82,6 +92,7 @@ void SingleGameWidget::drawMap()
 
 void SingleGameWidget::on_btnPause_clicked()
 {
+    tank->resetMoving();
     emit signalPause();
 }
 

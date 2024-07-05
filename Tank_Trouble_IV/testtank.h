@@ -14,6 +14,7 @@ public:
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
     void advance();
+    void resetMoving();
 
 private:
     bool movingUp, movingDown, movingLeft, movingRight;
