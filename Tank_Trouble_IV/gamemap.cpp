@@ -9,7 +9,7 @@ GameMap::GameMap() {}
 void GameMap::createMap()
 {
     // 随机生成地图的行列数（加上外圈的墙）
-    col = QRandomGenerator::global()->bounded(16, 29) + 2;
+    col = QRandomGenerator::global()->bounded(30, 51) + 2;
     row = col * 3 / 4;
     map.resize(row);
     for(auto& i : map)

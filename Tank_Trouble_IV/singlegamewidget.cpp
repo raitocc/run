@@ -11,7 +11,7 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
 {
     ui->setupUi(this);
     map.createMap();
-    tank = new testTank(&map);
+    //tank = new testTank(&map);
     //tank = new testTank;
     tank1 = new class tank(1000);//堆上创建
     scene = new QGraphicsScene(this);
@@ -21,6 +21,9 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     //添加事件过滤器
     tank1->setPos(gridSize, gridSize);
     scene->addItem(tank1);
+    //强聚焦，始终接收键盘事件设置焦点策略
+    ui->graphicsView->setFocusPolicy(Qt::StrongFocus);
+    ui->graphicsView->setFocus();
     //坦克重生点设置
 
     tank1->setPos(500, 300);//设置坦克出生点
@@ -88,7 +91,7 @@ void SingleGameWidget::drawMap()
             }
         }
     }
-    scene->addItem(tank);
+    //scene->addItem(tank);
 }
 
 void SingleGameWidget::on_btnPause_clicked()
@@ -106,7 +109,7 @@ void SingleGameWidget::advance()
 void SingleGameWidget::centerViewOnTank()
 {
     // 获取坦克的中心位置
-    QPointF tankCenter = tank->pos() + QPointF(tank->rect().width() / 2, tank->rect().height() / 2);
+    QPointF tankCenter = tank1->pos() + QPointF(tank1->width / 2, tank1->length / 2);
 
     // 计算视图的边界
     QRectF sceneRect = scene->sceneRect();
