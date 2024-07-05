@@ -1,6 +1,7 @@
 #include "singlegamewidget.h"
 #include "tank.h"
 #include "ui_singlegamewidget.h"
+//#include <QPainter>
 
 //在这里创建（声明）tank才能在析构函数里面正常析构,因为我没在widget里面放指针
 tank* tank1;//创建
@@ -20,10 +21,17 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0, 0, gridSize * map.getcol(), gridSize * (map.getrow()+2)); // col和row是地图的列数和行数
     ui->graphicsView->setScene(scene);
+    //设置鼠标默认追踪
+    ui->graphicsView->setMouseTracking(true);
+    this->setMouseTracking(true);
     drawMap();
     //添加事件过滤器
     tank1->setPos(gridSize, gridSize);
     scene->addItem(tank1);
+    ui->graphicsView->viewport()->installEventFilter(this);
+    //确保 QGraphicsView 和 QWidget 允许鼠标事件传递
+    ui->graphicsView->setAttribute(Qt::WA_TransparentForMouseEvents, false);
+    this->setAttribute(Qt::WA_TransparentForMouseEvents, false);
     //强聚焦，始终接收键盘事件设置焦点策略
     ui->graphicsView->setFocusPolicy(Qt::StrongFocus);
     ui->graphicsView->setFocus();
@@ -32,16 +40,100 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     tank1->setPos(tank_X-tank1->width/2, tank_Y-tank1->length/2);//设置坦克出生点
     tank1->setZValue(5); // 设置 tank1 的 Z 值为 1，防止被场景遮挡,这个可以有效解决其他的遮挡问题
     ui->graphicsView->installEventFilter(this);
+    this->installEventFilter(this);//事件过滤器
     ui->graphicsView->centerOn(0,0);
     timer = new QTimer;
     timer->start(1000/60);//60fps
     connect(timer,&QTimer::timeout,this,&SingleGameWidget::advance);
 }
 
+// bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
+// {
+//     if (watched == ui->graphicsView)
+//     {
+//         //按键的
+//         if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease)
+//         {
+//             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+//             QGraphicsScene *scene = ui->graphicsView->scene();
+//             for (auto item : scene->items())
+//             {
+//                 if (tank *tank0 = dynamic_cast<tank *>(item))
+//                 {
+//                     if (event->type() == QEvent::KeyPress)
+//                     {
+//                         tank0->keyPressEvent(keyEvent);
+//                     }
+//                     else if (event->type() == QEvent::KeyRelease)
+//                     {
+//                         tank0->keyReleaseEvent(keyEvent);
+//                     }
+//                     return true;
+//                 }
+//             }
+//         }
+//         //鼠标的
+//         if (event->type() == QEvent::MouseMove)
+//         {
+//             QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+//             mouseMoveEvent(mouseEvent);
+//             return true;
+//         }
+//         else if (event->type() == QEvent::MouseButtonRelease)
+//         {
+//             QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+//             mouseReleaseEvent(mouseEvent);
+//             return true;
+//         }
+//         else if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease)
+//         {
+//             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+//             QGraphicsScene *scene = ui->graphicsView->scene();
+//             for (auto item : scene->items())
+//             {
+//                 if (tank *tank0 = dynamic_cast<tank *>(item))
+//                 {
+//                     if (event->type() == QEvent::KeyPress)
+//                     {
+//                         tank0->keyPressEvent(keyEvent);
+//                     }
+//                     else if (event->type() == QEvent::KeyRelease)
+//                     {
+//                         tank0->keyReleaseEvent(keyEvent);
+//                     }
+//                     return true;
+//                 }
+//             }
+//         }
+//     }
+//     return QWidget::eventFilter(watched, event);
+// }
 bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
 {
+    if (watched == ui->graphicsView->viewport())
+    {
+        if (event->type() == QEvent::MouseMove)
+        {
+            QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+            mouseMoveEvent(mouseEvent);
+            return true;
+        }
+        else if (event->type() == QEvent::MouseButtonPress)
+        {
+            QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+            mousePressEvent(mouseEvent);
+            return true;
+        }
+        else if (event->type() == QEvent::MouseButtonRelease)
+        {
+            QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+            mouseReleaseEvent(mouseEvent);
+            return true;
+        }
+    }
     if (watched == ui->graphicsView)
     {
+        //按键的
         if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease)
         {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
@@ -65,7 +157,6 @@ bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
     }
     return QWidget::eventFilter(watched, event);
 }
-
 
 SingleGameWidget::~SingleGameWidget()
 {
@@ -136,13 +227,33 @@ void SingleGameWidget::centerViewOnTank()
 
 void SingleGameWidget::mouseMoveEvent(QMouseEvent *event)
 {
-
-}
+    //需要实时更新
+    //if(event->button()==Qt::LeftButton){
+        setMouseTracking(true);
+        msx=event->pos().x();
+        msy=event->pos().y();//相对坐标
+        qDebug()<<msx<<msy;
+        ui->label_2->setText(QString::number(msx)+","+QString::number(msy));
+    //}
+}//我感觉并不需要
 void SingleGameWidget::mousePressEvent(QMouseEvent *event)
 {
+    qDebug()<<"pressed!";
+    //想法是激活追踪
 
 }
 void SingleGameWidget::mouseReleaseEvent(QMouseEvent *event)
 {
+    if(event->button()==Qt::LeftButton)
+    {
+    msx=event->pos().x();//相对坐标
+    msy=event->pos().y();//相对坐标
+    qDebug()<<msx<<msy;
+    //发射炮弹
+
+    }
 
 }
+
+
+

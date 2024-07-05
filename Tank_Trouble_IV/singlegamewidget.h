@@ -20,6 +20,8 @@ class SingleGameWidget : public QWidget
     Q_OBJECT
 
 public:
+    double msx;
+    double msy;
     explicit SingleGameWidget(QWidget *parent = nullptr);
     ~SingleGameWidget();
 
@@ -31,7 +33,6 @@ public:
     void mouseReleaseEvent(QMouseEvent *event);
 public slots:
     void on_btnPause_clicked();
-
     void advance();
 
 private:
