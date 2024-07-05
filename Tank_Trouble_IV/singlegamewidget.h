@@ -6,7 +6,7 @@
 #include <QGraphicsScene>
 #include <QRandomGenerator>
 #include <QGraphicsRectItem>
-#include "testtank.h"
+//#include "testtank.h"
 #include <QKeyEvent>
 #include <QTimer>
 
@@ -35,7 +35,7 @@ private:
     GameMap map;
     QGraphicsScene* scene;
 
-    testTank* tank;
+    //testTank* tank;
     QTimer* timer;
 
 

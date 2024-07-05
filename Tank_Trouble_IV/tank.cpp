@@ -1,4 +1,5 @@
 #include "tank.h"
+#include "qevent.h"
 
 void tank::inital_tank
     (
@@ -23,7 +24,7 @@ void tank::inital_tank
     shell[shell_kind_]=MAXNUM;//默认子弹数量为无穷
 }
 //我设定的子弹种类 #0普通子弹 #1双发普通子弹 #3爆炸子弹
-tank::tank(int ID):ID(ID){
+tank::tank(int ID):ID(ID),tank_angle (0), movingUp(false), movingDown(false), movingLeft(false), movingRight(false){
     //这里我想的是每个tank型号我们定一个ID,创建时直接用ID就可以创建
     switch(ID)
     {
@@ -55,7 +56,127 @@ tank::tank(int ID):ID(ID){
         inital_tank("Bomb turret","",4,0,basic_attck_speed*0.5,tank_width,tank_length,2);
         break;
     }
+
+    QPixmap pixmap(":/img/Tank1000.png");
+    if (pixmap.isNull()) {
+        qDebug() << "Failed to load image.";
+    } else {
+        qDebug() << "Image loaded successfully.";
+    }
+    QPixmap scaledPixmap = pixmap.scaled(30, 30, Qt::KeepAspectRatio); // 调整图片大小到 100x100，保持纵横比
+    setPixmap(scaledPixmap);
+    setTransformOriginPoint(scaledPixmap.width() / 2, scaledPixmap.height() / 2); // 设置旋转点为图片中心
+    setScale(2); // 放大
+
 }
 tank::~tank() {
     delete[] shell;
+}
+
+void tank::keyPressEvent(QKeyEvent *event)
+{
+    switch (event->key())
+    {
+    case Qt::Key_W:
+        movingUp = true;
+        break;
+    case Qt::Key_S:
+        movingDown = true;
+        break;
+    case Qt::Key_A:
+        movingLeft = true;
+        break;
+    case Qt::Key_D:
+        movingRight = true;
+        break;
+    default:
+        break;
+    }
+    updateDirection();
+}
+
+void tank::keyReleaseEvent(QKeyEvent *event)
+{
+    switch (event->key())
+    {
+    case Qt::Key_W:
+        movingUp = false;
+        break;
+    case Qt::Key_S:
+        movingDown = false;
+        break;
+    case Qt::Key_A:
+        movingLeft = false;
+        break;
+    case Qt::Key_D:
+        movingRight = false;
+        break;
+    default:
+        break;
+    }
+    updateDirection();
+}
+
+void tank::updateDirection()
+{
+    if (movingUp && movingRight) {
+        setRotation(45);
+    } else if (movingUp && movingLeft) {
+        setRotation(-45);
+    } else if (movingDown && movingRight) {
+        setRotation(135);
+    } else if (movingDown && movingLeft) {
+        setRotation(-135);
+    } else if (movingUp) {
+        setRotation(0);
+    } else if (movingDown) {
+        setRotation(180);
+    } else if (movingLeft) {
+        setRotation(-90);
+    } else if (movingRight) {
+        setRotation(90);
+    }
+}
+
+void tank::tank_move()
+{
+    if (movingUp && movingRight)
+    {
+        moveBy(tank_speed/1.414, -tank_speed/1.414);
+    }
+    else if (movingUp && movingLeft)
+    {
+        moveBy(-tank_speed/1.414, -tank_speed/1.414);
+    }
+    else if (movingDown && movingRight)
+    {
+        moveBy(tank_speed/1.414, tank_speed/1.414);
+    }
+    else if (movingDown && movingLeft)
+    {
+        moveBy(-tank_speed/1.414, tank_speed/1.414);
+    }
+    else if (movingUp)
+    {
+        moveBy(0, -tank_speed);
+    }
+    else if (movingDown)
+    {
+        moveBy(0, tank_speed);
+    }
+    else if (movingLeft)
+    {
+        moveBy(-tank_speed, 0);
+    }
+    else if (movingRight)
+    {
+        moveBy(tank_speed, 0);
+    }
+}
+void tank::resetMoving()
+{
+    movingDown=false;
+    movingLeft=false;
+    movingRight=false;
+    movingUp=false;
 }

@@ -1,8 +1,11 @@
 #include "singlegamewidget.h"
+#include "tank.h"
 #include "ui_singlegamewidget.h"
 #define gridSize 50
 #define tanklength 30
 
+//在这里创建（声明）tank才能在析构函数里面正常析构,因为我没在widget里面放指针
+tank* tank1;//创建
 
 SingleGameWidget::SingleGameWidget(QWidget *parent)
     : QWidget(parent)
@@ -10,35 +13,18 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
 {
     ui->setupUi(this);
     map.createMap();
-    tank = new testTank;
+    //tank = new testTank;
+    tank1 = new class tank(1000);//堆上创建
     scene = new QGraphicsScene(this);
-    // // 循环创建格子并添加到场景中
-    // for (int row = 0; row < numCells; ++row) {
-    //     for (int col = 0; col < numCells; ++col) {
-    //         // 计算当前格子的位置
-    //         int x = col * gridSize;
-    //         int y = row * gridSize;
-
-
-    //         QRandomGenerator *generator = QRandomGenerator::global();
-
-    //         // 生成范围在 [0, 2] 内的随机整数
-    //         int randomValue = generator->bounded(3);
-
-    //         // 使用随机数来确定 GridItem 的类型
-    //         GridItem::Type itemType = static_cast<GridItem::Type>(randomValue);
-
-
-    //         // 创建矩形项并设置位置和大小
-    //         QGraphicsRectItem *rect = new QGraphicsRectItem(x, y, gridSize, gridSize);
-    //         scene->addItem(rect);
-    //     }
-    // }
-    // QGraphicsRectItem *rect1 = new QGraphicsRectItem(50, 0, 1000, 1000);
-    // scene->addItem(rect1);
     ui->graphicsView->setScene(scene);
     drawMap();
     //添加事件过滤器
+    tank1->setPos(gridSize, gridSize);
+    scene->addItem(tank1);
+    //坦克重生点设置
+
+    tank1->setPos(500, 300);//设置坦克出生点
+    tank1->setZValue(1); // 设置 tank1 的 Z 值为 1，防止被场景遮挡,这个可以有效解决其他的遮挡问题
     ui->graphicsView->installEventFilter(this);
     timer = new QTimer;
     timer->start(1000/60);
@@ -55,15 +41,15 @@ bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
             QGraphicsScene *scene = ui->graphicsView->scene();
             for (auto item : scene->items())
             {
-                if (testTank *tank = dynamic_cast<testTank *>(item))
+                if (tank *tank0 = dynamic_cast<tank *>(item))
                 {
                     if (event->type() == QEvent::KeyPress)
                     {
-                        tank->keyPressEvent(keyEvent);
+                        tank0->keyPressEvent(keyEvent);
                     }
                     else if (event->type() == QEvent::KeyRelease)
                     {
-                        tank->keyReleaseEvent(keyEvent);
+                        tank0->keyReleaseEvent(keyEvent);
                     }
                     return true;
                 }
@@ -101,17 +87,16 @@ void SingleGameWidget::drawMap()
             }
         }
     }
-    tank->setPos(gridSize, gridSize);
-    scene->addItem(tank);
 }
 
 void SingleGameWidget::on_btnPause_clicked()
 {
     emit signalPause();
+    tank1->resetMoving();
 }
 
 void SingleGameWidget::advance()
 {
-    tank->advance();
+    tank1->tank_move();
 }
 
