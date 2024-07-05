@@ -180,3 +180,5 @@ void tank::resetMoving()
     movingRight=false;
     movingUp=false;
 }
+
+

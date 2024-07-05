@@ -6,6 +6,7 @@
 #include <QGraphicsPixmapItem>//图形元素
 //#include <QGraphicsview>//视图
 #include <QGraphicsScene>//场景
+#include <QMouseEvent>>
 using namespace std;
 
 #define basic_tank_speed 2
@@ -32,17 +33,25 @@ public:
     double width;//坦克宽度
     double length;//坦克长度,间接决定坦克体积
     double tank_x;
-    double tank_Y;//坦克的坐标
+    double tank_y;//坦克的坐标
     double tank_angle;//坦克角度，0-360
     double shell_angle;//炮筒角度，0-360
     bool movingUp, movingDown, movingLeft, movingRight;//当前移动方向
     void updateDirection();
-    bool IFPLAYER;
+    bool IFPLAYER;//是否为玩家
+
     tank(int ID);
     ~tank();
+    //tank坐标实时更新？
+    void SET_X(int x){tank_x=x;}
+    void SET_Y(int y){tank_y=y;}
+
     void inital_tank(string name,string info,int HP,int tank_speed,int attck_speed,int width,int length,int shell_kind);
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
+    void mouseMoveEvent(QMouseEvent *event) ;
+    void mousePressEvent(QMouseEvent *event);
+
     void tank_move();//
     void resetMoving();
 };

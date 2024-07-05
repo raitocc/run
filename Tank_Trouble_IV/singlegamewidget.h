@@ -25,7 +25,10 @@ public:
 
     void drawMap();
     bool eventFilter(QObject *watched, QEvent *event);
-
+    //鼠标
+    void mouseMoveEvent(QMouseEvent *event) ;
+    void mousePressEvent(QMouseEvent *event);
+    void mouseReleaseEvent(QMouseEvent *event);
 public slots:
     void on_btnPause_clicked();
 

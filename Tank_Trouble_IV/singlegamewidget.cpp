@@ -134,3 +134,15 @@ void SingleGameWidget::centerViewOnTank()
     ui->graphicsView->centerOn(newCenterX, newCenterY);
 }
 
+void SingleGameWidget::mouseMoveEvent(QMouseEvent *event)
+{
+
+}
+void SingleGameWidget::mousePressEvent(QMouseEvent *event)
+{
+
+}
+void SingleGameWidget::mouseReleaseEvent(QMouseEvent *event)
+{
+
+}
