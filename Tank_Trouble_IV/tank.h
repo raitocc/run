@@ -1,10 +1,14 @@
 #ifndef TANK_H
 #define TANK_H
 
+#include <QGraphicsRectItem>
 #include <Qstring>
+#include <QGraphicsPixmapItem>//图形元素
+//#include <QGraphicsview>//视图
+#include <QGraphicsScene>//场景
 using namespace std;
 
-#define basic_tank_speed 5
+#define basic_tank_speed 2
 #define basic_attck_speed 5
 //#define basic_turning_speed
 #define tank_width 1
@@ -13,7 +17,7 @@ using namespace std;
 #define shellkind 10//子弹最大种类
 #define MAXNUM 2000000000;
 
-class tank
+class tank : public QGraphicsPixmapItem
 {
 public:
     int ID;//tank编号
@@ -29,9 +33,17 @@ public:
     double length;//坦克长度,间接决定坦克体积
     double tank_x;
     double tank_Y;//坦克的坐标
-    double angle;//炮筒角度，0-360
+    double tank_angle;//坦克角度，0-360
+    double shell_angle;//炮筒角度，0-360
+    bool movingUp, movingDown, movingLeft, movingRight;//当前移动方向
+    void updateDirection();
+    bool IFPLAYER;
     tank(int ID);
     ~tank();
     void inital_tank(string name,string info,int HP,int tank_speed,int attck_speed,int width,int length,int shell_kind);
+    void keyPressEvent(QKeyEvent *event);
+    void keyReleaseEvent(QKeyEvent *event);
+    void tank_move();//
+    void resetMoving();
 };
 #endif // TANK_H

@@ -1,6 +1,9 @@
 #include "singlegamewidget.h"
+#include "tank.h"
 #include "ui_singlegamewidget.h"
 
+//在这里创建（声明）tank才能在析构函数里面正常析构,因为我没在widget里面放指针
+tank* tank1;//创建
 
 
 SingleGameWidget::SingleGameWidget(QWidget *parent)
@@ -10,11 +13,19 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     ui->setupUi(this);
     map.createMap();
     tank = new testTank(&map);
+    //tank = new testTank;
+    tank1 = new class tank(1000);//堆上创建
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0, 0, gridSize * map.getcol(), gridSize * (map.getrow()+2)); // col和row是地图的列数和行数
     ui->graphicsView->setScene(scene);
     drawMap();
     //添加事件过滤器
+    tank1->setPos(gridSize, gridSize);
+    scene->addItem(tank1);
+    //坦克重生点设置
+
+    tank1->setPos(500, 300);//设置坦克出生点
+    tank1->setZValue(1); // 设置 tank1 的 Z 值为 1，防止被场景遮挡,这个可以有效解决其他的遮挡问题
     ui->graphicsView->installEventFilter(this);
     ui->graphicsView->centerOn(0,0);
     timer = new QTimer;
@@ -32,15 +43,15 @@ bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
             QGraphicsScene *scene = ui->graphicsView->scene();
             for (auto item : scene->items())
             {
-                if (testTank *tank = dynamic_cast<testTank *>(item))
+                if (tank *tank0 = dynamic_cast<tank *>(item))
                 {
                     if (event->type() == QEvent::KeyPress)
                     {
-                        tank->keyPressEvent(keyEvent);
+                        tank0->keyPressEvent(keyEvent);
                     }
                     else if (event->type() == QEvent::KeyRelease)
                     {
-                        tank->keyReleaseEvent(keyEvent);
+                        tank0->keyReleaseEvent(keyEvent);
                     }
                     return true;
                 }
@@ -90,11 +101,12 @@ void SingleGameWidget::drawMap()
 void SingleGameWidget::on_btnPause_clicked()
 {
     emit signalPause();
+    tank1->resetMoving();
 }
 
 void SingleGameWidget::advance()
 {
-    tank->advance();
+    tank1->tank_move();
     centerViewOnTank();
 }
 
