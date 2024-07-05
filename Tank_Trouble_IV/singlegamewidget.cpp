@@ -161,18 +161,27 @@ void SingleGameWidget::setInitGraphicView()
     ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-
+    //连接鼠标事件信号与槽函数
+    // connect(ui->graphicsView,&GameView::signalMouseMove,this,&SingleGameWidget::slotMouseMove);
+    // connect(ui->graphicsView,&GameView::signalMousePress,this,&SingleGameWidget::slotMousePress);
 
     //安装事件过滤器
     ui->graphicsView->installEventFilter(this);
 
 }
 
-//禁用滚轮事件
-void SingleGameWidget::wheelEvent(QWheelEvent *event)
-{
-    // 禁止鼠标滚轮移动视图
-    qDebug()<<"!";
-    event->ignore();
-}
+// void SingleGameWidget::slotMouseMove(QMouseEvent *event)
+// {
+//     QPointF mousePos = ui->graphicsView->mapToScene(event->pos());
+//     tank1->updateCannonDirection(mousePos);
+// }
+
+// void SingleGameWidget::slotMousePress(QMouseEvent *event)
+// {
+//     if (event->button() == Qt::LeftButton)
+//     {
+//         tank1->shoot();
+//     }
+// }
+
 

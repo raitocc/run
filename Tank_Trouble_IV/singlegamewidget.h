@@ -33,7 +33,6 @@ public slots:
     void advance();
 
 protected:
-    virtual void wheelEvent(QWheelEvent * event);
 
 private:
     Ui::SingleGameWidget *ui;
@@ -47,7 +46,9 @@ private:
     void centerViewOnTank();
     void setInitGraphicView();
 
-
+private slots:
+    void slotMouseMove(QMouseEvent* event);
+    void slotMousePress(QMouseEvent* event);
 
 signals:
     void signalPause();

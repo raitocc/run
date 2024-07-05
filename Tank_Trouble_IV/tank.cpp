@@ -1,5 +1,7 @@
 #include "tank.h"
+#include "bullet.h"
 #include "qevent.h"
+#include "qpainter.h"
 
 void tank::inital_tank
     (
@@ -256,3 +258,37 @@ bool tank::checkCollision()
     }
     return false;
 }
+
+// void tank::setCannonRotation(qreal angle)
+// {
+//     cannonRotation = angle;
+//     update();
+// }
+
+// void tank::updateCannonDirection(QPointF mousePos)
+// {
+//     QPointF tankCenter = pos() + QPointF(width / 2, length / 2);
+//     QLineF line(tankCenter, mousePos);
+//     setCannonRotation(-line.angle()); // -line.angle() to adjust to Qt's coordinate system
+// }
+
+// void tank::shoot()
+// {
+
+//     QPointF startPos = pos() + QPointF(width / 2, length / 2);
+//     qreal cannonAngle = cannonRotation;  // Assuming the cannon rotates with the tank
+//     qreal bulletSpeed = 10.0; // Define bullet speed
+//     Bullet *bullet = new Bullet(startPos, cannonAngle, bulletSpeed, scene());
+
+// }
+
+// void tank::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+// {
+//     QGraphicsPixmapItem::paint(painter, option, widget);
+//     // 绘制炮筒
+//     painter->save();
+//     painter->translate(width / 2, length / 2);
+//     painter->rotate(cannonRotation);
+//     painter->drawRect(QRectF(4, -12, 2, 10));
+//     painter->restore();
+// }

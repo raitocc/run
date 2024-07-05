@@ -10,8 +10,9 @@ CONFIG += c++17
 
 SOURCES += \
     #PlayerScene.cpp \
-    bullet_s.cpp \
+    #bullet.cpp \
     gamemap.cpp \
+    gameview.cpp \
     griditem.cpp \
     loginwidget.cpp \
     main.cpp \
@@ -27,8 +28,9 @@ SOURCES += \
 
 HEADERS += \
     #PlayerScene.h \
-    bullet_s.h \
+    #bullet.h \
     gamemap.h \
+    gameview.h \
     griditem.h \
     loginwidget.h \
     mainwindow.h \
