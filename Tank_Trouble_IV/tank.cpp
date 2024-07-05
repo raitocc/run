@@ -138,49 +138,103 @@ void tank::updateDirection()
     }
 }
 
-void tank::tank_move()
+void tank::tank_move()//让坦克斜角运动时候不会被一面墙卡住
 {
     QPointF oldPos = pos();
     int oldRotation = this->rotation();
+
+    bool moved = false;
+    int count = (movingDown+movingLeft+movingRight+movingUp);
+    // 尝试主要方向的移动
     if (movingUp && movingRight)
     {
-        moveBy(tank_speed/1.414, -tank_speed/1.414);
+        moveBy(tank_speed / 1.414, -tank_speed / 1.414);
+        if (!checkCollision()) {
+            moved = true;
+        } else {
+            setPos(oldPos);
+        }
     }
-    else if (movingUp && movingLeft)
+    if (!moved && movingUp && movingLeft)
     {
-        moveBy(-tank_speed/1.414, -tank_speed/1.414);
+        moveBy(-tank_speed / 1.414, -tank_speed / 1.414);
+        if (!checkCollision()) {
+            moved = true;
+        } else {
+            setPos(oldPos);
+        }
     }
-    else if (movingDown && movingRight)
+    if (!moved && movingDown && movingRight)
     {
-        moveBy(tank_speed/1.414, tank_speed/1.414);
+        moveBy(tank_speed / 1.414, tank_speed / 1.414);
+        if (!checkCollision()) {
+            moved = true;
+        } else {
+            setPos(oldPos);
+        }
     }
-    else if (movingDown && movingLeft)
+    if (!moved && movingDown && movingLeft)
     {
-        moveBy(-tank_speed/1.414, tank_speed/1.414);
+        moveBy(-tank_speed / 1.414, tank_speed / 1.414);
+        if (!checkCollision()) {
+            moved = true;
+        } else {
+            setPos(oldPos);
+        }
     }
-    else if (movingUp)
-    {
-        moveBy(0, -tank_speed);
+
+    // 如果主要方向移动受阻，分别尝试各个单独方向的移动
+    if (!moved) {
+        if (movingUp)
+        {
+            if(count>=2)moveBy(0, -tank_speed/1.414);
+            else moveBy(0, -tank_speed);
+            if (!checkCollision()) {
+                moved = true;
+            } else {
+                setPos(oldPos);
+            }
+        }
+        if (!moved && movingDown)
+        {
+            if(count>=2)moveBy(0, tank_speed/1.414);
+            else moveBy(0, tank_speed);
+            if (!checkCollision()) {
+                moved = true;
+            } else {
+                setPos(oldPos);
+            }
+        }
+        if (!moved && movingLeft)
+        {
+            if(count>=2)moveBy(-tank_speed/1.414, 0);
+            else moveBy(-tank_speed, 0);
+            if (!checkCollision()) {
+                moved = true;
+            } else {
+                setPos(oldPos);
+            }
+        }
+        if (!moved && movingRight)
+        {
+            if(count>=2)moveBy(tank_speed/1.414, 0);
+            else moveBy(tank_speed, 0);
+            if (!checkCollision()) {
+                moved = true;
+            } else {
+                setPos(oldPos);
+            }
+        }
     }
-    else if (movingDown)
-    {
-        moveBy(0, tank_speed);
-    }
-    else if (movingLeft)
-    {
-        moveBy(-tank_speed, 0);
-    }
-    else if (movingRight)
-    {
-        moveBy(tank_speed, 0);
-    }
-    updateDirection();
-    if (checkCollision())//如果碰到则不作改变
-    {
-        setPos(oldPos);
+
+    // 更新方向
+    if (moved) {
+        updateDirection();
+    } else {
         setRotation(oldRotation);
     }
 }
+
 void tank::resetMoving()
 {
     movingDown=false;
