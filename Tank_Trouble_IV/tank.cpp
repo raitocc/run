@@ -140,6 +140,8 @@ void tank::updateDirection()
 
 void tank::tank_move()
 {
+    QPointF oldPos = pos();
+    int oldRotation = this->rotation();
     if (movingUp && movingRight)
     {
         moveBy(tank_speed/1.414, -tank_speed/1.414);
@@ -172,6 +174,12 @@ void tank::tank_move()
     {
         moveBy(tank_speed, 0);
     }
+    updateDirection();
+    if (checkCollision())//如果碰到则不作改变
+    {
+        setPos(oldPos);
+        setRotation(oldRotation);
+    }
 }
 void tank::resetMoving()
 {
@@ -179,4 +187,18 @@ void tank::resetMoving()
     movingLeft=false;
     movingRight=false;
     movingUp=false;
+}
+
+bool tank::checkCollision()
+{
+    QList<QGraphicsItem *> collidingItems = scene()->collidingItems(this);
+    for (QGraphicsItem *item : collidingItems)
+    {
+        QGraphicsRectItem *rectItem = dynamic_cast<QGraphicsRectItem *>(item);
+        if (rectItem && rectItem->brush().color() == Qt::black)
+        {
+            return true;
+        }
+    }
+    return false;
 }

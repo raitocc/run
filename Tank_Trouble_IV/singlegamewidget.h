@@ -25,6 +25,7 @@ public:
 
     void drawMap();
     bool eventFilter(QObject *watched, QEvent *event);
+    void setViewFocus();//设置视图为其焦点
 
 public slots:
     void on_btnPause_clicked();

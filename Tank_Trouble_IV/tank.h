@@ -45,5 +45,6 @@ public:
     void keyReleaseEvent(QKeyEvent *event);
     void tank_move();//
     void resetMoving();
+    bool checkCollision();
 };
 #endif // TANK_H

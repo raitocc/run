@@ -134,3 +134,8 @@ void SingleGameWidget::centerViewOnTank()
     ui->graphicsView->centerOn(newCenterX, newCenterY);
 }
 
+void SingleGameWidget::setViewFocus()
+{
+    this->ui->graphicsView->setFocus();
+}
+
