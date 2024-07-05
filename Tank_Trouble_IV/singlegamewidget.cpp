@@ -3,6 +3,29 @@
 #include "ui_singlegamewidget.h"
 //#include <QPainter>
 
+#include <QtMath>
+
+// 计算角度的函数
+double calculateAngle(double x1, double y1, double x2, double y2)
+{
+    // 计算 y 和 x 方向上的差值
+    double deltaY = y2 - y1;
+    double deltaX = x2 - x1;
+
+    // 计算弧度
+    double radians = qAtan2(deltaY, deltaX);
+
+    // 将弧度转换为角度
+    double degrees = qRadiansToDegrees(radians);
+
+    // 确保角度在 0 到 360 度之间
+    if (degrees < 0) {
+        degrees += 360;
+    }
+
+    return degrees;
+}
+
 //在这里创建（声明）tank才能在析构函数里面正常析构,因为我没在widget里面放指针
 tank* tank1;//创建
 
@@ -47,69 +70,10 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     connect(timer,&QTimer::timeout,this,&SingleGameWidget::advance);
 }
 
-// bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
-// {
-//     if (watched == ui->graphicsView)
-//     {
-//         //按键的
-//         if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease)
-//         {
-//             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-//             QGraphicsScene *scene = ui->graphicsView->scene();
-//             for (auto item : scene->items())
-//             {
-//                 if (tank *tank0 = dynamic_cast<tank *>(item))
-//                 {
-//                     if (event->type() == QEvent::KeyPress)
-//                     {
-//                         tank0->keyPressEvent(keyEvent);
-//                     }
-//                     else if (event->type() == QEvent::KeyRelease)
-//                     {
-//                         tank0->keyReleaseEvent(keyEvent);
-//                     }
-//                     return true;
-//                 }
-//             }
-//         }
-//         //鼠标的
-//         if (event->type() == QEvent::MouseMove)
-//         {
-//             QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-//             mouseMoveEvent(mouseEvent);
-//             return true;
-//         }
-//         else if (event->type() == QEvent::MouseButtonRelease)
-//         {
-//             QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
-//             mouseReleaseEvent(mouseEvent);
-//             return true;
-//         }
-//         else if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease)
-//         {
-//             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
-//             QGraphicsScene *scene = ui->graphicsView->scene();
-//             for (auto item : scene->items())
-//             {
-//                 if (tank *tank0 = dynamic_cast<tank *>(item))
-//                 {
-//                     if (event->type() == QEvent::KeyPress)
-//                     {
-//                         tank0->keyPressEvent(keyEvent);
-//                     }
-//                     else if (event->type() == QEvent::KeyRelease)
-//                     {
-//                         tank0->keyReleaseEvent(keyEvent);
-//                     }
-//                     return true;
-//                 }
-//             }
-//         }
-//     }
-//     return QWidget::eventFilter(watched, event);
-// }
+//事件过滤器
 bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
 {
+    //鼠标
     if (watched == ui->graphicsView->viewport())
     {
         if (event->type() == QEvent::MouseMove)
@@ -131,9 +95,9 @@ bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
             return true;
         }
     }
+    //按键
     if (watched == ui->graphicsView)
     {
-        //按键的
         if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease)
         {
             QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
@@ -232,7 +196,10 @@ void SingleGameWidget::mouseMoveEvent(QMouseEvent *event)
         setMouseTracking(true);
         msx=event->pos().x();
         msy=event->pos().y();//相对坐标
-        qDebug()<<msx<<msy;
+        //qDebug()<<msx<<msy;
+        int tank_x=tank1->pos().x()-tanklength/3;
+        int tank_y=tank1->pos().y()-tanklength/2;
+        tank1->shell_angle=calculateAngle(msx,msy,tank_x,tank_y);//得出炮筒角度
         ui->label_2->setText(QString::number(msx)+","+QString::number(msy));
     //}
 }//我感觉并不需要
@@ -240,15 +207,13 @@ void SingleGameWidget::mousePressEvent(QMouseEvent *event)
 {
     qDebug()<<"pressed!";
     //想法是激活追踪
-
+    //但是以后再实现
 }
 void SingleGameWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     if(event->button()==Qt::LeftButton)
     {
-    msx=event->pos().x();//相对坐标
-    msy=event->pos().y();//相对坐标
-    qDebug()<<msx<<msy;
+        tank1->shell_angle=calculateAngle(event->pos().x(),event->pos().y(),tank1->pos().x()-tanklength/3,tank1->pos().y()-tanklength/2);//得出炮筒角度
     //发射炮弹
 
     }
