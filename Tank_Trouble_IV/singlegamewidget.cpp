@@ -30,7 +30,7 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     //坦克重生点设置
     //不好意思有点误差
     tank1->setPos(tank_X-tank1->width/2, tank_Y-tank1->length/2);//设置坦克出生点
-    tank1->setZValue(1); // 设置 tank1 的 Z 值为 1，防止被场景遮挡,这个可以有效解决其他的遮挡问题
+    tank1->setZValue(5); // 设置 tank1 的 Z 值为 1，防止被场景遮挡,这个可以有效解决其他的遮挡问题
     ui->graphicsView->installEventFilter(this);
     ui->graphicsView->centerOn(0,0);
     timer = new QTimer;
@@ -101,7 +101,7 @@ void SingleGameWidget::drawMap()
     }
     //scene->addItem(tank);
 
-    scene->addItem(tank); // 添加坦克或其他游戏元素
+    //scene->addItem(tank); // 添加坦克或其他游戏元素
 }
 
 void SingleGameWidget::on_btnPause_clicked()
