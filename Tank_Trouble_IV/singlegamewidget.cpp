@@ -34,9 +34,8 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     ui->graphicsView->installEventFilter(this);
     ui->graphicsView->centerOn(0,0);
 
-    //强聚焦，始终接收键盘事件设置焦点策略
-    ui->graphicsView->setFocusPolicy(Qt::StrongFocus);
-    ui->graphicsView->setFocus();
+    //初始化视图
+    setInitGraphicView();
 
     timer = new QTimer;
     timer->start(1000/60);//60fps
@@ -67,6 +66,11 @@ bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
                 }
             }
         }
+        // if(event->type()==QEvent::)
+        // {
+        //     qDebug()<<"Wheel";
+        //     return true;
+        // }
     }
     return QWidget::eventFilter(watched, event);
 }
@@ -90,6 +94,8 @@ void SingleGameWidget::drawMap()
         for(int j = 0; j < map.getcol(); ++j)
         {
             QGraphicsRectItem *rect = scene->addRect(j*gridSize, i*gridSize, gridSize, gridSize);
+             rect->setPen(Qt::NoPen); // 确保没有边框
+
             QPixmap wall(":/new/prefix1/wall.png");
             QPixmap resizedwall =wall.scaled(gridSize, gridSize);
             QPixmap box(":/new/prefix1/box.png");
@@ -143,4 +149,39 @@ void SingleGameWidget::centerViewOnTank()
     // 设置视图的中心
     ui->graphicsView->centerOn(newCenterX, newCenterY);
 }
+
+//初始化视图
+void SingleGameWidget::setInitGraphicView()
+{
+    //强聚焦，始终接收键盘事件设置焦点策略
+    ui->graphicsView->setFocusPolicy(Qt::StrongFocus);
+    ui->graphicsView->setFocus();
+
+
+    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    //连接鼠标事件信号与槽函数
+    // connect(ui->graphicsView,&GameView::signalMouseMove,this,&SingleGameWidget::slotMouseMove);
+    // connect(ui->graphicsView,&GameView::signalMousePress,this,&SingleGameWidget::slotMousePress);
+
+    //安装事件过滤器
+    ui->graphicsView->installEventFilter(this);
+
+}
+
+// void SingleGameWidget::slotMouseMove(QMouseEvent *event)
+// {
+//     QPointF mousePos = ui->graphicsView->mapToScene(event->pos());
+//     tank1->updateCannonDirection(mousePos);
+// }
+
+// void SingleGameWidget::slotMousePress(QMouseEvent *event)
+// {
+//     if (event->button() == Qt::LeftButton)
+//     {
+//         tank1->shoot();
+//     }
+// }
+
 

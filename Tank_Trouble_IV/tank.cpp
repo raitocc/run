@@ -1,5 +1,7 @@
 #include "tank.h"
+#include "bullet.h"
 #include "qevent.h"
+#include "qpainter.h"
 
 void tank::inital_tank
     (
@@ -138,49 +140,103 @@ void tank::updateDirection()
     }
 }
 
-void tank::tank_move()
+void tank::tank_move()//让坦克斜角运动时候不会被一面墙卡住
 {
     QPointF oldPos = pos();
     int oldRotation = this->rotation();
+
+    bool moved = false;
+    int count = (movingDown+movingLeft+movingRight+movingUp);
+    // 尝试主要方向的移动
     if (movingUp && movingRight)
     {
-        moveBy(tank_speed/1.414, -tank_speed/1.414);
+        moveBy(tank_speed / 1.414, -tank_speed / 1.414);
+        if (!checkCollision()) {
+            moved = true;
+        } else {
+            setPos(oldPos);
+        }
     }
-    else if (movingUp && movingLeft)
+    if (!moved && movingUp && movingLeft)
     {
-        moveBy(-tank_speed/1.414, -tank_speed/1.414);
+        moveBy(-tank_speed / 1.414, -tank_speed / 1.414);
+        if (!checkCollision()) {
+            moved = true;
+        } else {
+            setPos(oldPos);
+        }
     }
-    else if (movingDown && movingRight)
+    if (!moved && movingDown && movingRight)
     {
-        moveBy(tank_speed/1.414, tank_speed/1.414);
+        moveBy(tank_speed / 1.414, tank_speed / 1.414);
+        if (!checkCollision()) {
+            moved = true;
+        } else {
+            setPos(oldPos);
+        }
     }
-    else if (movingDown && movingLeft)
+    if (!moved && movingDown && movingLeft)
     {
-        moveBy(-tank_speed/1.414, tank_speed/1.414);
+        moveBy(-tank_speed / 1.414, tank_speed / 1.414);
+        if (!checkCollision()) {
+            moved = true;
+        } else {
+            setPos(oldPos);
+        }
     }
-    else if (movingUp)
-    {
-        moveBy(0, -tank_speed);
+
+    // 如果主要方向移动受阻，分别尝试各个单独方向的移动
+    if (!moved) {
+        if (movingUp)
+        {
+            if(count>=2)moveBy(0, -tank_speed/1.414);
+            else moveBy(0, -tank_speed);
+            if (!checkCollision()) {
+                moved = true;
+            } else {
+                setPos(oldPos);
+            }
+        }
+        if (!moved && movingDown)
+        {
+            if(count>=2)moveBy(0, tank_speed/1.414);
+            else moveBy(0, tank_speed);
+            if (!checkCollision()) {
+                moved = true;
+            } else {
+                setPos(oldPos);
+            }
+        }
+        if (!moved && movingLeft)
+        {
+            if(count>=2)moveBy(-tank_speed/1.414, 0);
+            else moveBy(-tank_speed, 0);
+            if (!checkCollision()) {
+                moved = true;
+            } else {
+                setPos(oldPos);
+            }
+        }
+        if (!moved && movingRight)
+        {
+            if(count>=2)moveBy(tank_speed/1.414, 0);
+            else moveBy(tank_speed, 0);
+            if (!checkCollision()) {
+                moved = true;
+            } else {
+                setPos(oldPos);
+            }
+        }
     }
-    else if (movingDown)
-    {
-        moveBy(0, tank_speed);
-    }
-    else if (movingLeft)
-    {
-        moveBy(-tank_speed, 0);
-    }
-    else if (movingRight)
-    {
-        moveBy(tank_speed, 0);
-    }
-    updateDirection();
-    if (checkCollision())//如果碰到则不作改变
-    {
-        setPos(oldPos);
+
+    // 更新方向
+    if (moved) {
+        updateDirection();
+    } else {
         setRotation(oldRotation);
     }
 }
+
 void tank::resetMoving()
 {
     movingDown=false;
@@ -202,3 +258,37 @@ bool tank::checkCollision()
     }
     return false;
 }
+
+// void tank::setCannonRotation(qreal angle)
+// {
+//     cannonRotation = angle;
+//     update();
+// }
+
+// void tank::updateCannonDirection(QPointF mousePos)
+// {
+//     QPointF tankCenter = pos() + QPointF(width / 2, length / 2);
+//     QLineF line(tankCenter, mousePos);
+//     setCannonRotation(-line.angle()); // -line.angle() to adjust to Qt's coordinate system
+// }
+
+// void tank::shoot()
+// {
+
+//     QPointF startPos = pos() + QPointF(width / 2, length / 2);
+//     qreal cannonAngle = cannonRotation;  // Assuming the cannon rotates with the tank
+//     qreal bulletSpeed = 10.0; // Define bullet speed
+//     Bullet *bullet = new Bullet(startPos, cannonAngle, bulletSpeed, scene());
+
+// }
+
+// void tank::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
+// {
+//     QGraphicsPixmapItem::paint(painter, option, widget);
+//     // 绘制炮筒
+//     painter->save();
+//     painter->translate(width / 2, length / 2);
+//     painter->rotate(cannonRotation);
+//     painter->drawRect(QRectF(4, -12, 2, 10));
+//     painter->restore();
+// }

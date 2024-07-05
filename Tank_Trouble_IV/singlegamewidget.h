@@ -32,6 +32,8 @@ public slots:
 
     void advance();
 
+protected:
+
 private:
     Ui::SingleGameWidget *ui;
     GameMap map;
@@ -42,7 +44,11 @@ private:
     QTimer* timer;
 
     void centerViewOnTank();
+    void setInitGraphicView();
 
+private slots:
+    void slotMouseMove(QMouseEvent* event);
+    void slotMousePress(QMouseEvent* event);
 
 signals:
     void signalPause();

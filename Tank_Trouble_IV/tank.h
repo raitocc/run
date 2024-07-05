@@ -46,5 +46,13 @@ public:
     void tank_move();//
     void resetMoving();
     bool checkCollision();
+
+
+    // void setCannonRotation(qreal angle);//测试炮筒
+    // void updateCannonDirection(QPointF mousePos);//测试炮筒
+    // void shoot();//测试发射子弹
+    // void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+private:
+    qreal cannonRotation;//测试坦克类
 };
 #endif // TANK_H
