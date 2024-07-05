@@ -94,6 +94,8 @@ void SingleGameWidget::drawMap()
         for(int j = 0; j < map.getcol(); ++j)
         {
             QGraphicsRectItem *rect = scene->addRect(j*gridSize, i*gridSize, gridSize, gridSize);
+             rect->setPen(Qt::NoPen); // 确保没有边框
+
             QPixmap wall(":/new/prefix1/wall.png");
             QPixmap resizedwall =wall.scaled(gridSize, gridSize);
             QPixmap box(":/new/prefix1/box.png");
