@@ -3,6 +3,12 @@
 
 #include <QWidget>
 #include "gamemap.h"
+#include <QGraphicsScene>
+#include <QRandomGenerator>
+#include <QGraphicsRectItem>
+#include "testtank.h"
+#include <QKeyEvent>
+#include <QTimer>
 
 namespace Ui {
 class SingleGameWidget;
@@ -16,12 +22,22 @@ public:
     explicit SingleGameWidget(QWidget *parent = nullptr);
     ~SingleGameWidget();
 
-private slots:
+    void drawMap();
+    bool eventFilter(QObject *watched, QEvent *event);
+
+public slots:
     void on_btnPause_clicked();
+
+    void advance();
 
 private:
     Ui::SingleGameWidget *ui;
     GameMap map;
+    QGraphicsScene* scene;
+
+    testTank* tank;
+    QTimer* timer;
+
 
 signals:
     void signalPause();

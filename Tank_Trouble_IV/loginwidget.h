@@ -21,7 +21,12 @@ private slots:
 
     void on_btnExit_clicked();
 
+    void on_btnRegister_clicked();
+
 private:
+    bool isLoginValid(const QString &username, const QString &password); // 验证用户名与密码
+
+public:
     Ui::LoginWidget *ui;
 
 signals:

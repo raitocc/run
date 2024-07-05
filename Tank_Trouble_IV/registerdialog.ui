@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>LoginWidget</class>
- <widget class="QWidget" name="LoginWidget">
+ <class>RegisterDialog</class>
+ <widget class="QDialog" name="RegisterDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>708</width>
-    <height>478</height>
+    <width>513</width>
+    <height>434</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Dialog</string>
   </property>
   <widget class="QLineEdit" name="usernameLineEdit">
    <property name="geometry">
     <rect>
-     <x>270</x>
-     <y>190</y>
+     <x>190</x>
+     <y>111</y>
      <width>171</width>
      <height>25</height>
     </rect>
@@ -26,8 +26,21 @@
   <widget class="QLineEdit" name="passwordLineEdit">
    <property name="geometry">
     <rect>
-     <x>270</x>
-     <y>260</y>
+     <x>190</x>
+     <y>170</y>
+     <width>171</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="echoMode">
+    <enum>QLineEdit::Password</enum>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="confirmPasswordLineEdit">
+   <property name="geometry">
+    <rect>
+     <x>190</x>
+     <y>230</y>
      <width>171</width>
      <height>25</height>
     </rect>
@@ -39,76 +52,49 @@
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>30</y>
-     <width>251</width>
-     <height>71</height>
+     <x>100</x>
+     <y>110</y>
+     <width>91</width>
+     <height>21</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>20</pointsize>
-    </font>
-   </property>
    <property name="text">
-    <string>Tank Trouble IV</string>
+    <string>Username</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>190</y>
-     <width>101</width>
+     <x>100</x>
+     <y>170</y>
+     <width>91</width>
      <height>21</height>
     </rect>
    </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-    </font>
-   </property>
    <property name="text">
-    <string>user name</string>
+    <string>Password</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
    <property name="geometry">
     <rect>
-     <x>170</x>
-     <y>260</y>
+     <x>100</x>
+     <y>220</y>
      <width>101</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-    </font>
-   </property>
-   <property name="text">
-    <string>password</string>
-   </property>
-  </widget>
-  <widget class="QPushButton" name="pushButton">
-   <property name="geometry">
-    <rect>
-     <x>170</x>
-     <y>340</y>
-     <width>111</width>
-     <height>28</height>
+     <height>41</height>
     </rect>
    </property>
    <property name="text">
-    <string>Login</string>
+    <string>Confirm
+password</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btnRegister">
+  <widget class="QPushButton" name="registerButton">
    <property name="geometry">
     <rect>
-     <x>322</x>
-     <y>340</y>
-     <width>111</width>
+     <x>100</x>
+     <y>310</y>
+     <width>93</width>
      <height>28</height>
     </rect>
    </property>
@@ -116,17 +102,17 @@
     <string>Register</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="btnExit">
+  <widget class="QPushButton" name="cancelButton">
    <property name="geometry">
     <rect>
-     <x>600</x>
-     <y>10</y>
-     <width>81</width>
-     <height>31</height>
+     <x>260</x>
+     <y>310</y>
+     <width>93</width>
+     <height>28</height>
     </rect>
    </property>
    <property name="text">
-    <string>Exit</string>
+    <string>Cancel</string>
    </property>
   </widget>
  </widget>

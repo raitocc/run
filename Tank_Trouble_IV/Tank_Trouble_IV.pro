@@ -9,31 +9,42 @@ CONFIG += c++17
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    #PlayerScene.cpp \
+    bullet_s.cpp \
     gamemap.cpp \
+    griditem.cpp \
     loginwidget.cpp \
     main.cpp \
     mainwindow.cpp \
     pausewidget.cpp \
     #shell.cpp \
-    #tank.cpp \
+    registerdialog.cpp \
+    tank.cpp \
     singlegamewidget.cpp \
+    testtank.cpp \
     welcomewidget.cpp
 
 
 HEADERS += \
+    #PlayerScene.h \
+    bullet_s.h \
     gamemap.h \
+    griditem.h \
     loginwidget.h \
     mainwindow.h \
+    registerdialog.h \
+    testtank.h \
     welcomewidget.h \
     pausewidget.h \
     singlegamewidget.h \
-    #tank.h \
+    tank.h \
     #shell.h \
 
 FORMS += \
     loginwidget.ui \
     mainwindow.ui \
     pausewidget.ui \
+    registerdialog.ui \
     singlegamewidget.ui \
     welcomewidget.ui
 

@@ -26,7 +26,7 @@ signals:
 
     void signalSingleStart();
 
-private:
+public:
     Ui::WelcomeWidget *ui;
 };
 

@@ -8,8 +8,8 @@ GameMap::GameMap() {}
 
 void GameMap::createMap()
 {
-    // 随机生成地图的行列数
-    col = QRandomGenerator::global()->bounded(12, 21);
+    // 随机生成地图的行列数（加上外圈的墙）
+    col = QRandomGenerator::global()->bounded(12, 21) + 2;
     row = col * 3 / 4;
     map.resize(row);
     for(auto& i : map)
@@ -17,13 +17,13 @@ void GameMap::createMap()
         i.resize(col);
     }
 
-    // 随机放置方块(设置墙的数量)
-    int totalCells = row * col;
+    // 随机放置方块（不包括外圈的墙）
+    int totalCells = (row - 2) * (col - 2);
     int numZeros = totalCells / 4;
     int numOnes = totalCells / 4;
     int numTwos = totalCells - numZeros - numOnes;
 
-    //初始化数组
+    // 初始化数组
     std::vector<int> cells;
     cells.insert(cells.end(), numZeros, 0);
     cells.insert(cells.end(), numOnes, 1);
@@ -34,12 +34,24 @@ void GameMap::createMap()
         int j = QRandomGenerator::global()->bounded(i + 1);
         std::swap(cells[i], cells[j]);
     }
+    for(int i = 1; i < row - 1; ++i)
+    {
+        for(int j = 1; j < col - 1; ++j)
+        {
+            map[i][j] = cells[(i - 1) * (col - 2) + (j - 1)];
+        }
+    }
+
+    // 设置外圈为不可破坏的墙（0）
     for(int i = 0; i < row; ++i)
     {
-        for(int j = 0; j < col; ++j)
-        {
-            map[i][j] = cells[i * col + j];
-        }
+        map[i][0] = 0;
+        map[i][col - 1] = 0;
+    }
+    for(int j = 0; j < col; ++j)
+    {
+        map[0][j] = 0;
+        map[row - 1][j] = 0;
     }
 
     // 检查连通性
@@ -49,11 +61,11 @@ void GameMap::createMap()
             int j = QRandomGenerator::global()->bounded(i + 1);
             std::swap(cells[i], cells[j]);
         }
-        for(int i = 0; i < row; ++i)
+        for(int i = 1; i < row - 1; ++i)
         {
-            for(int j = 0; j < col; ++j)
+            for(int j = 1; j < col - 1; ++j)
             {
-                map[i][j] = cells[i * col + j];
+                map[i][j] = cells[(i - 1) * (col - 2) + (j - 1)];
             }
         }
     }
@@ -63,9 +75,9 @@ void GameMap::createMap()
     {
         for(int j = 0; j < col; ++j)
         {
-            std::cout<<map[i][j]<<" ";
+            std::cout << map[i][j] << " ";
         }
-        std::cout<<std::endl;
+        std::cout << std::endl;
     }
 }
 
@@ -77,9 +89,9 @@ bool GameMap::checkConnectivity()
     bool foundStart = false;
 
     // 找到第一个1或2的方块
-    for(int i = 0; i < row && !foundStart; ++i)
+    for(int i = 1; i < row - 1 && !foundStart; ++i)
     {
-        for(int j = 0; j < col && !foundStart; ++j)
+        for(int j = 1; j < col - 1 && !foundStart; ++j)
         {
             if(map[i][j] == 1 || map[i][j] == 2)
             {
@@ -103,7 +115,7 @@ bool GameMap::checkConnectivity()
         {
             int newX = x + dir[0];
             int newY = y + dir[1];
-            if(newX >= 0 && newX < row && newY >= 0 && newY < col && !visited[newX][newY])
+            if(newX >= 1 && newX < row - 1 && newY >= 1 && newY < col - 1 && !visited[newX][newY])
             {
                 if(map[newX][newY] == 1 || map[newX][newY] == 2)
                 {
@@ -115,9 +127,9 @@ bool GameMap::checkConnectivity()
     }
 
     // 检查所有的1或2的方块是否都访问过
-    for(int i = 0; i < row; ++i)
+    for(int i = 1; i < row - 1; ++i)
     {
-        for(int j = 0; j < col; ++j)
+        for(int j = 1; j < col - 1; ++j)
         {
             if((map[i][j] == 1 || map[i][j] == 2) && !visited[i][j])
             {
@@ -127,4 +139,19 @@ bool GameMap::checkConnectivity()
     }
 
     return true;
+}
+
+int GameMap::getrow()
+{
+    return row;
+}
+
+int GameMap::getcol()
+{
+    return col;
+}
+
+const QVector<QVector<int> > &GameMap::getmap()
+{
+    return map;
 }
