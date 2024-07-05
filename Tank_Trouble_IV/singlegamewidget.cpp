@@ -116,7 +116,7 @@ void SingleGameWidget::drawMap()
 
 void SingleGameWidget::on_btnPause_clicked()
 {
-    tank->resetMoving();
+    //tank->resetMoving();
     emit signalPause();
     tank1->resetMoving();
 }
