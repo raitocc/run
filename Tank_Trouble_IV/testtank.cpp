@@ -5,7 +5,7 @@
 
 
 testTank::testTank(GameMap* gameMap)
-    : movingUp(false), movingDown(false), movingLeft(false), movingRight(false), speed(2.0), rotationAngle(0)
+    : movingUp(false), movingDown(false), movingLeft(false), movingRight(false), speed(1.5), rotationAngle(0)
 {
     setRect(0, 0, tankLength * 2 / 3, tankLength);
     setBrush(QBrush(Qt::red));
@@ -173,4 +173,12 @@ void testTank::advance()//timer调用advance函数，用于实现状态更新
         setPos(oldPos);
         setRotation(oldRotation);
     }
+}
+
+void testTank::resetMoving()
+{
+    movingDown=false;
+    movingLeft=false;
+    movingRight=false;
+    movingUp=false;
 }
