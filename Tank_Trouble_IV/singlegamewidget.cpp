@@ -41,6 +41,13 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     //tank = new testTank(&map);
     //tank = new testTank;
     tank1 = new class tank(1000);//堆上创建
+
+    // 设置坦克的身体和炮筒贴图
+    tank1->setTankBodyPixmap(QPixmap(":/new/prefix1/tankbody.png"));
+    tank1->setTankFirePixmap(QPixmap(":/new/prefix1/tankfire.png"));
+
+    // 更新炮筒的角度，可以在适当的时机调用，比如在鼠标移动事件中
+    tank1->updateCannonRotation(QCursor::pos());
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0, 0, gridSize * map.getcol(), gridSize * (map.getrow()+2)); // col和row是地图的列数和行数
     ui->graphicsView->setScene(scene);
@@ -65,6 +72,10 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     ui->graphicsView->installEventFilter(this);
     this->installEventFilter(this);//事件过滤器
     ui->graphicsView->centerOn(0,0);
+
+    //初始化视图
+    setInitGraphicView();
+
     timer = new QTimer;
     timer->start(1000/60);//60fps
     connect(timer,&QTimer::timeout,this,&SingleGameWidget::advance);
@@ -118,9 +129,20 @@ bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
                 }
             }
         }
+        // if(event->type()==QEvent::)
+        // {
+        //     qDebug()<<"Wheel";
+        //     return true;
+        // }
     }
     return QWidget::eventFilter(watched, event);
 }
+
+void SingleGameWidget::setViewFocus()
+{
+    ui->graphicsView->setFocus();
+}
+
 
 SingleGameWidget::~SingleGameWidget()
 {
@@ -135,6 +157,8 @@ void SingleGameWidget::drawMap()
         for(int j = 0; j < map.getcol(); ++j)
         {
             QGraphicsRectItem *rect = scene->addRect(j*gridSize, i*gridSize, gridSize, gridSize);
+             rect->setPen(Qt::NoPen); // 确保没有边框
+
             QPixmap wall(":/new/prefix1/wall.png");
             QPixmap resizedwall =wall.scaled(gridSize, gridSize);
             QPixmap box(":/new/prefix1/box.png");
@@ -189,7 +213,25 @@ void SingleGameWidget::centerViewOnTank()
     ui->graphicsView->centerOn(newCenterX, newCenterY);
 }
 
-void SingleGameWidget::mouseMoveEvent(QMouseEvent *event)
+//初始化视图
+void SingleGameWidget::setInitGraphicView()
+{
+    //强聚焦，始终接收键盘事件设置焦点策略
+    ui->graphicsView->setFocusPolicy(Qt::StrongFocus);
+    ui->graphicsView->setFocus();
+
+
+    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    //连接鼠标事件信号与槽函数
+    // connect(ui->graphicsView,&GameView::signalMouseMove,this,&SingleGameWidget::slotMouseMove);
+    // connect(ui->graphicsView,&GameView::signalMousePress,this,&SingleGameWidget::slotMousePress);
+
+    //安装事件过滤器
+    ui->graphicsView->installEventFilter(this);
+
+}void SingleGameWidget::mouseMoveEvent(QMouseEvent *event)
 {
     //需要实时更新
     //if(event->button()==Qt::LeftButton){
@@ -208,8 +250,7 @@ void SingleGameWidget::mousePressEvent(QMouseEvent *event)
     qDebug()<<"pressed!";
     //想法是激活追踪
     //但是以后再实现
-}
-void SingleGameWidget::mouseReleaseEvent(QMouseEvent *event)
+}void SingleGameWidget::mouseReleaseEvent(QMouseEvent *event)
 {
     if(event->button()==Qt::LeftButton)
     {
@@ -219,6 +260,3 @@ void SingleGameWidget::mouseReleaseEvent(QMouseEvent *event)
     }
 
 }
-
-
-

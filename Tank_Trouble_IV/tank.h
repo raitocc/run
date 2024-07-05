@@ -1,6 +1,6 @@
 #ifndef TANK_H
 #define TANK_H
-
+#include<QCursor>
 #include <QGraphicsRectItem>
 #include <Qstring>
 #include <QGraphicsPixmapItem>//图形元素
@@ -32,9 +32,8 @@ public:
     int* shell;//当前携带各种子弹及其数量
     double width;//坦克宽度
     double length;//坦克长度,间接决定坦克体积
-    double tank_x;
-    double tank_y;//坦克的坐标
-    double tank_angle;//坦克角度，0-360
+    qreal tank_x;  // 坦克在场景中的 x 坐标
+    qreal tank_Y;  // 坦克在场景中的 y 坐标    double tank_angle;//坦克角度，0-360
     double shell_angle;//炮筒角度，0-360
     bool movingUp, movingDown, movingLeft, movingRight;//当前移动方向
     void updateDirection();
@@ -54,5 +53,33 @@ public:
 
     void tank_move();//
     void resetMoving();
+    bool checkCollision();
+    void setTankBodyPixmap(const QPixmap &pixmap);
+    void setTankFirePixmap(const QPixmap &pixmap);
+    void updateCannonRotation(const QPointF &targetPos);  // 更新炮筒角度
+
+    tank(QGraphicsItem *parent = nullptr) : QGraphicsPixmapItem(parent) {}
+
+    QPointF pos() const {
+        return QPointF(tank_x, tank_Y);
+    }
+
+
+
+    QPointF mapToScene(const QPointF& pos) const {
+        // 根据 tank_x 和 tank_y 计算坦克在场景中的位置
+        QPointF scenePos(tank_x, tank_Y);
+        return scenePos;
+    }
+
+    // void setCannonRotation(qreal angle);//测试炮筒
+    // void updateCannonDirection(QPointF mousePos);//测试炮筒
+    // void shoot();//测试发射子弹
+    // void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+private:
+    qreal cannonRotation;//测试坦克类
+    QPixmap tankBodyPixmap;  // 坦克身体贴图
+    QPixmap tankFirePixmap;  // 坦克炮筒贴图
+
 };
 #endif // TANK_H

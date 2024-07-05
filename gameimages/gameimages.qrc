@@ -2,6 +2,7 @@
     <qresource prefix="/new/prefix1">
         <file>box.png</file>
         <file>wall.png</file>
-        <file>Tank1000.png</file>
+        <file>tankbody.png</file>
+        <file>tankfire.png</file>
     </qresource>
 </RCC>

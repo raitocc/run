@@ -93,6 +93,7 @@ void MainWindow::slotSinglePause()//单人游戏暂停
 void MainWindow::slotBackToGame()//暂停时返回游戏
 {
     if(mPauseWidget)delete mPauseWidget;
+    mSingleGameWidget->setViewFocus();
 }
 
 void MainWindow::slotExitToMenu()//暂停页面返回主菜单

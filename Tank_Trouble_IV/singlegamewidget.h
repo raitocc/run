@@ -27,13 +27,15 @@ public:
 
     void drawMap();
     bool eventFilter(QObject *watched, QEvent *event);
-    //榧犳爣
+    //鼠标
     void mouseMoveEvent(QMouseEvent *event) ;
     void mousePressEvent(QMouseEvent *event);
     void mouseReleaseEvent(QMouseEvent *event);
-public slots:
+    void setViewFocus();//设置视图为其焦点public slots:
     void on_btnPause_clicked();
     void advance();
+
+protected:
 
 private:
     Ui::SingleGameWidget *ui;
@@ -45,7 +47,11 @@ private:
     QTimer* timer;
 
     void centerViewOnTank();
+    void setInitGraphicView();
 
+private slots:
+    //void slotMouseMove(QMouseEvent* event);
+    //void slotMousePress(QMouseEvent* event);
 
 signals:
     void signalPause();

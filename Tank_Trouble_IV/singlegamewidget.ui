@@ -34,7 +34,7 @@
   <widget class="QPushButton" name="btnPause">
    <property name="geometry">
     <rect>
-     <x>710</x>
+     <x>920</x>
      <y>10</y>
      <width>101</width>
      <height>51</height>
@@ -44,14 +44,23 @@
     <string>Pause</string>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="graphicsView">
+  <widget class="GameView" name="graphicsView">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>70</y>
-     <width>1200</width>
-     <height>800</height>
+     <width>1201</width>
+     <height>731</height>
     </rect>
+   </property>
+   <property name="verticalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="horizontalScrollBarPolicy">
+    <enum>Qt::ScrollBarAlwaysOff</enum>
+   </property>
+   <property name="dragMode">
+    <enum>QGraphicsView::NoDrag</enum>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -68,6 +77,13 @@
    </property>
   </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GameView</class>
+   <extends>QGraphicsView</extends>
+   <header location="global">gameview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
