@@ -17,6 +17,13 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     //tank = new testTank(&map);
     //tank = new testTank;
     tank1 = new class tank(1000);//堆上创建
+
+    // 设置坦克的身体和炮筒贴图
+    tank1->setTankBodyPixmap(QPixmap(":/new/prefix1/tankbody.png"));
+    tank1->setTankFirePixmap(QPixmap(":/new/prefix1/tankfire.png"));
+
+    // 更新炮筒的角度，可以在适当的时机调用，比如在鼠标移动事件中
+    tank1->updateCannonRotation(QCursor::pos());
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0, 0, gridSize * map.getcol(), gridSize * (map.getrow()+2)); // col和row是地图的列数和行数
     ui->graphicsView->setScene(scene);
