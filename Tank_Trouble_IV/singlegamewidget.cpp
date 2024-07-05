@@ -1,8 +1,6 @@
 #include "singlegamewidget.h"
 #include "tank.h"
 #include "ui_singlegamewidget.h"
-#define gridSize 50
-#define tanklength 30
 
 //在这里创建（声明）tank才能在析构函数里面正常析构,因为我没在widget里面放指针
 tank* tank1;//创建
@@ -13,9 +11,11 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
 {
     ui->setupUi(this);
     map.createMap();
+    tank = new testTank(&map);
     //tank = new testTank;
     tank1 = new class tank(1000);//堆上创建
     scene = new QGraphicsScene(this);
+    scene->setSceneRect(0, 0, gridSize * map.getcol(), gridSize * (map.getrow()+2)); // col和row是地图的列数和行数
     ui->graphicsView->setScene(scene);
     drawMap();
     //添加事件过滤器
@@ -26,8 +26,9 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     tank1->setPos(500, 300);//设置坦克出生点
     tank1->setZValue(1); // 设置 tank1 的 Z 值为 1，防止被场景遮挡,这个可以有效解决其他的遮挡问题
     ui->graphicsView->installEventFilter(this);
+    ui->graphicsView->centerOn(0,0);
     timer = new QTimer;
-    timer->start(1000/60);
+    timer->start(1000/60);//60fps
     connect(timer,&QTimer::timeout,this,&SingleGameWidget::advance);
 }
 
@@ -87,6 +88,7 @@ void SingleGameWidget::drawMap()
             }
         }
     }
+    scene->addItem(tank);
 }
 
 void SingleGameWidget::on_btnPause_clicked()
@@ -98,5 +100,24 @@ void SingleGameWidget::on_btnPause_clicked()
 void SingleGameWidget::advance()
 {
     tank1->tank_move();
+    centerViewOnTank();
+}
+
+void SingleGameWidget::centerViewOnTank()
+{
+    // 获取坦克的中心位置
+    QPointF tankCenter = tank->pos() + QPointF(tank->rect().width() / 2, tank->rect().height() / 2);
+
+    // 计算视图的边界
+    QRectF sceneRect = scene->sceneRect();
+    qreal halfWidth = ui->graphicsView->viewport()->width() / 2;
+    qreal halfHeight = ui->graphicsView->viewport()->height() / 2;
+
+    // 计算新的中心位置，确保不超出边界
+    qreal newCenterX = qMin(sceneRect.right() - halfWidth, qMax(sceneRect.left() + halfWidth, tankCenter.x()));
+    qreal newCenterY = qMin(sceneRect.bottom() - halfHeight, qMax(sceneRect.top() + halfHeight, tankCenter.y()));
+
+    // 设置视图的中心
+    ui->graphicsView->centerOn(newCenterX, newCenterY);
 }
 
