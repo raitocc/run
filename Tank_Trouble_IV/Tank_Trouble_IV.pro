@@ -21,7 +21,7 @@ SOURCES += \
     registerdialog.cpp \
     tank.cpp \
     singlegamewidget.cpp \
-    testtank.cpp \
+    #testtank.cpp \
     welcomewidget.cpp
 
 
@@ -33,7 +33,7 @@ HEADERS += \
     loginwidget.h \
     mainwindow.h \
     registerdialog.h \
-    testtank.h \
+    #testtank.h \
     welcomewidget.h \
     pausewidget.h \
     singlegamewidget.h \
