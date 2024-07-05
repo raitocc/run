@@ -57,7 +57,7 @@ tank::tank(int ID):ID(ID),tank_angle (0), movingUp(false), movingDown(false), mo
         break;
     }
 
-    QPixmap pixmap(":/img/Tank1000.png");
+    QPixmap pixmap(":/new/prefix1/Tank1000.png");
     if (pixmap.isNull()) {
         qDebug() << "Failed to load image.";
     } else {
