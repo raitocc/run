@@ -34,9 +34,8 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     ui->graphicsView->installEventFilter(this);
     ui->graphicsView->centerOn(0,0);
 
-    //强聚焦，始终接收键盘事件设置焦点策略
-    ui->graphicsView->setFocusPolicy(Qt::StrongFocus);
-    ui->graphicsView->setFocus();
+    //初始化视图
+    setInitGraphicView();
 
     timer = new QTimer;
     timer->start(1000/60);//60fps
@@ -67,6 +66,11 @@ bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
                 }
             }
         }
+        // if(event->type()==QEvent::)
+        // {
+        //     qDebug()<<"Wheel";
+        //     return true;
+        // }
     }
     return QWidget::eventFilter(watched, event);
 }
@@ -142,5 +146,31 @@ void SingleGameWidget::centerViewOnTank()
 
     // 设置视图的中心
     ui->graphicsView->centerOn(newCenterX, newCenterY);
+}
+
+//初始化视图
+void SingleGameWidget::setInitGraphicView()
+{
+    //强聚焦，始终接收键盘事件设置焦点策略
+    ui->graphicsView->setFocusPolicy(Qt::StrongFocus);
+    ui->graphicsView->setFocus();
+
+
+    ui->graphicsView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    ui->graphicsView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+
+
+    //安装事件过滤器
+    ui->graphicsView->installEventFilter(this);
+
+}
+
+//禁用滚轮事件
+void SingleGameWidget::wheelEvent(QWheelEvent *event)
+{
+    // 禁止鼠标滚轮移动视图
+    qDebug()<<"!";
+    event->ignore();
 }
 

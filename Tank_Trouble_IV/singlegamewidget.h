@@ -32,6 +32,9 @@ public slots:
 
     void advance();
 
+protected:
+    virtual void wheelEvent(QWheelEvent * event);
+
 private:
     Ui::SingleGameWidget *ui;
     GameMap map;
@@ -42,6 +45,8 @@ private:
     QTimer* timer;
 
     void centerViewOnTank();
+    void setInitGraphicView();
+
 
 
 signals:
