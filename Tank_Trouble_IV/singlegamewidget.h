@@ -10,8 +10,6 @@
 #include <QKeyEvent>
 #include <QTimer>
 
-#define gridSize 50
-#define tanklength 30
 
 namespace Ui {
 class SingleGameWidget;

@@ -11,8 +11,8 @@ using namespace std;
 #define basic_tank_speed 2
 #define basic_attck_speed 5
 //#define basic_turning_speed
-#define tank_width 1
-#define tank_length 2//留了几个宏方便你们定义
+#define tank_width 20
+#define tank_length 30//留了几个宏方便你们定义
 
 #define shellkind 10//子弹最大种类
 #define MAXNUM 2000000000;

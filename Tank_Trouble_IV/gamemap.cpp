@@ -155,3 +155,33 @@ const QVector<QVector<int> > &GameMap::getmap()
 {
     return map;
 }
+
+void GameMap::setRandomInitialPosition(int &x,int &y)
+{
+    QVector<QVector<int>> map = getmap();
+    QVector<QPair<int, int>> whiteCells;
+    for (int i = 0; i < map.size(); ++i)
+    {
+        for (int j = 0; j < map[i].size(); ++j)
+        {
+            if (map[i][j] == 2)
+            {
+                whiteCells.append(qMakePair(i, j));
+            }
+        }
+    }
+
+    if (!whiteCells.isEmpty())
+    {
+        int selectedNum = QRandomGenerator::global()->bounded(whiteCells.size());
+        QPair<int, int> pos = whiteCells[selectedNum];
+        int row = pos.first;
+        int col = pos.second;
+
+        // 将坦克放在白色块的中心
+        //setPos(col * gridSize + gridSize / 2 - rect().width() / 2, row * gridSize + gridSize / 2 - rect().height() / 2);
+        x=col * gridSize + gridSize / 2;
+        y=row * gridSize + gridSize / 2;
+        //gridSize宏定义在"singlegamewidget.h"中，因此#include "singlegamewidget.h"
+    }
+}
