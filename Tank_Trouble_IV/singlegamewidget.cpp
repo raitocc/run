@@ -7,9 +7,13 @@
 tank* tank1;//创建
 
 
+
+
 SingleGameWidget::SingleGameWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::SingleGameWidget)
+    ,level(1)//默认从第一关开始
+    ,money(0)//默认金币为零，可以以后放下面去
 {
     ui->setupUi(this);
     map.createMap();
@@ -18,6 +22,7 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     map.setRandomInitialPosition(tank_X,tank_Y);
     //tank = new testTank(&map);
     //tank = new testTank;
+
     tank1 = new class tank(1000);//堆上创建
     scene = new QGraphicsScene(this);
     scene->setSceneRect(0, 0, gridSize * map.getcol(), gridSize * (map.getrow()+2)); // col和row是地图的列数和行数
@@ -45,6 +50,26 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     timer = new QTimer;
     timer->start(1000/60);//60fps
     connect(timer,&QTimer::timeout,this,&SingleGameWidget::advance);
+
+    //血条实现d
+    ui->progressBar->setRange(0,tank1->MAX_HP);
+    //设置当前进度的值
+    ui->progressBar->setValue(tank1->MAX_HP);
+    //
+    ui->progressBar->setFormat(QString::number(tank1->HP)+"/"+QString::number(tank1->MAX_HP));
+    ui->progressBar->setInvertedAppearance(false); //true:反方向  false:正方向
+    ui->progressBar->setAlignment(Qt::AlignCenter);  // This will add text over Progress Bar
+    ui->progressBar->setStyleSheet("QProgressBar{height:25px; "//高度24像素
+                                     "text-align: center; "//文本居中
+                                     "font-size: 15px; "//字体大小14像素
+                                     "color: white; "//文本颜色为白色
+                                     "border-radius: 5px; "//5像素圆角
+                                     "background: #e2e3e4;}"//浅灰色背景
+                                     "QProgressBar::chunk{border-radius: 5px;"//填充部分也有5像素的圆角
+                                   "background: red}" );//背景颜色为红色
+    //槽函数，时刻检测血量变化
+    connect(timer, &QTimer::timeout, this, &SingleGameWidget::if_HP_changed);
+    connect(this, &SingleGameWidget::HP_changed, this, &SingleGameWidget::on_progressBar_valueChanged);
 }
 
 bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
@@ -110,7 +135,6 @@ void SingleGameWidget::timerStart()
 SingleGameWidget::~SingleGameWidget()
 {
     delete ui;
-
 }
 
 void SingleGameWidget::drawMap()
@@ -189,5 +213,36 @@ void SingleGameWidget::centerViewOnTank()
 
     // 设置视图的中心
     ui->graphicsView->centerOn(newCenterX, newCenterY);
+}
+
+
+void SingleGameWidget::if_HP_changed()
+{
+    //显示与实际血量不一致时发射信号
+    if(ui->progressBar->value()!=tank1->HP){
+    emit HP_changed();
+    //直接赋值，//不知道会不会直接跳到槽
+    ui->progressBar->setValue(tank1->MAX_HP);
+    }
+}
+void SingleGameWidget::progressBar_valueChanged()
+{
+    //血量变化的信号
+    //重设文本和进度条
+    //ui->progressBar->setValue(tank1->MAX_HP);
+    ui->progressBar->setFormat(QString::number(tank1->HP)+"/"+QString::number(tank1->MAX_HP));
+}
+
+//接受获胜判定的信号进入下一关
+void SingleGameWidget::change_label_level()
+{
+    level++;
+    ui->label_level->setText("当前关卡:"+QString::number(level));
+}
+
+
+void SingleGameWidget::change_label_money()
+{
+        ui->label_money->setText("金币数:"+QString::number(money));
 }
 
