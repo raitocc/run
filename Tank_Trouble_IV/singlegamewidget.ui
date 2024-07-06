@@ -93,6 +93,19 @@
     <string>当前关卡： 1</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_money">
+   <property name="geometry">
+    <rect>
+     <x>850</x>
+     <y>22</y>
+     <width>51</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>金币数：0</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
  <connections/>

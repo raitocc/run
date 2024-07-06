@@ -12,6 +12,7 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::SingleGameWidget)
     ,level(1)//默认从第一关开始
+    ,money(0)//默认金币为零，可以以后放下面去
 {
     ui->setupUi(this);
     map.createMap();
@@ -175,11 +176,11 @@ void SingleGameWidget::if_HP_changed()
     //显示与实际血量不一致时发射信号
     if(ui->progressBar->value()!=tank1->HP){
     emit HP_changed();
-    //不知道是不是应该放直接赋值，不知道会不会直接跳到槽
+    //直接赋值，//不知道会不会直接跳到槽
     ui->progressBar->setValue(tank1->MAX_HP);
     }
 }
-void SingleGameWidget::on_progressBar_valueChanged()
+void SingleGameWidget::progressBar_valueChanged()
 {
     //血量变化的信号
     //重设文本和进度条
@@ -188,9 +189,15 @@ void SingleGameWidget::on_progressBar_valueChanged()
 }
 
 //接受获胜判定的信号进入下一关
-void SingleGameWidget::on_label_2_linkActivated()
+void SingleGameWidget::change_label_level()
 {
     level++;
-    ui->label_level->setText("当前关卡 ："+QString::number(level));
+    ui->label_level->setText("当前关卡:"+QString::number(level));
+}
+
+
+void SingleGameWidget::change_label_money()
+{
+        ui->label_money->setText("金币数:"+QString::number(money));
 }
 

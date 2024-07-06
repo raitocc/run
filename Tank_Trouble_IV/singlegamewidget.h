@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include "gamemap.h"
-#include "qprogressbar.h"
 #include <QGraphicsScene>
 #include <QRandomGenerator>
 #include <QGraphicsRectItem>
@@ -42,6 +41,8 @@ private:
 
     QTimer* timer;
     int level;//关卡
+    int money;//金币数
+
     void centerViewOnTank();
 
 
@@ -50,8 +51,9 @@ signals:
     void HP_changed();//Ѫ���ı�
 private slots:
     void if_HP_changed();
-    void on_progressBar_valueChanged();
-    void on_label_2_linkActivated();
+    void progressBar_valueChanged();
+    void change_label_level();
+    void change_label_money(const QString &link);
 };
 
 #endif // SINGLEGAMEWIDGET_H
