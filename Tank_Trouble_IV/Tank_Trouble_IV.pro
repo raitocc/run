@@ -1,5 +1,4 @@
-QT       += core gui sql
-
+QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -11,9 +10,8 @@ CONFIG += c++17
 
 SOURCES += \
     #PlayerScene.cpp \
-    #bullet.cpp \
+    bullet_s.cpp \
     gamemap.cpp \
-    gameview.cpp \
     griditem.cpp \
     loginwidget.cpp \
     main.cpp \
@@ -29,9 +27,8 @@ SOURCES += \
 
 HEADERS += \
     #PlayerScene.h \
-    #bullet.h \
+    bullet_s.h \
     gamemap.h \
-    gameview.h \
     griditem.h \
     loginwidget.h \
     mainwindow.h \

@@ -1,4 +1,5 @@
 #include "gamemap.h"
+#include "qdebug.h"
 #include <queue>
 #include <algorithm>
 #include <iostream>
