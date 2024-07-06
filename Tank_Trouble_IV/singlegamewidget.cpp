@@ -69,7 +69,7 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
                                    "background: red}" );//背景颜色为红色
     //槽函数，时刻检测血量变化
     connect(timer, &QTimer::timeout, this, &SingleGameWidget::if_HP_changed);
-    connect(this, &SingleGameWidget::HP_changed, this, &SingleGameWidget::on_progressBar_valueChanged);
+    connect(this, &SingleGameWidget::HP_changed, this, &::SingleGameWidget::progressBar_valueChanged);
 }
 
 bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
@@ -241,8 +241,8 @@ void SingleGameWidget::change_label_level()
 }
 
 
-void SingleGameWidget::change_label_money()
-{
-        ui->label_money->setText("金币数:"+QString::number(money));
-}
+// void SingleGameWidget::change_label_money()
+// {
+//         ui->label_money->setText("金币数:"+QString::number(money));
+// }
 
