@@ -60,7 +60,7 @@ private slots:
     void if_HP_changed();
     void progressBar_valueChanged();
     void change_label_level();
-    void change_label_money(const QString &link);
+    //void change_label_money();
 };
 
 #endif // SINGLEGAMEWIDGET_H
