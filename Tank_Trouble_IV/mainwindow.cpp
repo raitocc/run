@@ -147,6 +147,15 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
     QMainWindow::keyPressEvent(event); // 调用基类的实现，如果需要的话
 }
 
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    //if(mLoginWidget!=nullptr) mLoginWidget->resize(this->width(),this->height());
+    //if(mWelcomeWidget!=nullptr) mWelcomeWidget->resize(this->width(),this->height());
+    if(mSingleGameWidget!=nullptr) mSingleGameWidget->resize(this->width(),this->height());
+    //if(mPauseWidget!=nullptr) mPauseWidget->resize(this->width(),this->height());
+    //if(mFailedWidget!=nullptr) mFailedWidget->resize(this->width(),this->height());
+}
+
 // void MainWindow::setupMap()
 // {
 //     const int tileSize = 40; // 每个方块的大小

@@ -14,6 +14,7 @@ class testSheel : public QObject, public QGraphicsRectItem
 public:
     testSheel(tank* shooter, QPointF startPos, QPointF targetPos);
     void move();
+    tank* getShooter();
 
 private:
     qreal speed;

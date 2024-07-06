@@ -49,6 +49,8 @@ private:
 
     void centerViewOnTank();
 
+protected:
+    void resizeEvent(QResizeEvent *event) override;//窗口调整大小事件覆盖
 
 signals:
     void signalPause();

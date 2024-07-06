@@ -35,6 +35,7 @@ public:
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
 
 private:
@@ -43,7 +44,7 @@ private:
     WelcomeWidget* mWelcomeWidget;//登入成功页面
     SingleGameWidget* mSingleGameWidget;//单人游戏页面
     PauseWidget* mPauseWidget;//暂停游戏页面
-    FailedWidget* mFailedWidget;
+    FailedWidget* mFailedWidget;//失败界面
 
     QString userName;//用户名
     //QStackedWidget *stackedWidget;

@@ -4,7 +4,8 @@
 GameView::GameView(QWidget *parent)
     : QGraphicsView{parent}
 {
-    qDebug()<<"!!!!!!!!!";
+    this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 }
 
 void GameView::wheelEvent(QWheelEvent *event)

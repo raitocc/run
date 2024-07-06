@@ -6,9 +6,6 @@
 //在这里创建（声明）tank才能在析构函数里面正常析构,因为我没在widget里面放指针
 tank* tank1;//创建
 
-
-
-
 SingleGameWidget::SingleGameWidget(QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::SingleGameWidget)
@@ -28,7 +25,10 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     scene->setSceneRect(0, 0, gridSize * map.getcol(), gridSize * (map.getrow()+2)); // col和row是地图的列数和行数
     ui->graphicsView->setScene(scene);
     drawMap();
+
     //添加事件过滤器
+    this->installEventFilter(this);
+
     tank1->setPos(gridSize, gridSize);
     scene->addItem(tank1);
     //强聚焦，始终接收键盘事件设置焦点策略
@@ -215,6 +215,15 @@ void SingleGameWidget::centerViewOnTank()
     ui->graphicsView->centerOn(newCenterX, newCenterY);
 }
 
+
+
+void SingleGameWidget::resizeEvent(QResizeEvent *event)//窗口size大小变化
+{
+    QWidget::resizeEvent(event);
+    qDebug()<<"Resize";
+    // 调整 QGraphicsView 的大小以适应窗口
+    ui->graphicsView->setGeometry(0, 70, this->width(), this->height()-70);
+}
 
 void SingleGameWidget::if_HP_changed()
 {

@@ -260,7 +260,7 @@ bool tank::checkCollision()
         }
         // 检查是否碰到子弹
         testSheel *bullet = dynamic_cast<testSheel *>(item);
-        if (bullet)
+        if (bullet&&bullet->getShooter()!=this)
         {
             emit signalGameFailed();
             qDebug()<<"碰到子弹";
