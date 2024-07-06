@@ -184,7 +184,7 @@ void SingleGameWidget::advance()
 {
     tank1->tank_move();
     centerViewOnTank();
-    tank1->GetOutOfWall();
+    //tank1->GetOutOfWall();
 }
 
 void SingleGameWidget::slotFailed()
