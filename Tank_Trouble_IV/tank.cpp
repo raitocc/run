@@ -1,5 +1,6 @@
 #include "tank.h"
 #include "qevent.h"
+#include "testsheel.h"
 
 void tank::inital_tank
     (
@@ -121,20 +122,28 @@ void tank::updateDirection()
 {
     if (movingUp && movingRight) {
         setRotation(45);
+        if(checkCollision()) adjustPosition();
     } else if (movingUp && movingLeft) {
         setRotation(-45);
+        if(checkCollision()) adjustPosition();
     } else if (movingDown && movingRight) {
         setRotation(135);
+        if(checkCollision()) adjustPosition();
     } else if (movingDown && movingLeft) {
         setRotation(-135);
+        if(checkCollision()) adjustPosition();
     } else if (movingUp) {
         setRotation(0);
+        if(checkCollision()) adjustPosition();
     } else if (movingDown) {
         setRotation(180);
+        if(checkCollision()) adjustPosition();
     } else if (movingLeft) {
         setRotation(-90);
+        if(checkCollision()) adjustPosition();
     } else if (movingRight) {
         setRotation(90);
+        if(checkCollision()) adjustPosition();
     }
 }
 
@@ -243,16 +252,54 @@ void tank::resetMoving()
     movingUp=false;
 }
 
+#include <QGraphicsScene>
+#include <QGraphicsItem>
+
 bool tank::checkCollision()
 {
     QList<QGraphicsItem *> collidingItems = scene()->collidingItems(this);
     for (QGraphicsItem *item : collidingItems)
     {
         QGraphicsRectItem *rectItem = dynamic_cast<QGraphicsRectItem *>(item);
+        // 检查是否碰到黑色墙壁
         if (rectItem && rectItem->brush().color() == Qt::black)
         {
+            return true;
+        }
+        // 检查是否碰到子弹
+        testSheel *bullet = dynamic_cast<testSheel *>(item);
+        if (bullet)
+        {
+            //emit signalGameFailed(); // 发送失败信号
+            qDebug()<<"碰到子弹";
             return true;
         }
     }
     return false;
 }
+
+
+void tank::adjustPosition()
+{
+    const int maxAttempts = 10; // 最大尝试次数
+    const qreal stepSize = 0.5; // 微调步进值
+
+    for (int i = 0; i < maxAttempts; ++i) {
+        moveBy(stepSize, 0);
+        if (!checkCollision()) return;
+        moveBy(-stepSize, 0);
+
+        moveBy(-stepSize, 0);
+        if (!checkCollision()) return;
+        moveBy(stepSize, 0);
+
+        moveBy(0, stepSize);
+        if (!checkCollision()) return;
+        moveBy(0, -stepSize);
+
+        moveBy(0, -stepSize);
+        if (!checkCollision()) return;
+        moveBy(0, stepSize);
+    }
+}
+

@@ -32,6 +32,8 @@ public slots:
 
     void advance();
 
+    void slotFailed();//сно╥й╖╟э
+
 private:
     Ui::SingleGameWidget *ui;
     GameMap map;
