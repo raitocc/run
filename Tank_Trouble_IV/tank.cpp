@@ -125,20 +125,52 @@ void tank::updateDirection()
 {
     if (movingUp && movingRight) {
         setRotation(45);
+        if(checkCollision())
+        {
+            adjustPosition();
+        }
     } else if (movingUp && movingLeft) {
         setRotation(-45);
+        if(checkCollision())
+        {
+            adjustPosition();
+        }
     } else if (movingDown && movingRight) {
         setRotation(135);
+        if(checkCollision())
+        {
+            adjustPosition();
+        }
     } else if (movingDown && movingLeft) {
         setRotation(-135);
+        if(checkCollision())
+        {
+            adjustPosition();
+        }
     } else if (movingUp) {
         setRotation(0);
+        if(checkCollision())
+        {
+            adjustPosition();
+        }
     } else if (movingDown) {
         setRotation(180);
+        if(checkCollision())
+        {
+            adjustPosition();
+        }
     } else if (movingLeft) {
         setRotation(-90);
+        if(checkCollision())
+        {
+            adjustPosition();
+        }
     } else if (movingRight) {
         setRotation(90);
+        if(checkCollision())
+        {
+            adjustPosition();
+        }
     }
 }
 
@@ -260,7 +292,7 @@ bool tank::checkCollision()
         }
         // 检查是否碰到子弹
         testSheel *bullet = dynamic_cast<testSheel *>(item);
-        if (bullet)
+        if (bullet&&bullet->getShooter()!=this)
         {
             emit signalGameFailed();
             qDebug()<<"碰到子弹";
@@ -303,6 +335,7 @@ QPoint tank::findNearestWhiteTile() {
             QPoint(1, 1), QPoint(-1, 1), QPoint(1, -1), QPoint(-1, -1)
         };
 
+
         for (QPoint dir : directions) {
             QPoint newPos = currentPos + dir;
             if (!visited.contains(newPos) && currentDistance < searchRadius) {
@@ -319,18 +352,72 @@ QPoint tank::findNearestWhiteTile() {
 
 void tank::adjustPosition()
 {
-    const int maxAttempts = 10; // 最大尝试次数
+    qDebug()<<"卡墙";
+    QPointF oldPos = this->pos();
+    const int maxAttempts = 20; // 最大尝试次数
     const qreal stepSize = 0.5; // 微调步进值
-
-    QPointF targetPos = findNearestWhiteTile();
-    qDebug()<<"脱离目标: "<<targetPos;
-    for (int i = 0; i < maxAttempts; ++i) {
-        QPointF direction = targetPos - pos();
-        direction = direction / sqrt(direction.x() * direction.x() + direction.y() * direction.y());
-        moveBy(direction.x() * stepSize, direction.y() * stepSize);
-        if (!checkCollision()) return;
-        moveBy(-direction.x() * stepSize, -direction.y() * stepSize);
+    for(int i = 0;i<maxAttempts;i++)
+    {
+        moveBy(0,stepSize);
+        if(!checkCollision()) return;
     }
+    this->setPos(oldPos);
+    for(int i = 0;i<maxAttempts;i++)
+    {
+        moveBy(0,-stepSize);
+        if(!checkCollision()) return;
+    }
+    this->setPos(oldPos);
+    for(int i = 0;i<maxAttempts;i++)
+    {
+        moveBy(-stepSize,0);
+        if(!checkCollision()) return;
+    }
+    this->setPos(oldPos);
+    for(int i = 0;i<maxAttempts;i++)
+    {
+        moveBy(stepSize,0);
+        if(!checkCollision()) return;
+    }
+    this->setPos(oldPos);
+    // for (int i = 0; i < maxAttempts; ++i) {
+    //     if(movingUp&&movingRight)
+    //     {
+    //         moveBy(-stepSize,stepSize);
+    //         if(!checkCollision()) return;
+    //     }
+    //     else if(movingUp&&movingLeft)
+    //     {
+    //         moveBy(stepSize,stepSize);
+    //         if(!checkCollision()) return;
+    //     }
+    //     else if(movingDown&&movingRight)
+    //     {
+    //         moveBy(-stepSize,-stepSize);
+    //         if(!checkCollision()) return;
+    //     }
+    //     else if(movingDown&&movingLeft)
+    //     {
+    //         moveBy(stepSize,-stepSize);
+    //         if(!checkCollision()) return;
+    //     }
+    //     else if(movingDown)
+    //     {
+    //         moveBy(0,-stepSize);
+    //     }
+    //     else if(movingUp)
+    //     {
+    //         moveBy(0,stepSize);
+    //     }
+    //     else if(movingLeft)
+    //     {
+    //         moveBy(stepSize,0);
+    //     }
+    //     else if(movingRight)
+    //     {
+    //         moveBy(-stepSize,0);
+    //     }
+    // }
 }
 
 void tank::GetOutOfWall()

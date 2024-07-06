@@ -6,7 +6,6 @@
 #include <QGraphicsScene>
 #include <QRandomGenerator>
 #include <QGraphicsRectItem>
-//#include "testtank.h"
 #include <QKeyEvent>
 #include <QTimer>
 
