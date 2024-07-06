@@ -1,4 +1,4 @@
-#include "loginwidget.h"
+﻿#include "loginwidget.h"
 #include "registerdialog.h"
 #include "ui_loginwidget.h"
 #include <QFile>
@@ -37,6 +37,12 @@ LoginWidget::~LoginWidget()
     // 关闭数据库连接
     QSqlDatabase::database().close();
     delete ui;
+}
+
+void LoginWidget::paintEvent(QPaintEvent * event)
+{
+    QPainter painter(this);
+    painter.drawPixmap(0,0,width(),height(),QPixmap(":/login_background.png"));
 }
 
 void LoginWidget::on_pushButton_clicked()//登录按钮按下
