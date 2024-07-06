@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "gamemap.h"
+#include "qprogressbar.h"
 #include <QGraphicsScene>
 #include <QRandomGenerator>
 #include <QGraphicsRectItem>
@@ -46,6 +47,10 @@ private:
 
 signals:
     void signalPause();
+    void HP_changed();//ÑªÁ¿¸Ä±ä
+private slots:
+    void if_HP_changed();
+    void on_progressBar_valueChanged();
 };
 
 #endif // SINGLEGAMEWIDGET_H
