@@ -11,7 +11,9 @@ CONFIG += c++17
 SOURCES += \
     #PlayerScene.cpp \
     bullet_s.cpp \
+    failedwidget.cpp \
     gamemap.cpp \
+    gameview.cpp \
     griditem.cpp \
     loginwidget.cpp \
     main.cpp \
@@ -29,7 +31,9 @@ SOURCES += \
 HEADERS += \
     #PlayerScene.h \
     bullet_s.h \
+    failedwidget.h \
     gamemap.h \
+    gameview.h \
     griditem.h \
     loginwidget.h \
     mainwindow.h \
@@ -39,10 +43,11 @@ HEADERS += \
     welcomewidget.h \
     pausewidget.h \
     singlegamewidget.h \
-    tank.h \
+    tank.h
     #shell.h \
 
 FORMS += \
+    failedwidget.ui \
     loginwidget.ui \
     mainwindow.ui \
     pausewidget.ui \

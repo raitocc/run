@@ -1,6 +1,9 @@
 #include "tank.h"
 #include "qevent.h"
 #include "testsheel.h"
+#include<QQueue>
+
+#include <QtMath>
 
 void tank::inital_tank
     (
@@ -122,28 +125,20 @@ void tank::updateDirection()
 {
     if (movingUp && movingRight) {
         setRotation(45);
-        if(checkCollision()) adjustPosition();
     } else if (movingUp && movingLeft) {
         setRotation(-45);
-        if(checkCollision()) adjustPosition();
     } else if (movingDown && movingRight) {
         setRotation(135);
-        if(checkCollision()) adjustPosition();
     } else if (movingDown && movingLeft) {
         setRotation(-135);
-        if(checkCollision()) adjustPosition();
     } else if (movingUp) {
         setRotation(0);
-        if(checkCollision()) adjustPosition();
     } else if (movingDown) {
         setRotation(180);
-        if(checkCollision()) adjustPosition();
     } else if (movingLeft) {
         setRotation(-90);
-        if(checkCollision()) adjustPosition();
     } else if (movingRight) {
         setRotation(90);
-        if(checkCollision()) adjustPosition();
     }
 }
 
@@ -252,9 +247,6 @@ void tank::resetMoving()
     movingUp=false;
 }
 
-#include <QGraphicsScene>
-#include <QGraphicsItem>
-
 bool tank::checkCollision()
 {
     QList<QGraphicsItem *> collidingItems = scene()->collidingItems(this);
@@ -270,12 +262,58 @@ bool tank::checkCollision()
         testSheel *bullet = dynamic_cast<testSheel *>(item);
         if (bullet)
         {
-            //emit signalGameFailed(); // 发送失败信号
+            emit signalGameFailed();
             qDebug()<<"碰到子弹";
-            return true;
+            return false;
         }
     }
     return false;
+}
+
+
+
+
+
+// 定义一个辅助函数来查找最近的白色空方块
+QPoint tank::findNearestWhiteTile() {
+    const int searchRadius = 50; // 搜索半径
+    QQueue<QPair<QPoint, int>> queue;
+    QSet<QPoint> visited;
+    QPoint start = pos().toPoint();
+    queue.enqueue(qMakePair(start, 0));
+    visited.insert(start);
+
+    while (!queue.isEmpty()) {
+        QPair<QPoint, int> current = queue.dequeue();
+        QPoint currentPos = current.first;
+        int currentDistance = current.second;
+
+        // 获取当前坐标下的物体
+        QList<QGraphicsItem *> items = scene()->items(QRectF(currentPos, QSize(1, 1)));
+        for (QGraphicsItem *item : items) {
+            QGraphicsRectItem *rectItem = dynamic_cast<QGraphicsRectItem *>(item);
+            if (rectItem && rectItem->brush().color() == Qt::white) {
+                return currentPos;
+            }
+        }
+
+        // 向四个方向扩展
+        QList<QPoint> directions = {
+            QPoint(0, 1), QPoint(1, 0), QPoint(0, -1), QPoint(-1, 0),
+            QPoint(1, 1), QPoint(-1, 1), QPoint(1, -1), QPoint(-1, -1)
+        };
+
+        for (QPoint dir : directions) {
+            QPoint newPos = currentPos + dir;
+            if (!visited.contains(newPos) && currentDistance < searchRadius) {
+                queue.enqueue(qMakePair(newPos, currentDistance + 1));
+                visited.insert(newPos);
+            }
+        }
+    }
+
+    // 如果没有找到白色空方块，返回当前位置
+    return start;
 }
 
 
@@ -284,22 +322,23 @@ void tank::adjustPosition()
     const int maxAttempts = 10; // 最大尝试次数
     const qreal stepSize = 0.5; // 微调步进值
 
+    QPointF targetPos = findNearestWhiteTile();
+    qDebug()<<"脱离目标: "<<targetPos;
     for (int i = 0; i < maxAttempts; ++i) {
-        moveBy(stepSize, 0);
+        QPointF direction = targetPos - pos();
+        direction = direction / sqrt(direction.x() * direction.x() + direction.y() * direction.y());
+        moveBy(direction.x() * stepSize, direction.y() * stepSize);
         if (!checkCollision()) return;
-        moveBy(-stepSize, 0);
+        moveBy(-direction.x() * stepSize, -direction.y() * stepSize);
+    }
+}
 
-        moveBy(-stepSize, 0);
-        if (!checkCollision()) return;
-        moveBy(stepSize, 0);
-
-        moveBy(0, stepSize);
-        if (!checkCollision()) return;
-        moveBy(0, -stepSize);
-
-        moveBy(0, -stepSize);
-        if (!checkCollision()) return;
-        moveBy(0, stepSize);
+void tank::GetOutOfWall()
+{
+    if(checkCollision())
+    {
+        qDebug()<<"卡墙了！";
+        adjustPosition();
     }
 }
 

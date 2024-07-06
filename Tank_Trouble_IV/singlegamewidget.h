@@ -25,29 +25,42 @@ public:
 
     void drawMap();
     bool eventFilter(QObject *watched, QEvent *event);
-    void setViewFocus();//ÉèÖÃÊÓÍ¼ÎªÆä½¹µã
+    void setViewFocus();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Îªï¿½ä½¹ï¿½ï¿½
+    void timerStart();
 
 public slots:
     void on_btnPause_clicked();
 
     void advance();
 
-    void slotFailed();//ÓÎÏ·Ê§°Ü
+    void slotFailed();//æ¸¸æˆå¤±è´¥
 
 private:
     Ui::SingleGameWidget *ui;
     GameMap map;
     QGraphicsScene* scene;
 
+    bool ifFailed;
+
     //testTank* tank;
 
     QTimer* timer;
+    int level;//å…³å¡
+    int money;//é‡‘å¸æ•°
 
     void centerViewOnTank();
 
 
 signals:
     void signalPause();
+
+    void signalGameFailed();
+    void HP_changed();//Ñªï¿½ï¿½ï¿½Ä±ï¿½
+private slots:
+    void if_HP_changed();
+    void progressBar_valueChanged();
+    void change_label_level();
+    void change_label_money(const QString &link);
 };
 
 #endif // SINGLEGAMEWIDGET_H

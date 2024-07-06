@@ -2,22 +2,18 @@
 #define GAMEVIEW_H
 
 #include <QGraphicsView>
+#include <QWidget>
 
 class GameView : public QGraphicsView
 {
     Q_OBJECT
 public:
-    GameView(QWidget *parent);
+    explicit GameView(QWidget *parent = nullptr);
 
+protected:
     void wheelEvent(QWheelEvent *event);
 
-
-    // void mouseMoveEvent(QMouseEvent *event);
-    // void mousePressEvent(QMouseEvent *event);
-
-// signals:
-//     void signalMouseMove(QMouseEvent *event);
-//     void signalMousePress(QMouseEvent *event);
+signals:
 };
 
 #endif // GAMEVIEW_H

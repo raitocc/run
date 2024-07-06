@@ -34,7 +34,7 @@
   <widget class="QPushButton" name="btnPause">
    <property name="geometry">
     <rect>
-     <x>710</x>
+     <x>1020</x>
      <y>10</y>
      <width>101</width>
      <height>51</height>
@@ -44,7 +44,7 @@
     <string>Pause</string>
    </property>
   </widget>
-  <widget class="QGraphicsView" name="graphicsView">
+  <widget class="GameView" name="graphicsView">
    <property name="geometry">
     <rect>
      <x>0</x>
@@ -54,7 +54,66 @@
     </rect>
    </property>
   </widget>
+  <widget class="QProgressBar" name="progressBar">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>20</y>
+     <width>118</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="value">
+    <number>24</number>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_HP">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>22</y>
+     <width>40</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>HP</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_level">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>22</y>
+     <width>111</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>当前关卡： 1</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_money">
+   <property name="geometry">
+    <rect>
+     <x>850</x>
+     <y>22</y>
+     <width>51</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>金币数：0</string>
+   </property>
+  </widget>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>GameView</class>
+   <extends>QGraphicsView</extends>
+   <header location="global">gameview.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
