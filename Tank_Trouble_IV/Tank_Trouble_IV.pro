@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     #PlayerScene.cpp \
     bullet_s.cpp \
+    enemytank.cpp \
     failedwidget.cpp \
     gamemap.cpp \
     gameview.cpp \
@@ -31,6 +32,7 @@ SOURCES += \
 HEADERS += \
     #PlayerScene.h \
     bullet_s.h \
+    enemytank.h \
     failedwidget.h \
     gamemap.h \
     gameview.h \
