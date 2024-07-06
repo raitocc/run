@@ -1,7 +1,8 @@
-#ifndef LOGINWIDGET_H
+﻿#ifndef LOGINWIDGET_H
 #define LOGINWIDGET_H
 
 #include <QWidget>
+#include<QPainter>
 #include "QMessageBox"
 
 namespace Ui {
@@ -15,6 +16,7 @@ class LoginWidget : public QWidget
 public:
     explicit LoginWidget(QWidget *parent = nullptr);
     ~LoginWidget();
+    void paintevent(QPaintEvent * event);
 
 private slots:
     void on_pushButton_clicked();
