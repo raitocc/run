@@ -20,7 +20,7 @@ private:
     QPointF direction;
     tank* shooter;
 
-private slots:
+public slots:
     void onMove();
 
 signals:

@@ -26,6 +26,7 @@ public:
     void drawMap();
     bool eventFilter(QObject *watched, QEvent *event);
     void setViewFocus();//设置视图为其焦点
+    void timerStart();
 
 public slots:
     void on_btnPause_clicked();
@@ -39,6 +40,8 @@ private:
     GameMap map;
     QGraphicsScene* scene;
 
+    bool ifFailed;
+
     //testTank* tank;
 
     QTimer* timer;
@@ -48,6 +51,8 @@ private:
 
 signals:
     void signalPause();
+
+    void signalGameFailed();
 };
 
 #endif // SINGLEGAMEWIDGET_H

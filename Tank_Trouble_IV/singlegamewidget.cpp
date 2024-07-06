@@ -13,6 +13,7 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
 {
     ui->setupUi(this);
     map.createMap();
+    ifFailed = false;
     int tank_X,tank_Y;
     map.setRandomInitialPosition(tank_X,tank_Y);
     //tank = new testTank(&map);
@@ -32,7 +33,8 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     //不好意思有点误差
     tank1->setPos(tank_X-tank1->width/2, tank_Y-tank1->length/2);//设置坦克出生点
     tank1->setZValue(5); // 设置 tank1 的 Z 值为 1，防止被场景遮挡,这个可以有效解决其他的遮挡问题
-    //connect(tank1,&tank::signalGameFailed,this,&SingleGameWidget::slotFailed);
+    connect(tank1,&tank::signalGameFailed,this,&SingleGameWidget::slotFailed);
+
     ui->graphicsView->installEventFilter(this);
     ui->graphicsView->centerOn(0,0);
 
@@ -75,17 +77,18 @@ bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
         QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
         if (mouseEvent->button() == Qt::LeftButton)
         {
-            qDebug() << "左键按下";
+            //qDebug() << "左键按下";
 
             // 获取点击位置在QGraphicsView的坐标
             QPoint viewPos = mouseEvent->pos();
             QPointF scenePos = ui->graphicsView->mapToScene(viewPos);
 
-            qDebug() << "点击位置在QGraphicsView坐标：" << viewPos;
-            qDebug() << "点击位置在场景坐标：" << scenePos;
+            //qDebug() << "点击位置在QGraphicsView坐标：" << viewPos;
+            //qDebug() << "点击位置在场景坐标：" << scenePos;
 
             // 创建子弹并添加到场景中
             testSheel *bullet = new testSheel(tank1, tank1->pos(), scenePos);
+            connect(timer,&QTimer::timeout,bullet,&testSheel::onMove);
             scene->addItem(bullet);
         }
         return true;
@@ -96,6 +99,11 @@ bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
 void SingleGameWidget::setViewFocus()
 {
     ui->graphicsView->setFocus();
+}
+
+void SingleGameWidget::timerStart()
+{
+    timer->start(1000/60);
 }
 
 
@@ -122,12 +130,15 @@ void SingleGameWidget::drawMap()
             {
             case 0: // 不可破坏墙
                 rect->setBrush(QBrush(resizedwall)); // 加载不可破坏墙的贴图
+                rect->setData(1,0);
                 break;
             case 1: // 可破坏墙体
                 rect->setBrush(QBrush(resizedbox)); // 加载可破坏墙体的贴图
+                rect->setData(1,1);
                 break;
             case 2: // 其他类型的墙体或空白
                 rect->setBrush(QBrush(Qt::white)); // 或者使用默认的白色填充
+                rect->setData(1,2);
                 break;
             }
         }
@@ -137,22 +148,29 @@ void SingleGameWidget::drawMap()
     //scene->addItem(tank); // 添加坦克或其他游戏元素
 }
 
-
+//按下暂停按钮
 void SingleGameWidget::on_btnPause_clicked()
 {
     emit signalPause();
     tank1->resetMoving();
+    timer->stop();
 }
 
 void SingleGameWidget::advance()
 {
     tank1->tank_move();
     centerViewOnTank();
+    tank1->GetOutOfWall();
 }
 
 void SingleGameWidget::slotFailed()
 {
-    qDebug()<<"Failed";
+    timer->stop();
+    tank1->resetMoving();
+    if(!ifFailed){
+        ifFailed = true;
+        emit signalGameFailed();
+    }
 }
 
 void SingleGameWidget::centerViewOnTank()

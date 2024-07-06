@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "failedwidget.h"
 #include "loginwidget.h"
 #include "pausewidget.h"
 #include "singlegamewidget.h"
@@ -42,6 +43,7 @@ private:
     WelcomeWidget* mWelcomeWidget;//登入成功页面
     SingleGameWidget* mSingleGameWidget;//单人游戏页面
     PauseWidget* mPauseWidget;//暂停游戏页面
+    FailedWidget* mFailedWidget;
 
     QString userName;//用户名
     //QStackedWidget *stackedWidget;
@@ -82,6 +84,12 @@ private slots:
     void slotExitToMenu();//退出到菜单
 
     void handleLoginSuccess(const QString &username);
+
+    void slotGameFailed();//游戏失败
+
+    void slotSingleRestart();//单人游戏失败重新开始
+
+    void slotSingleFailedBack();//单人游戏失败返回
 
 };
 

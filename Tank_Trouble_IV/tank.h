@@ -18,8 +18,9 @@ using namespace std;
 #define shellkind 10//子弹最大种类
 #define MAXNUM 2000000000;
 
-class tank : public QGraphicsPixmapItem
+class tank : public QObject, public QGraphicsPixmapItem
 {
+    Q_OBJECT
 public:
     int ID;//tank编号
     string name;
@@ -49,9 +50,14 @@ public:
     bool checkCollision();
     void adjustPosition();
 
-signals:
-    //void signalGameFailed();
+    void GetOutOfWall();
 
+signals:
+    void signalGameFailed();
+
+
+private:
+    QPoint findNearestWhiteTile();
 
 };
 #endif // TANK_H
