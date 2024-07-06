@@ -26,7 +26,7 @@ public:
 
     void drawMap();
     bool eventFilter(QObject *watched, QEvent *event);
-    void setViewFocus();//ÉèÖÃÊÓÍ¼ÎªÆä½¹µã
+    void setViewFocus();//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¼Îªï¿½ä½¹ï¿½ï¿½
 
 public slots:
     void on_btnPause_clicked();
@@ -41,16 +41,17 @@ private:
     //testTank* tank;
 
     QTimer* timer;
-
+    int level;//å…³å¡
     void centerViewOnTank();
 
 
 signals:
     void signalPause();
-    void HP_changed();//ÑªÁ¿¸Ä±ä
+    void HP_changed();//Ñªï¿½ï¿½ï¿½Ä±ï¿½
 private slots:
     void if_HP_changed();
     void on_progressBar_valueChanged();
+    void on_label_2_linkActivated();
 };
 
 #endif // SINGLEGAMEWIDGET_H

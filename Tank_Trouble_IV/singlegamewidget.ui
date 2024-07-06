@@ -34,7 +34,7 @@
   <widget class="QPushButton" name="btnPause">
    <property name="geometry">
     <rect>
-     <x>710</x>
+     <x>1020</x>
      <y>10</y>
      <width>101</width>
      <height>51</height>
@@ -78,6 +78,19 @@
    </property>
    <property name="text">
     <string>HP</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_level">
+   <property name="geometry">
+    <rect>
+     <x>700</x>
+     <y>22</y>
+     <width>111</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>当前关卡： 1</string>
    </property>
   </widget>
  </widget>
