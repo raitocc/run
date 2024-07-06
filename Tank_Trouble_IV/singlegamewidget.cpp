@@ -1,6 +1,7 @@
 #include "singlegamewidget.h"
 #include "tank.h"
 #include "ui_singlegamewidget.h"
+#include "testsheel.h"
 
 //在这里创建（声明）tank才能在析构函数里面正常析构,因为我没在widget里面放指针
 tank* tank1;//创建
@@ -31,6 +32,7 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     //不好意思有点误差
     tank1->setPos(tank_X-tank1->width/2, tank_Y-tank1->length/2);//设置坦克出生点
     tank1->setZValue(5); // 设置 tank1 的 Z 值为 1，防止被场景遮挡,这个可以有效解决其他的遮挡问题
+    //connect(tank1,&tank::signalGameFailed,this,&SingleGameWidget::slotFailed);
     ui->graphicsView->installEventFilter(this);
     ui->graphicsView->centerOn(0,0);
 
@@ -68,6 +70,26 @@ bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
             }
         }
     }
+    if (event->type() == QEvent::MouseButtonPress)
+    {
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+        if (mouseEvent->button() == Qt::LeftButton)
+        {
+            qDebug() << "左键按下";
+
+            // 获取点击位置在QGraphicsView的坐标
+            QPoint viewPos = mouseEvent->pos();
+            QPointF scenePos = ui->graphicsView->mapToScene(viewPos);
+
+            qDebug() << "点击位置在QGraphicsView坐标：" << viewPos;
+            qDebug() << "点击位置在场景坐标：" << scenePos;
+
+            // 创建子弹并添加到场景中
+            testSheel *bullet = new testSheel(tank1, tank1->pos(), scenePos);
+            scene->addItem(bullet);
+        }
+        return true;
+    }
     return QWidget::eventFilter(watched, event);
 }
 
@@ -104,7 +126,7 @@ void SingleGameWidget::drawMap()
                 rect->setBrush(QBrush(resizedbox)); // 加载可破坏墙体的贴图
                 break;
             case 2: // 其他类型的墙体或空白
-                rect->setBrush(QBrush(QColor(255, 255, 255))); // 或者使用默认的白色填充
+                rect->setBrush(QBrush(Qt::white)); // 或者使用默认的白色填充
                 break;
             }
         }
@@ -124,6 +146,11 @@ void SingleGameWidget::advance()
 {
     tank1->tank_move();
     centerViewOnTank();
+}
+
+void SingleGameWidget::slotFailed()
+{
+    qDebug()<<"Failed";
 }
 
 void SingleGameWidget::centerViewOnTank()

@@ -3,6 +3,7 @@
 
 #include <QGraphicsRectItem>
 #include <Qstring>
+#include <QObject>
 #include <QGraphicsPixmapItem>//图形元素
 //#include <QGraphicsview>//视图
 #include <QGraphicsScene>//场景
@@ -46,5 +47,11 @@ public:
     void tank_move();//
     void resetMoving();
     bool checkCollision();
+    void adjustPosition();
+
+signals:
+    //void signalGameFailed();
+
+
 };
 #endif // TANK_H
