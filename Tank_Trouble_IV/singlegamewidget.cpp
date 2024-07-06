@@ -94,6 +94,7 @@ void SingleGameWidget::drawMap()
             QPixmap resizedwall =wall.scaled(gridSize, gridSize);
             QPixmap box(":/new/prefix1/box.png");
             QPixmap resizedbox =box.scaled(gridSize, gridSize);
+             rect->setPen(Qt::NoPen); // 确保没有边框
             // Load pixmap based on map element
             switch (map.getmap()[i][j])
             {
@@ -113,6 +114,7 @@ void SingleGameWidget::drawMap()
 
     //scene->addItem(tank); // 添加坦克或其他游戏元素
 }
+
 
 void SingleGameWidget::on_btnPause_clicked()
 {
