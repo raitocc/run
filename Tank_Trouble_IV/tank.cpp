@@ -354,8 +354,8 @@ void tank::adjustPosition()
 {
     qDebug()<<"卡墙";
     QPointF oldPos = this->pos();
-    const int maxAttempts = 20; // 最大尝试次数
-    const qreal stepSize = 0.5; // 微调步进值
+    const int maxAttempts = 30; // 最大尝试次数
+    const qreal stepSize = 0.25; // 微调步进值
     for(int i = 0;i<maxAttempts;i++)
     {
         moveBy(0,stepSize);

@@ -49,6 +49,8 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
 
     timer = new QTimer;
     timer->start(1000/60);//60fps
+
+    //与计时器有关请放到advance槽函数中，不需要重复connect
     connect(timer,&QTimer::timeout,this,&SingleGameWidget::advance);
 
     //血条实现d
