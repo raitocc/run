@@ -39,6 +39,8 @@ private:
     Ui::SingleGameWidget *ui;
     GameMap map;
     QGraphicsScene* scene;
+    QVector<QPair<int,int>> bornplace;//出生点
+    int tank_num;//>=2的数
 
     bool ifFailed;
 

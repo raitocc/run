@@ -2,6 +2,7 @@
 #include "tank.h"
 #include "ui_singlegamewidget.h"
 #include "testsheel.h"
+#include <QRandomGenerator>//随机数生成
 
 //在这里创建（声明）tank才能在析构函数里面正常析构,因为我没在widget里面放指针
 tank* tank1;//创建
@@ -15,8 +16,15 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     ui->setupUi(this);
     map.createMap();
     ifFailed = false;
-    int tank_X,tank_Y;
-    map.setRandomInitialPosition(tank_X,tank_Y);
+    QRandomGenerator *generator = QRandomGenerator::global();
+    tank_num = generator->bounded(2, 11); // [2, 11)
+    qDebug()<<tank_num;
+    bornplace=map.generateSpawnPoints(tank_num);
+    for(int i=0;i<tank_num;i++)
+    {
+        qDebug()<<i<<":("<<bornplace[i].first<<","<<bornplace[i].second<<")";
+    }
+    //map.setRandomInitialPosition(bornplace[0].first,bornplace[0].second);
     //tank = new testTank(&map);
     //tank = new testTank;
 
@@ -36,7 +44,7 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     ui->graphicsView->setFocus();
     //坦克重生点设置
     //不好意思有点误差
-    tank1->setPos(tank_X-tank1->width/2, tank_Y-tank1->length/2);//设置坦克出生点
+    tank1->setPos(bornplace[0].first-tank1->width/2, bornplace[0].second-tank1->length/2);//设置坦克出生点
     tank1->setZValue(5); // 设置 tank1 的 Z 值为 1，防止被场景遮挡,这个可以有效解决其他的遮挡问题
     connect(tank1,&tank::signalGameFailed,this,&SingleGameWidget::slotFailed);
 
