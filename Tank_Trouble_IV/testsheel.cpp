@@ -11,9 +11,9 @@ testSheel::testSheel(tank *shooter, QPointF startPos, QPointF targetPos)
     // 计算方向向量
     QLineF line(startPos, targetPos);
     direction = line.unitVector().p2() - line.unitVector().p1();
-    speed = 3; // 可以调整子弹速度
-    //QPointF bias = direction * 27;
-    setPos(startPos);
+    speed = 1.5; // 可以调整子弹速度
+    QPointF bias = direction * 12;
+    setPos(startPos+bias);
 
     //qDebug() << "子弹生成位置：" << startPos << " 目标位置：" << targetPos;
     //qDebug() << "方向向量：" << direction;
@@ -44,7 +44,7 @@ void testSheel::move()
             delete this;
             return;
         }
-        if (item != this && item != shooter && (rectItem == nullptr || rectItem->brush().color() != Qt::white)) {
+        if (item != this && item != shooter && (rectItem == nullptr || rectItem->brush().color() != Qt::white ) && item!=shooter->getTurret()) {
             emit hitTarget(item);
             //qDebug() << "子弹碰撞";
             scene()->removeItem(this);

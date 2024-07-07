@@ -26,6 +26,7 @@ public:
     bool eventFilter(QObject *watched, QEvent *event);
     void setViewFocus();//������ͼΪ�佹��
     void timerStart();
+    void setTurretRotation();//设置炮筒朝向
 
 public slots:
     void on_btnPause_clicked();

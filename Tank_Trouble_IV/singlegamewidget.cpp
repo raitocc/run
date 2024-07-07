@@ -1,10 +1,12 @@
 #include "singlegamewidget.h"
 #include "tank.h"
+#include "tankturret.h"
 #include "ui_singlegamewidget.h"
 #include "testsheel.h"
 
 //在这里创建（声明）tank才能在析构函数里面正常析构,因为我没在widget里面放指针
 tank* tank1;//创建
+TankTurret* turret1;
 
 SingleGameWidget::SingleGameWidget(QWidget *parent)
     : QWidget(parent)
@@ -15,6 +17,9 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     ui->setupUi(this);
     map.createMap();
     ifFailed = false;
+
+    //this->setMouseTracking(true);
+
     int tank_X,tank_Y;
     map.setRandomInitialPosition(tank_X,tank_Y);
     //tank = new testTank(&map);
@@ -40,6 +45,12 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     tank1->setZValue(5); // 设置 tank1 的 Z 值为 1，防止被场景遮挡,这个可以有效解决其他的遮挡问题
     connect(tank1,&tank::signalGameFailed,this,&SingleGameWidget::slotFailed);
 
+
+    turret1 = new TankTurret;
+    turret1->setParentItem(tank1);
+    turret1->setPos(tank1->width/2-8,-5);//试出来的数字，具有很大的不可重复利用性
+    tank1->setTurret(turret1);
+
     ui->graphicsView->installEventFilter(this);
     ui->graphicsView->centerOn(0,0);
 
@@ -48,7 +59,7 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     ui->graphicsView->setFocus();
 
     timer = new QTimer;
-    timer->start(1000/60);//60fps
+    timer->start(1000/165);//165Hz
 
     //与计时器有关请放到advance槽函数中，不需要重复connect
     connect(timer,&QTimer::timeout,this,&SingleGameWidget::advance);
@@ -133,6 +144,21 @@ void SingleGameWidget::timerStart()
     timer->start(1000/60);
 }
 
+void SingleGameWidget::setTurretRotation()//设置炮筒转向
+{
+    // QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+    // QPoint viewPos = mouseEvent->pos();
+    // QPointF scenePos = ui->graphicsView->mapToScene(viewPos);
+    // qDebug()<<"MouseMove";
+    // // 更新炮筒的方向
+    // turret1->setDirection(tank1->rotation(),scenePos - (tank1->pos()+QPoint(tank1->width/2-8,-5)));
+    QPoint globalMousePos = QCursor::pos();
+    QPoint viewPos = ui->graphicsView->mapFromGlobal(globalMousePos);
+    QPointF scenePos = ui->graphicsView->mapToScene(viewPos);
+
+    turret1->setDirection(tank1->rotation(), scenePos - (tank1->pos() + QPoint(tank1->width / 2 - 8, -5)));
+}
+
 
 SingleGameWidget::~SingleGameWidget()
 {
@@ -187,6 +213,7 @@ void SingleGameWidget::advance()
     tank1->tank_move();
     centerViewOnTank();
     //tank1->GetOutOfWall();
+    setTurretRotation();
 }
 
 void SingleGameWidget::slotFailed()

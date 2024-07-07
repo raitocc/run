@@ -10,7 +10,7 @@ void tank::inital_tank
     string name_,
     string info_,
     int HP_,
-    int tank_speed_,
+    double tank_speed_,
     int attck_speed_,
     int width_,
     int length_,
@@ -354,7 +354,7 @@ void tank::adjustPosition()
 {
     qDebug()<<"卡墙";
     QPointF oldPos = this->pos();
-    const int maxAttempts = 30; // 最大尝试次数
+    const int maxAttempts = 40; // 最大尝试次数
     const qreal stepSize = 0.25; // 微调步进值
     for(int i = 0;i<maxAttempts;i++)
     {
@@ -427,5 +427,15 @@ void tank::GetOutOfWall()
         qDebug()<<"卡墙了！";
         adjustPosition();
     }
+}
+
+void tank::setTurret(TankTurret *turret)
+{
+    this->turret = turret;
+}
+
+TankTurret *tank::getTurret()
+{
+    return this->turret;
 }
 

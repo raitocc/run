@@ -7,9 +7,10 @@
 #include <QGraphicsPixmapItem>//图形元素
 //#include <QGraphicsview>//视图
 #include <QGraphicsScene>//场景
+#include "tankturret.h"
 using namespace std;
 
-#define basic_tank_speed 2
+#define basic_tank_speed 0.6
 #define basic_attck_speed 5
 //#define basic_turning_speed
 #define tank_width 20
@@ -27,7 +28,7 @@ public:
     string info;
     int HP;//当前生命值
     int MAX_HP;//最大生命上限
-    int tank_speed;//坦克移速
+    double tank_speed;//坦克移速
     int attck_speed;//攻速
     //int turning_speed;//转向速度
     int* shell;//当前携带各种子弹及其数量
@@ -42,7 +43,7 @@ public:
     bool IFPLAYER;
     tank(int ID);
     ~tank();
-    void inital_tank(string name,string info,int HP,int tank_speed,int attck_speed,int width,int length,int shell_kind);
+    void inital_tank(string name,string info,int HP,double tank_speed,int attck_speed,int width,int length,int shell_kind);
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
     void tank_move();//
@@ -50,7 +51,10 @@ public:
     bool checkCollision();
     void adjustPosition();
 
+
     void GetOutOfWall();
+    void setTurret(TankTurret* turret);
+    TankTurret *getTurret();
 
 signals:
     void signalGameFailed();
@@ -58,6 +62,7 @@ signals:
 
 private:
     QPoint findNearestWhiteTile();
+    TankTurret* turret;
 
 };
 #endif // TANK_H
