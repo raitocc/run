@@ -48,7 +48,7 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
 
     turret1 = new TankTurret;
     turret1->setParentItem(tank1);
-    turret1->setPos(tank1->width/2-8,-4);//试出来的数字，具有很大的不可重复利用性
+    turret1->setPos(tank1->width/2-8,-6);//试出来的数字，具有很大的不可重复利用性
     tank1->setTurret(turret1);
 
     ui->graphicsView->installEventFilter(this);
@@ -59,7 +59,7 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     ui->graphicsView->setFocus();
 
     timer = new QTimer;
-    timer->start(1000/165);//165Hz
+    timerStart();
 
     //与计时器有关请放到advance槽函数中，不需要重复connect
     connect(timer,&QTimer::timeout,this,&SingleGameWidget::advance);
@@ -141,7 +141,7 @@ void SingleGameWidget::setViewFocus()
 
 void SingleGameWidget::timerStart()
 {
-    timer->start(1000/60);
+    timer->start(1000/165);//采用165hz
 }
 
 void SingleGameWidget::setTurretRotation()//设置炮筒转向

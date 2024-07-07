@@ -4,7 +4,7 @@
 testSheel::testSheel(tank *shooter, QPointF startPos, QPointF targetPos)
     : QObject(), QGraphicsRectItem()
 {
-    setRect(2, 6, 5, 5);
+    setRect(2, 8, 5, 5);
 
     this->shooter = shooter;
     this->setBrush(QBrush(Qt::red));
