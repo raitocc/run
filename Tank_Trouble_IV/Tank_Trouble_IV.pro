@@ -25,6 +25,7 @@ SOURCES += \
     tank.cpp \
     singlegamewidget.cpp \
     #testtank.cpp \
+    tankturret.cpp \
     testsheel.cpp \
     welcomewidget.cpp
 
@@ -41,6 +42,7 @@ HEADERS += \
     mainwindow.h \
     registerdialog.h \
     #testtank.h \
+    tankturret.h \
     testsheel.h \
     welcomewidget.h \
     pausewidget.h \

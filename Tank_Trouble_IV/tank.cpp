@@ -10,7 +10,7 @@ void tank::inital_tank
     string name_,
     string info_,
     int HP_,
-    int tank_speed_,
+    double tank_speed_,
     int attck_speed_,
     int width_,
     int length_,
@@ -29,6 +29,8 @@ void tank::inital_tank
 }
 //我设定的子弹种类 #0普通子弹 #1双发普通子弹 #3爆炸子弹
 tank::tank(int ID):ID(ID),tank_angle (0), movingUp(false), movingDown(false), movingLeft(false), movingRight(false){
+    //
+    IFPLAYER=1;
     //这里我想的是每个tank型号我们定一个ID,创建时直接用ID就可以创建
     switch(ID)
     {
@@ -71,14 +73,32 @@ tank::tank(int ID):ID(ID),tank_angle (0), movingUp(false), movingDown(false), mo
     setPixmap(scaledPixmap);
     setTransformOriginPoint(scaledPixmap.width() / 2, scaledPixmap.height() * 2 / 3); // 设置旋转点为图片中心
     setScale(2); // 放大
-
 }
+
+tank::tank():tank_angle (0), movingUp(false), movingDown(false), movingLeft(false), movingRight(false){
+    IFPLAYER=0;
+    QPixmap pixmap(":/new/prefix1/Tank1000.png");
+    if (pixmap.isNull()) {
+        qDebug() << "Failed to load image.";
+    } else {
+        qDebug() << "Image loaded successfully.";
+    }
+    inital_tank("","梦开始的地方",10,basic_tank_speed,basic_attck_speed,tank_width,tank_length,0);
+    QPixmap scaledPixmap = pixmap.scaled(10, 16, Qt::KeepAspectRatio); // 调整图片大小到 100x100，保持纵横比
+    setPixmap(scaledPixmap);
+    setTransformOriginPoint(scaledPixmap.width() / 2, scaledPixmap.height() * 2 / 3); // 设置旋转点为图片中心
+    setScale(2); // 放大
+}
+
+
 tank::~tank() {
     delete[] shell;
 }
 
 void tank::keyPressEvent(QKeyEvent *event)
 {
+    if(IFPLAYER)//是玩家才检测键盘输入
+    {
     switch (event->key())
     {
     case Qt::Key_W:
@@ -97,28 +117,32 @@ void tank::keyPressEvent(QKeyEvent *event)
         break;
     }
     updateDirection();
+    }
 }
 
 void tank::keyReleaseEvent(QKeyEvent *event)
 {
-    switch (event->key())
+    if(IFPLAYER)//是玩家才检测键盘输入
     {
-    case Qt::Key_W:
-        movingUp = false;
-        break;
-    case Qt::Key_S:
-        movingDown = false;
-        break;
-    case Qt::Key_A:
-        movingLeft = false;
-        break;
-    case Qt::Key_D:
-        movingRight = false;
-        break;
-    default:
-        break;
+        switch (event->key())
+        {
+        case Qt::Key_W:
+            movingUp = false;
+            break;
+        case Qt::Key_S:
+            movingDown = false;
+            break;
+        case Qt::Key_A:
+            movingLeft = false;
+            break;
+        case Qt::Key_D:
+            movingRight = false;
+            break;
+        default:
+            break;
+        }
+        updateDirection();
     }
-    updateDirection();
 }
 
 void tank::updateDirection()
@@ -354,8 +378,8 @@ void tank::adjustPosition()
 {
     qDebug()<<"卡墙";
     QPointF oldPos = this->pos();
-    const int maxAttempts = 20; // 最大尝试次数
-    const qreal stepSize = 0.5; // 微调步进值
+    const int maxAttempts = 40; // 最大尝试次数
+    const qreal stepSize = 0.25; // 微调步进值
     for(int i = 0;i<maxAttempts;i++)
     {
         moveBy(0,stepSize);
@@ -429,3 +453,23 @@ void tank::GetOutOfWall()
     }
 }
 
+void tank::setTurret(TankTurret *turret)
+{
+    this->turret = turret;
+}
+
+TankTurret *tank::getTurret()
+{
+    return this->turret;
+}
+
+void tank::tank_damage(int damage)
+{
+    HP-=damage;
+    qDebug()<<"血量还剩"<<HP;
+}
+bool tank::dead()
+{
+    if(HP<=0)return 1;
+    else return 0;
+}
