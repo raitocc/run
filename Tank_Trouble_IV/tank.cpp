@@ -24,7 +24,7 @@ void tank::inital_tank
     attck_speed=attck_speed_;//默认攻速
     width=width_;
     length=length_;//默认体积
-    shell= new int[shellkind];
+    shell.resize(shellkind);
     shell[shell_kind_]=MAXNUM;//默认子弹数量为无穷
 }
 //我设定的子弹种类 #0普通子弹 #1双发普通子弹 #3爆炸子弹
@@ -91,8 +91,9 @@ tank::tank():tank_angle (0), movingUp(false), movingDown(false), movingLeft(fals
 }
 
 
-tank::~tank() {
-    delete[] shell;
+tank::~tank()
+{
+    //if(shell!=nullptr)delete[] shell;
 }
 
 void tank::keyPressEvent(QKeyEvent *event)

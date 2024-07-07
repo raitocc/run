@@ -22,7 +22,11 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     tank_num = generator->bounded(2, 11); // [2, 11)
     qDebug()<<tank_num;
     bornplace=map.generateSpawnPoints(tank_num);
-    enemytank=new tank[tank_num-1];
+    enemytank.resize(tank_num-1);//new tank[tank_num-1];
+    for(int i = 0;i<enemytank.size();i++)
+    {
+        enemytank[i]=new tank;
+    }
     for(int i=0;i<tank_num;i++)
     {
         qDebug()<<i<<":("<<bornplace[i].first<<","<<bornplace[i].second<<")";
@@ -59,12 +63,12 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     //敌方坦克生成模拟这个，for循环就行，遍历bornplace[],[1,tank_num)
     for(int i=1;i<tank_num;i++)
     {
-        enemytank[i-1].setPos(bornplace[i].first-enemytank[i-1].width/2, bornplace[i].second-enemytank[i-1].length/2);
-        enemytank[i-1].setZValue(5);
-        scene->addItem(&enemytank[i-1]);
+        enemytank[i-1]->setPos(bornplace[i].first-enemytank[i-1]->width/2, bornplace[i].second-enemytank[i-1]->length/2);
+        enemytank[i-1]->setZValue(5);
+        scene->addItem(enemytank[i-1]);
         qDebug() << "Enemy tank" << i << "position set";
     }
-qDebug() << "ALL Enemy tank" << "position set";
+    qDebug() << "ALL Enemy tank" << "position set";
     turret1 = new TankTurret;
     turret1->setParentItem(tank1);
     turret1->setPos(tank1->width/2-8,-6);//试出来的数字，具有很大的不可重复利用性
@@ -182,7 +186,7 @@ void SingleGameWidget::setTurretRotation()//设置炮筒转向
 
 SingleGameWidget::~SingleGameWidget()
 {
-    delete enemytank;
+    //delete enemytank;
     delete ui;
 }
 
@@ -297,9 +301,9 @@ void SingleGameWidget::if_HP_changed()
     //敌方扣血检测,清理尸体
     for(int i=1;i<tank_num;i++)
     {
-        if(enemytank[i-1].dead()&&sceneContainsTank(this->scene,&enemytank[i-1]))
+        if(enemytank[i-1]->dead()&&sceneContainsTank(this->scene,enemytank[i-1]))
         {
-            this->scene->removeItem(&enemytank[i-1]);
+            this->scene->removeItem(enemytank[i-1]);
         }
     }
 }

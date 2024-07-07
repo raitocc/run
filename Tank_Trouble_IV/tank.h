@@ -7,6 +7,7 @@
 #include <QGraphicsPixmapItem>//图形元素
 //#include <QGraphicsview>//视图
 #include <QGraphicsScene>//场景
+#include <QVector>
 #include "tankturret.h"
 using namespace std;
 
@@ -31,7 +32,7 @@ public:
     double tank_speed;//坦克移速
     int attck_speed;//攻速
     //int turning_speed;//转向速度
-    int* shell;//当前携带各种子弹及其数量
+    QVector<int> shell;//当前携带各种子弹及其数量
     double width;//坦克宽度
     double length;//坦克长度,间接决定坦克体积
     double tank_x;

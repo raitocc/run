@@ -42,7 +42,8 @@ private:
     QGraphicsScene* scene;
     QVector<QPair<int,int>> bornplace;//出生点
     int tank_num;//>=2的数
-    tank* enemytank;//敌方坦克
+    QVector<tank*> enemytank;//敌方坦克
+    //tank* enemytank;
 
     bool ifFailed;
 
