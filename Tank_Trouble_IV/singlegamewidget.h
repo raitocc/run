@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "gamemap.h"
+#include "tank.h"
 #include <QGraphicsScene>
 #include <QRandomGenerator>
 #include <QGraphicsRectItem>
@@ -39,6 +40,9 @@ private:
     Ui::SingleGameWidget *ui;
     GameMap map;
     QGraphicsScene* scene;
+    QVector<QPair<int,int>> bornplace;//出生点
+    int tank_num;//>=2的数
+    tank* enemytank;//敌方坦克
 
     bool ifFailed;
 

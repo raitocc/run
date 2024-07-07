@@ -39,10 +39,13 @@ public:
     double tank_angle;//坦克角度，0-360
     double shell_angle;//炮筒角度，0-360
     bool movingUp, movingDown, movingLeft, movingRight;//当前移动方向
-    void updateDirection();
-    bool IFPLAYER;
+    bool IFPLAYER;//是否为玩家
+    QRect rect;
+public:
+    tank();
     tank(int ID);
     ~tank();
+    void updateDirection();
     void inital_tank(string name,string info,int HP,double tank_speed,int attck_speed,int width,int length,int shell_kind);
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);
@@ -50,8 +53,9 @@ public:
     void resetMoving();
     bool checkCollision();
     void adjustPosition();
-
-
+    //扣血
+    void tank_damage(int damage);
+    bool dead();
     void GetOutOfWall();
     void setTurret(TankTurret* turret);
     TankTurret *getTurret();
