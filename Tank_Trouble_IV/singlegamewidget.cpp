@@ -37,7 +37,7 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
 
     tank1 = new class tank(1000);//堆上创建
     scene = new QGraphicsScene(this);
-    scene->setSceneRect(0, 0, gridSize * map.getcol(), gridSize * (map.getrow()+2)); // col和row是地图的列数和行数
+    scene->setSceneRect(0, 0, gridSize * map.getcol(), gridSize * map.getrow()); // col和row是地图的列数和行数
     ui->graphicsView->setScene(scene);
     drawMap();
 
@@ -67,7 +67,7 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
 qDebug() << "ALL Enemy tank" << "position set";
     turret1 = new TankTurret;
     turret1->setParentItem(tank1);
-    turret1->setPos(tank1->width/2-8,-5);//试出来的数字，具有很大的不可重复利用性
+    turret1->setPos(tank1->width/2-8,-4);//试出来的数字，具有很大的不可重复利用性
     tank1->setTurret(turret1);
 
     ui->graphicsView->installEventFilter(this);
