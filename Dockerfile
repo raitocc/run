@@ -16,6 +16,12 @@ RUN apt-get update
 RUN apt-get install -y build-essential cmake git \
  libfmt-dev libgtest-dev
 
+# 安装 Qt
+RUN apt-get install -y software-properties-common && \
+    apt-add-repository -y ppa:ubuntu-sdk-team/ppa && \
+    apt-get update && \
+    apt-get install -y qt6-base qt6-declarative qt6-tools
+
 # 设置工作目录
 
 WORKDIR /app
