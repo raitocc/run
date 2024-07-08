@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     //playerScene(new PlayerScene(this))
 {
     ui->setupUi(this);
-    initPagePointers();
+    initPagePointers();//初始化所有指针
     mLoginWidget = new LoginWidget(this);
      // 连接登录成功信号到处理槽
     connect(mLoginWidget,&LoginWidget::signalLogin,this,&MainWindow::slotLogin);
