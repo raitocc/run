@@ -1,8 +1,8 @@
-#ifndef WELCOMEWIDGET_H
+﻿#ifndef WELCOMEWIDGET_H
 #define WELCOMEWIDGET_H
 
 #include <QWidget>
-
+#include"single_player_rules_dialog.h"
 namespace Ui {
 class WelcomeWidget;
 }
@@ -20,6 +20,8 @@ private slots:
     void on_btnBack_clicked();
 
     void on_btnSingle_clicked();
+
+    void on_pushButton_clicked();
 
 signals:
     void signalBackLogin();
