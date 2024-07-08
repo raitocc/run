@@ -15,6 +15,12 @@ Single_player_rules_Dialog::~Single_player_rules_Dialog()
 
 void Single_player_rules_Dialog::on_pushButton_clicked()
 {
+    this->close();
+}
+
+
+void Single_player_rules_Dialog::on_pushButton_clicked()
+{
     WelcomeWidget *configWindow = new WelcomeWidget;
     configWindow->show();
 }
