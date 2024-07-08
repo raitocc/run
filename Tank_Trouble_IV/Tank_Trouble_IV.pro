@@ -6,7 +6,20 @@ CONFIG += c++17
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+# DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+# release断点调试
+# QMAKE_CXXFLAGS_RELEASE = $$QMAKE_CFLAGS_RELEASE_WITH_DEBUGINFO
+# QMAKE_LFLAGS_RELEASE = $$QMAKE_LFLAGS_RELEASE_WITH_DEBUGINFO
+
+# 禁用优化
+# QMAKE_CXXFLAGS_RELEASE -= -O2
+# QMAKE_CXXFLAGS_RELEASE += -O0
+
+# 启用调试信息
+# QMAKE_CXXFLAGS_RELEASE += -g
+
+
 
 SOURCES += \
     #PlayerScene.cpp \

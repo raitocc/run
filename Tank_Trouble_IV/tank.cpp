@@ -459,6 +459,11 @@ void tank::setTurret(TankTurret *turret)
     this->turret = turret;
 }
 
+bool tank::isPlayer()
+{
+    return IFPLAYER;
+}
+
 TankTurret *tank::getTurret()
 {
     return this->turret;

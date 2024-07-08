@@ -59,6 +59,7 @@ public:
     bool dead();
     void GetOutOfWall();
     void setTurret(TankTurret* turret);
+    bool isPlayer();
     TankTurret *getTurret();
 
 signals:

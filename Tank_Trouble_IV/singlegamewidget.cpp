@@ -6,8 +6,7 @@
 #include <QRandomGenerator>//随机数生成
 
 //在这里创建（声明）tank才能在析构函数里面正常析构,因为我没在widget里面放指针
-tank* tank1;//创建
-TankTurret* turret1;
+
 
 SingleGameWidget::SingleGameWidget(QWidget *parent)
     : QWidget(parent)
