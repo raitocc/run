@@ -1,6 +1,5 @@
-# 使用包含 g++ 和 cmake 的镜像
-
-FROM ubuntu:latest
+# 使用官方Qt基础镜像
+FROM qtbase:5.15.2
 
 # 配置中国区镜像源
 
@@ -29,7 +28,7 @@ COPY . /app
 RUN mkdir build && cd build
 
 # 使用 QMake 生成 Makefile
-RUN /usr/bin/qmake .
+RUN qmake .
 
 # 编译项目
 
