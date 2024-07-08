@@ -12,3 +12,10 @@ Single_player_rules_Dialog::~Single_player_rules_Dialog()
 {
     delete ui;
 }
+
+void Single_player_rules_Dialog::on_pushButton_clicked()
+{
+    WelcomeWidget *configWindow = new WelcomeWidget;
+    configWindow->show();
+}
+
