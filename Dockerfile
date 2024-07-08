@@ -1,5 +1,5 @@
-# 使用官方Qt基础镜像
-FROM qtbase:5.15.2
+# 使用包含 g++ 和 cmake 的镜像
+FROM ubuntu:latest
 
 # 配置中国区镜像源
 
