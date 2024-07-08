@@ -13,6 +13,12 @@ WelcomeWidget::~WelcomeWidget()
     delete ui;
 }
 
+void WelcomeWidget::paintEvent(QPaintEvent * event)
+{
+    QPainter painter(this);
+    painter.setOpacity(0.5);
+    painter.drawPixmap(0,0,width(),height(),QPixmap(":/welcome_background.png"));
+}
 void WelcomeWidget::on_btnBack_clicked()
 {
     emit signalBackLogin();

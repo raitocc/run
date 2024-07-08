@@ -1,4 +1,4 @@
-#include "registerdialog.h"
+﻿#include "registerdialog.h"
 #include "qevent.h"
 #include "ui_registerdialog.h"
 
@@ -56,6 +56,13 @@ RegisterDialog::~RegisterDialog()
     // 关闭数据库连接
     QSqlDatabase::database().close();
     delete ui;
+}
+
+void RegisterDialog::paintEvent(QPaintEvent * event)
+{
+    QPainter painter(this);
+    painter.setOpacity(0.5);
+    painter.drawPixmap(0,0,width(),height(),QPixmap(":/login_background.png"));
 }
 
 void RegisterDialog::closeEvent(QCloseEvent *event)//关闭事件

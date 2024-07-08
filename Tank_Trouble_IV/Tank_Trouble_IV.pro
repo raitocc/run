@@ -71,4 +71,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     ../gameimages/gameimages.qrc \
-    login_background.qrc
+    login_background.qrc \
+    welcome_background.qrc

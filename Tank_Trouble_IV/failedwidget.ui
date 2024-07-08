@@ -32,15 +32,22 @@
     <property name="geometry">
      <rect>
       <x>100</x>
-      <y>90</y>
+      <y>120</y>
       <width>221</width>
-      <height>51</height>
+      <height>91</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>19</pointsize>
+      <family>华文琥珀</family>
+      <pointsize>28</pointsize>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 28pt &quot;华文琥珀&quot;;
+color: rgb(161, 161, 120);</string>
     </property>
     <property name="text">
      <string>You Failed!</string>
@@ -49,16 +56,23 @@
    <widget class="QPushButton" name="btnRestart">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>90</y>
-      <width>141</width>
+      <x>360</x>
+      <y>100</y>
+      <width>171</width>
       <height>61</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>12</pointsize>
+      <family>Comic Sans MS</family>
+      <pointsize>18</pointsize>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Comic Sans MS&quot;;
+color: rgb(161, 161, 120);</string>
     </property>
     <property name="text">
      <string>Restart</string>
@@ -67,16 +81,23 @@
    <widget class="QPushButton" name="btnBackToMenu">
     <property name="geometry">
      <rect>
-      <x>380</x>
-      <y>230</y>
-      <width>141</width>
-      <height>91</height>
+      <x>360</x>
+      <y>180</y>
+      <width>171</width>
+      <height>61</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>12</pointsize>
+      <family>Comic Sans MS</family>
+      <pointsize>18</pointsize>
+      <italic>false</italic>
+      <bold>false</bold>
      </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">font: 18pt &quot;Comic Sans MS&quot;;
+color: rgb(161, 161, 120);</string>
     </property>
     <property name="text">
      <string>Back To Menu</string>

@@ -2,6 +2,7 @@
 #define WELCOMEWIDGET_H
 
 #include <QWidget>
+#include <QPainter>
 #include"single_player_rules_dialog.h"
 namespace Ui {
 class WelcomeWidget;
@@ -14,6 +15,7 @@ class WelcomeWidget : public QWidget
 public:
     explicit WelcomeWidget(QWidget *parent = nullptr);
     ~WelcomeWidget();
+    void paintEvent(QPaintEvent * event);
 
 private slots:
 
