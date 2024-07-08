@@ -14,6 +14,7 @@ SOURCES += \
     enemytank.cpp \
     failedwidget.cpp \
     gamemap.cpp \
+    gamerulesdialog.cpp \
     gameview.cpp \
     griditem.cpp \
     loginwidget.cpp \
@@ -36,6 +37,7 @@ HEADERS += \
     enemytank.h \
     failedwidget.h \
     gamemap.h \
+    gamerulesdialog.h \
     gameview.h \
     griditem.h \
     loginwidget.h \
