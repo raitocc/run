@@ -1,4 +1,4 @@
-使用包含 g++ 和 cmake 的镜像
+# 使用包含 g++ 和 cmake 的镜像
 
 FROM ubuntu:latest
 
@@ -32,10 +32,12 @@ RUN mkdir build && cd build
 
 RUN cmake .
 
+RUN qmake .
+
 # 编译项目
 
 RUN make
 
 # 设置启动命令 (可选)
 
-CMD ["./HelloWorld"]
+CMD ["./Tank_Trouble_IV"]
