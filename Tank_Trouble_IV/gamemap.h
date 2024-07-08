@@ -20,6 +20,7 @@ public:
 
     //我移了一下
     void setRandomInitialPosition(int &x,int &y); // 设置随机初始位置
+    QVector<QPair<int, int>> generateSpawnPoints(int n) ;
 
 private:
     QVector<QVector<int>> map;//0代表不可破坏墙体，1代表可破坏墙体，2代表空

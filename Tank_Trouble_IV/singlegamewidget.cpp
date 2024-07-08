@@ -1,10 +1,13 @@
 #include "singlegamewidget.h"
 #include "tank.h"
+#include "tankturret.h"
 #include "ui_singlegamewidget.h"
 #include "testsheel.h"
+#include <QRandomGenerator>//随机数生成
 
 //在这里创建（声明）tank才能在析构函数里面正常析构,因为我没在widget里面放指针
 tank* tank1;//创建
+TankTurret* turret1;
 
 SingleGameWidget::SingleGameWidget(QWidget *parent)
     : QWidget(parent)
@@ -15,14 +18,30 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     ui->setupUi(this);
     map.createMap();
     ifFailed = false;
-    int tank_X,tank_Y;
-    map.setRandomInitialPosition(tank_X,tank_Y);
+    QRandomGenerator *generator = QRandomGenerator::global();
+    tank_num = generator->bounded(2, 11); // [2, 11)
+    qDebug()<<tank_num;
+    bornplace=map.generateSpawnPoints(tank_num);
+    enemytank.resize(tank_num-1);//new tank[tank_num-1];
+    for(int i = 0;i<enemytank.size();i++)
+    {
+        enemytank[i]=new tank;
+    }
+    for(int i=0;i<tank_num;i++)
+    {
+        qDebug()<<i<<":("<<bornplace[i].first<<","<<bornplace[i].second<<")";
+    }
+    //map.setRandomInitialPosition(bornplace[0].first,bornplace[0].second);
+    //this->setMouseTracking(true);
+
+    //int tank_X,tank_Y;
+    //map.setRandomInitialPosition(tank_X,tank_Y);
     //tank = new testTank(&map);
     //tank = new testTank;
 
     tank1 = new class tank(1000);//堆上创建
     scene = new QGraphicsScene(this);
-    scene->setSceneRect(0, 0, gridSize * map.getcol(), gridSize * (map.getrow()+2)); // col和row是地图的列数和行数
+    scene->setSceneRect(0, 0, gridSize * map.getcol(), gridSize * map.getrow()); // col和row是地图的列数和行数
     ui->graphicsView->setScene(scene);
     drawMap();
 
@@ -36,9 +55,24 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     ui->graphicsView->setFocus();
     //坦克重生点设置
     //不好意思有点误差
-    tank1->setPos(tank_X-tank1->width/2, tank_Y-tank1->length/2);//设置坦克出生点
+    tank1->setPos(bornplace[0].first-tank1->width/2, bornplace[0].second-tank1->length/2);//设置坦克出生点
     tank1->setZValue(5); // 设置 tank1 的 Z 值为 1，防止被场景遮挡,这个可以有效解决其他的遮挡问题
     connect(tank1,&tank::signalGameFailed,this,&SingleGameWidget::slotFailed);
+
+
+    //敌方坦克生成模拟这个，for循环就行，遍历bornplace[],[1,tank_num)
+    for(int i=1;i<tank_num;i++)
+    {
+        enemytank[i-1]->setPos(bornplace[i].first-enemytank[i-1]->width/2, bornplace[i].second-enemytank[i-1]->length/2);
+        enemytank[i-1]->setZValue(5);
+        scene->addItem(enemytank[i-1]);
+        qDebug() << "Enemy tank" << i << "position set";
+    }
+    qDebug() << "ALL Enemy tank" << "position set";
+    turret1 = new TankTurret;
+    turret1->setParentItem(tank1);
+    turret1->setPos(tank1->width/2-8,-6);//试出来的数字，具有很大的不可重复利用性
+    tank1->setTurret(turret1);
 
     ui->graphicsView->installEventFilter(this);
     ui->graphicsView->centerOn(0,0);
@@ -48,7 +82,9 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     ui->graphicsView->setFocus();
 
     timer = new QTimer;
-    timer->start(1000/60);//60fps
+    timerStart();
+
+    //与计时器有关请放到advance槽函数中，不需要重复connect
     connect(timer,&QTimer::timeout,this,&SingleGameWidget::advance);
 
     //血条实现d
@@ -70,6 +106,7 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     //槽函数，时刻检测血量变化
     connect(timer, &QTimer::timeout, this, &SingleGameWidget::if_HP_changed);
     connect(this, &SingleGameWidget::HP_changed, this, &::SingleGameWidget::progressBar_valueChanged);
+    qDebug()<<"intial";
 }
 
 bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
@@ -86,11 +123,11 @@ bool SingleGameWidget::eventFilter(QObject *watched, QEvent *event)
                 {
                     if (event->type() == QEvent::KeyPress)
                     {
-                        tank0->keyPressEvent(keyEvent);
+                        tank1->keyPressEvent(keyEvent);//动了一下
                     }
                     else if (event->type() == QEvent::KeyRelease)
                     {
-                        tank0->keyReleaseEvent(keyEvent);
+                        tank1->keyReleaseEvent(keyEvent);
                     }
                     return true;
                 }
@@ -128,12 +165,28 @@ void SingleGameWidget::setViewFocus()
 
 void SingleGameWidget::timerStart()
 {
-    timer->start(1000/60);
+    timer->start(1000/165);//采用165hz
+}
+
+void SingleGameWidget::setTurretRotation()//设置炮筒转向
+{
+    // QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+    // QPoint viewPos = mouseEvent->pos();
+    // QPointF scenePos = ui->graphicsView->mapToScene(viewPos);
+    // qDebug()<<"MouseMove";
+    // // 更新炮筒的方向
+    // turret1->setDirection(tank1->rotation(),scenePos - (tank1->pos()+QPoint(tank1->width/2-8,-5)));
+    QPoint globalMousePos = QCursor::pos();
+    QPoint viewPos = ui->graphicsView->mapFromGlobal(globalMousePos);
+    QPointF scenePos = ui->graphicsView->mapToScene(viewPos);
+
+    turret1->setDirection(tank1->rotation(), scenePos - (tank1->pos() + QPoint(tank1->width / 2 - 8, -5)));
 }
 
 
 SingleGameWidget::~SingleGameWidget()
 {
+    //delete enemytank;
     delete ui;
 }
 
@@ -184,7 +237,8 @@ void SingleGameWidget::advance()
 {
     tank1->tank_move();
     centerViewOnTank();
-    tank1->GetOutOfWall();
+    //tank1->GetOutOfWall();
+    setTurretRotation();
 }
 
 void SingleGameWidget::slotFailed()
@@ -225,6 +279,17 @@ void SingleGameWidget::resizeEvent(QResizeEvent *event)//窗口size大小变化
     ui->graphicsView->setGeometry(0, 70, this->width(), this->height()-70);
 }
 
+bool sceneContainsTank(QGraphicsScene* scene, tank* tank0) {
+    QList<QGraphicsItem*> items = scene->items();
+    for (QGraphicsItem* item : items) {
+        tank* currentTank = dynamic_cast<class tank*>(item);
+        if (currentTank == tank0) {
+            return true; // 找到坦克对象
+        }
+    }
+    return false; // 未找到坦克对象
+}
+
 void SingleGameWidget::if_HP_changed()
 {
     //显示与实际血量不一致时发射信号
@@ -232,6 +297,14 @@ void SingleGameWidget::if_HP_changed()
     emit HP_changed();
     //直接赋值，//不知道会不会直接跳到槽
     ui->progressBar->setValue(tank1->MAX_HP);
+    }
+    //敌方扣血检测,清理尸体
+    for(int i=1;i<tank_num;i++)
+    {
+        if(enemytank[i-1]->dead()&&sceneContainsTank(this->scene,enemytank[i-1]))
+        {
+            this->scene->removeItem(enemytank[i-1]);
+        }
     }
 }
 void SingleGameWidget::progressBar_valueChanged()

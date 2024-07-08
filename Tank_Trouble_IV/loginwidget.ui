@@ -30,16 +30,22 @@
     <string>Exit</string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>380</x>
      <y>350</y>
-     <width>444</width>
+     <width>459</width>
      <height>271</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
     <item>
      <widget class="QLabel" name="label">
       <property name="font">

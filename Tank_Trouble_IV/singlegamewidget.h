@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include "gamemap.h"
+#include "tank.h"
 #include <QGraphicsScene>
 #include <QRandomGenerator>
 #include <QGraphicsRectItem>
@@ -26,6 +27,7 @@ public:
     bool eventFilter(QObject *watched, QEvent *event);
     void setViewFocus();//������ͼΪ�佹��
     void timerStart();
+    void setTurretRotation();//设置炮筒朝向
 
 public slots:
     void on_btnPause_clicked();
@@ -38,6 +40,10 @@ private:
     Ui::SingleGameWidget *ui;
     GameMap map;
     QGraphicsScene* scene;
+    QVector<QPair<int,int>> bornplace;//出生点
+    int tank_num;//>=2的数
+    QVector<tank*> enemytank;//敌方坦克
+    //tank* enemytank;
 
     bool ifFailed;
 

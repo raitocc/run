@@ -1,5 +1,5 @@
 #include "gamemap.h"
-#include "qdebug.h"
+//#include "qdebug.h"
 #include <queue>
 #include <algorithm>
 #include <iostream>
@@ -156,32 +156,71 @@ const QVector<QVector<int> > &GameMap::getmap()
     return map;
 }
 
-void GameMap::setRandomInitialPosition(int &x,int &y)
-{
-    QVector<QVector<int>> map = getmap();
+// void GameMap::setRandomInitialPosition(int &x,int &y)
+// {
+//     QVector<QVector<int>> map = getmap();
+//     QVector<QPair<int, int>> whiteCells;
+//     for (int i = 0; i < map.size(); ++i)
+//     {
+//         for (int j = 0; j < map[i].size(); ++j)
+//         {
+//             if (map[i][j] == 2)
+//             {
+//                 whiteCells.append(qMakePair(i, j));
+//             }
+//         }
+//     }
+
+//     if (!whiteCells.isEmpty())
+//     {
+//         int selectedNum = QRandomGenerator::global()->bounded(whiteCells.size());
+//         QPair<int, int> pos = whiteCells[selectedNum];
+//         int row = pos.first;
+//         int col = pos.second;
+//         //tank出生点
+
+//         // 将坦克放在白色块的中心
+//         //setPos(col * gridSize + gridSize / 2 - rect().width() / 2, row * gridSize + gridSize / 2 - rect().height() / 2);
+//         x=col * gridSize + gridSize / 2;
+//         y=row * gridSize + gridSize / 2;
+//         //gridSize宏定义在"singlegamewidget.h"中，因此#include "singlegamewidget.h"
+//     }
+// }
+
+
+
+QVector<QPair<int, int>> GameMap::generateSpawnPoints(int n) {
+    QVector<QVector<int>> map = getmap(); // 获取引用以便修改
     QVector<QPair<int, int>> whiteCells;
-    for (int i = 0; i < map.size(); ++i)
-    {
-        for (int j = 0; j < map[i].size(); ++j)
-        {
-            if (map[i][j] == 2)
-            {
+
+    // 遍历地图以找到所有白色块的位置
+    for (int i = 0; i < map.size(); ++i) {
+        for (int j = 0; j < map[i].size(); ++j) {
+            if (map[i][j] == 2) {
                 whiteCells.append(qMakePair(i, j));
             }
         }
     }
 
-    if (!whiteCells.isEmpty())
-    {
-        int selectedNum = QRandomGenerator::global()->bounded(whiteCells.size());
-        QPair<int, int> pos = whiteCells[selectedNum];
-        int row = pos.first;
-        int col = pos.second;
+    QVector<QPair<int, int>> spawnPoints;
 
-        // 将坦克放在白色块的中心
-        //setPos(col * gridSize + gridSize / 2 - rect().width() / 2, row * gridSize + gridSize / 2 - rect().height() / 2);
-        x=col * gridSize + gridSize / 2;
-        y=row * gridSize + gridSize / 2;
-        //gridSize宏定义在"singlegamewidget.h"中，因此#include "singlegamewidget.h"
+    // 如果存在白色块，则随机选择 n 个位置
+    if (!whiteCells.isEmpty()) {
+        for (int k = 0; k < n; ++k) {
+            int selectedNum = QRandomGenerator::global()->bounded(whiteCells.size());
+            QPair<int, int> pos = whiteCells[selectedNum];
+            int row = pos.first;
+            int col = pos.second;
+
+            // 将坦克放在白色块的中心
+            //setPos(col * gridSize + gridSize / 2 - rect().width() / 2, row * gridSize + gridSize / 2 - rect().height() / 2);
+            //gridSize宏定义在"singlegamewidget.h"中，因此#include "singlegamewidget.h"
+            spawnPoints.append(qMakePair(col * gridSize + gridSize / 2, row * gridSize + gridSize / 2));
+
+            // 移除已选中的白色块以防止重复选择
+            whiteCells.removeAt(selectedNum);
+        }
     }
+
+    return spawnPoints;
 }

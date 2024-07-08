@@ -13,6 +13,10 @@ public:
 protected:
     void wheelEvent(QWheelEvent *event);
 
+    void mouseMoveEvent(QMouseEvent *event);
+
+    //void keyPressEvent(QKeyEvent* event);
+
 signals:
 };
 

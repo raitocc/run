@@ -11,9 +11,9 @@ testSheel::testSheel(tank *shooter, QPointF startPos, QPointF targetPos)
     // 计算方向向量
     QLineF line(startPos, targetPos);
     direction = line.unitVector().p2() - line.unitVector().p1();
-    speed = 3; // 可以调整子弹速度
-    //QPointF bias = direction * 27;
-    setPos(startPos);
+    speed = 1.5; // 可以调整子弹速度
+    QPointF bias = direction * 12;
+    setPos(startPos+bias);
 
     //qDebug() << "子弹生成位置：" << startPos << " 目标位置：" << targetPos;
     //qDebug() << "方向向量：" << direction;
@@ -34,6 +34,7 @@ void testSheel::move()
     for (QGraphicsItem *item : collidingItems)
     {
         QGraphicsRectItem *rectItem = dynamic_cast<QGraphicsRectItem *>(item);
+        tank *tankitem = dynamic_cast<tank *>(item);  // 验证是否为 tank 对象
         // 确保子弹不会与发射者（坦克）自己碰撞，并且碰到除了空白元素（白色）外的任何其他物体时被删除(1是key，右边的==1的1是value，1代表可破坏墙体)
         if (rectItem && rectItem->data(1)==1) {
             // 子弹碰到可破坏墙体
@@ -44,13 +45,27 @@ void testSheel::move()
             delete this;
             return;
         }
-        if (item != this && item != shooter && (rectItem == nullptr || rectItem->brush().color() != Qt::white)) {
+        if(tankitem&&item != shooter)
+        {
+
+            // 碰撞到的是一个坦克对象
+            // 可以添加具体处理逻辑
+            qDebug() << "碰撞到坦克";
+            // emit hitTarget(item);
+            scene()->removeItem(this);
+            //本来是要结合坦克子弹攻击力的
+            tankitem->tank_damage(5);
+            delete this;
+            return;
+        }
+        if (item != this && item != shooter && (rectItem == nullptr || rectItem->brush().color() != Qt::white ) && item!=shooter->getTurret()) {
             emit hitTarget(item);
             //qDebug() << "子弹碰撞";
             scene()->removeItem(this);
             delete this;
             return;
         }
+
     }
 
     // 如果子弹超出场景边界，则删除它
