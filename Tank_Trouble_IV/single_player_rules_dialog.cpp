@@ -19,9 +19,4 @@ void Single_player_rules_Dialog::on_pushButton_clicked()
 }
 
 
-void Single_player_rules_Dialog::on_pushButton_clicked()
-{
-    WelcomeWidget *configWindow = new WelcomeWidget;
-    configWindow->show();
-}
 

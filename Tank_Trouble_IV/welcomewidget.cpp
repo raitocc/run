@@ -28,7 +28,8 @@ void WelcomeWidget::on_btnSingle_clicked()
 void WelcomeWidget::on_pushButton_clicked()
 {
     Single_player_rules_Dialog *configWindow = new Single_player_rules_Dialog;
-    configWindow->show();
     configWindow->setWindowModality(Qt::ApplicationModal);
+    configWindow->show();
+
 }
 
