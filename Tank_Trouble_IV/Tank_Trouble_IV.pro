@@ -24,6 +24,7 @@ SOURCES += \
     pausewidget.cpp \
     #shell.cpp \
     registerdialog.cpp \
+    single_player_rules_dialog.cpp \
     tank.cpp \
     singlegamewidget.cpp \
     #testtank.cpp \
@@ -44,6 +45,7 @@ HEADERS += \
     mainwindow.h \
     registerdialog.h \
     #testtank.h \
+    single_player_rules_dialog.h \
     tankturret.h \
     testsheel.h \
     welcomewidget.h \
@@ -58,6 +60,7 @@ FORMS += \
     mainwindow.ui \
     pausewidget.ui \
     registerdialog.ui \
+    single_player_rules_dialog.ui \
     singlegamewidget.ui \
     welcomewidget.ui
 

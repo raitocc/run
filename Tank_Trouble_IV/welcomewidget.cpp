@@ -1,4 +1,4 @@
-#include "welcomewidget.h"
+﻿#include "welcomewidget.h"
 #include "ui_welcomewidget.h"
 
 WelcomeWidget::WelcomeWidget(QWidget *parent)
@@ -22,5 +22,12 @@ void WelcomeWidget::on_btnBack_clicked()
 void WelcomeWidget::on_btnSingle_clicked()
 {
     emit signalSingleStart();
+}
+
+
+void WelcomeWidget::on_pushButton_clicked()
+{
+    Single_player_rules_Dialog *configWindow = new Single_player_rules_Dialog;
+    configWindow->show();
 }
 
