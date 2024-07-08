@@ -28,9 +28,9 @@ COPY . /app
 
 RUN mkdir build && cd build
 
-# 使用 CMake 生成 Makefile
+# 使用 QMake 生成 Makefile
 
-RUN cmake .
+RUN qmake .
 
 # 编译项目
 
