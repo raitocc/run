@@ -32,8 +32,6 @@ RUN mkdir build && cd build
 
 RUN cmake .
 
-RUN qmake .
-
 # 编译项目
 
 RUN make
