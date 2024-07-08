@@ -15,6 +15,9 @@ public:
     explicit Single_player_rules_Dialog(QWidget *parent = nullptr);
     ~Single_player_rules_Dialog();
 
+private slots:
+    void on_pushButton_clicked();
+
 private:
     Ui::Single_player_rules_Dialog *ui;
 };

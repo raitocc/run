@@ -33,3 +33,7 @@ Tank Trouble IV是一款动作类单机或多人对战游戏，玩家可以在PC
 
 ### 双人模式
 除了单人模式外，Tank Trouble IV还将实现双人对战模式，让玩家之间展开对抗。多人模式采用本地联机的方案，与单人模式操作方式有所区别。多人模式采用积分制度，每一局的胜者获取1积分，双方玩家可以自行结束游戏。
+
+## 产品截图
+
+![1](C:\Users\czh\Desktop\tankTrouble\screenshoots\1.png)
