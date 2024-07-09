@@ -13,7 +13,7 @@ public:
     int HP() const;
     int moveSpeed() const;
     int shootSpeed() const;
-    bool movingState() const;
+    bool movingState(int dir) const;
     Turret* turret() const;
 
     void setHP(int hp);
@@ -22,16 +22,19 @@ public:
     void reduceHP(int num);
     void setMoveSpeed(int moveSpeed);
     void setShootSpeed(int shootSpeed);
-    void setMovingState(const int movingState[4]);
+    void setMovingState(int dir, bool state);
     void setTurret(Turret* turret);
+    QPointF centerPoint();//中心点
 
 protected:
     int _HP;
     int _maxHP;
-    int _moveSpeed;
-    int _shootSpeed;
+    qreal _moveSpeed;
+    qreal _shootSpeed;
     bool _movingState[4];
     Turret* _turret;
+
+
 };
 
 #endif // TANK_H

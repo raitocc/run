@@ -1,10 +1,11 @@
 #ifndef SINGLEGAMEWIDGET_H
 #define SINGLEGAMEWIDGET_H
 
-#include <QWidget>
 #include "gamedata.h"
-#include "qgraphicsscene.h"
+#include <QWidget>
+#include <QGraphicsScene>
 #include <QGraphicsRectItem>
+#include <QTimer>
 
 namespace Ui {
 class SingleGameWidget;
@@ -24,14 +25,19 @@ private slots:
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
+    //void keyPressEvent(QKeyEvent* event) override;
+    //void keyReleaseEvent(QKeyEvent* event) override;
 
 private:
     Ui::SingleGameWidget *ui;
     GameData* data;
     QGraphicsScene* scene;
+    QTimer* timer;
 
-    void initView();
-    void drawMap();
+    void initView();//初始化View
+    void initTimer();//初始化Timer
+    void drawMap();//绘制地图
+    void drawTank();//绘制坦克
 
 signals:
     void signalPause();

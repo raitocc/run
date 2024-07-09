@@ -16,6 +16,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     pausewidget.cpp \
+    playertank.cpp \
     singlegamewidget.cpp \
     tank.cpp \
     welcomewidget.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     mainwindow.h \
     parameter.h \
     pausewidget.h \
+    playertank.h \
     singlegamewidget.h \
     tank.h \
     welcomewidget.h \

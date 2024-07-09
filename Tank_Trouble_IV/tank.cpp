@@ -8,7 +8,8 @@ Tank::Tank(QGraphicsItem* parent) : QGraphicsRectItem(parent)
     _maxHP = 100;
     _moveSpeed = 5;
     _shootSpeed = 1;
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 4; ++i)
+    {
         _movingState[i] = false;
     }
     _turret = nullptr;
@@ -33,9 +34,9 @@ int Tank::shootSpeed() const
 }
 
 // 获得移动状态
-bool Tank::movingState() const
+bool Tank::movingState(int dir) const
 {
-    return _movingState;
+    return _movingState[dir];
 }
 
 // 获取炮塔
@@ -87,23 +88,24 @@ void Tank::setShootSpeed(int shootSpeed)
 }
 
 // 设置移动状态
-void Tank::setMovingState(const int movingState[4])
+void Tank::setMovingState(int dir,bool state)
 {
-    for (int i = 0; i < 4; ++i) {
-        _movingState[i] = movingState[i];
-    }
+    _movingState[dir] = state;
+    // for(int i=0;i<4;i++)
+    // {
+    //     qDebug()<<_movingState[i];
+    // }
 }
 
-// 设置炮塔
+// 设置炮筒
 void Tank::setTurret(Turret* turret)
 {
     _turret = turret;
 }
 
-// 实现其他成员函数
-// ...
+QPointF Tank::centerPoint()
+{
+    return QPointF(this->rect().center());
+}
 
-//void Tank::setTurret(Turret* turret)
-//{
- //   _turret = turret;
-//}
+
