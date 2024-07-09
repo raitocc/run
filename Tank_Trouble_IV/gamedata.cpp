@@ -93,6 +93,12 @@ void GameData::createMap(int row, int col)//创建地图
     }
 }
 
+void GameData::createTank(int n)
+{
+    QVector<QPair<int, int>> points = generateSpawnPoints(n);
+
+}
+
 int GameData::score() const
 {
     return _score;
@@ -181,5 +187,41 @@ bool GameData::checkConnectivity(int row, int col)//检查连通性
     }
 
     return true;
+}
+
+QVector<QPair<int, int>> GameData::generateSpawnPoints(int n)
+{
+    QVector<QPair<int, int>> whiteCells;
+
+    // 遍历地图以找到所有白色块的位置
+    for (int i = 0; i < _map.size(); ++i) {
+        for (int j = 0; j < _map[i].size(); ++j) {
+            if (_map[i][j] == 2) {
+                whiteCells.append(qMakePair(i, j));
+            }
+        }
+    }
+
+    QVector<QPair<int, int>> spawnPoints;
+
+    // 如果存在白色块，则随机选择 n 个位置
+    if (!whiteCells.isEmpty()) {
+        for (int k = 0; k < n; ++k) {
+            int selectedNum = QRandomGenerator::global()->bounded(whiteCells.size());
+            QPair<int, int> pos = whiteCells[selectedNum];
+            int row = pos.first;
+            int col = pos.second;
+
+            // 将坦克放在白色块的中心
+            //setPos(col * gridSize + gridSize / 2 - rect().width() / 2, row * gridSize + gridSize / 2 - rect().height() / 2);
+            //gridSize宏定义在"singlegamewidget.h"中，因此#include "singlegamewidget.h"
+            spawnPoints.append(qMakePair(col * GRIDSIZE + GRIDSIZE / 2, row * GRIDSIZE + GRIDSIZE / 2));
+
+            // 移除已选中的白色块以防止重复选择
+            whiteCells.removeAt(selectedNum);
+        }
+    }
+
+    return spawnPoints;
 }
 
