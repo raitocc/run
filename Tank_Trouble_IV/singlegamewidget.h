@@ -2,7 +2,7 @@
 #define SINGLEGAMEWIDGET_H
 
 #include <QWidget>
-#include "gamemap.h"
+#include "gamedata.h"
 
 namespace Ui {
 class SingleGameWidget;
@@ -16,12 +16,13 @@ public:
     explicit SingleGameWidget(QWidget *parent = nullptr);
     ~SingleGameWidget();
 
+    void newGame();
 private slots:
     void on_btnPause_clicked();
 
 private:
     Ui::SingleGameWidget *ui;
-    GameMap map;
+    GameData* data;
 
 signals:
     void signalPause();
