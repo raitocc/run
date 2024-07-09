@@ -72,6 +72,5 @@ void SingleGameWidget::on_btnPause_clicked()
 
 void SingleGameWidget::resizeEvent(QResizeEvent *event)
 {
-    qDebug()<<"!";
-    //ui->graphicsView->resize(this->width(),this->height()-STATEBAR_HEIGHT);
+    ui->graphicsView->resize(this->width(),this->height()-STATEBAR_HEIGHT);
 }
