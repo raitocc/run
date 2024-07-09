@@ -21,6 +21,10 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+protected:
+
+    void resizeEvent(QResizeEvent *event) override;
+
 private:
     Ui::MainWindow *ui;
     LoginWidget* mLoginWidget;
@@ -29,6 +33,8 @@ private:
     PauseWidget* mPauseWidget;
 
     QString userName;
+
+    void initPointers();//初始化指针
 
 private slots:
     void slotLogin();

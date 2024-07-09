@@ -6,9 +6,9 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    initPointers();//所有指针置空
     mLoginWidget = new LoginWidget(this);
     connect(mLoginWidget,&LoginWidget::signalLogin,this,&MainWindow::slotLogin);
-    userName = "NULLNULLNULLNULL";
 }
 
 MainWindow::~MainWindow()
@@ -16,11 +16,28 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::resizeEvent(QResizeEvent *event)
+{
+    qDebug()<<"MAINRESIZE";
+    if(mLoginWidget!=nullptr) mLoginWidget->resize(this->width(),this->height());
+    if(mWelcomeWidget!=nullptr) mWelcomeWidget->resize(this->width(),this->height());
+    if(mSingleGameWidget!=nullptr) mSingleGameWidget->resize(this->width(),this->height());
+    if(mPauseWidget!=nullptr) mPauseWidget->resize(this->width(),this->height());
+
+}
+
+void MainWindow::initPointers()
+{
+    mWelcomeWidget = nullptr;
+    mLoginWidget = nullptr;
+    mSingleGameWidget = nullptr;
+    mPauseWidget = nullptr;
+}
+
 void MainWindow::slotLogin()//登录按钮按下后处理
 {
     mWelcomeWidget = new WelcomeWidget(this);
     mWelcomeWidget->show();
-    userName = "Admin";
     if(mLoginWidget) delete mLoginWidget;
     connect(mWelcomeWidget,&WelcomeWidget::signalBackLogin,this,&MainWindow::slotBackToLogin);
     connect(mWelcomeWidget,&WelcomeWidget::signalSingleStart,this,&MainWindow::slotSingleStart);
@@ -32,7 +49,7 @@ void MainWindow::slotBackToLogin()//返回
     mLoginWidget = new LoginWidget(this);
     connect(mLoginWidget,&LoginWidget::signalLogin,this,&MainWindow::slotLogin);
     mLoginWidget->show();
-    userName = "NULLNULLNULLNULL";
+    userName = "";
 }
 
 void MainWindow::slotSingleStart()//开始单人游戏
