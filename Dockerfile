@@ -1,25 +1,20 @@
-# 使用包含 g++ 和 cmake 的镜像
+# 基础镜像
 FROM ubuntu:latest
 
-# 配置中国区镜像源
-
+# 配置apt源为阿里云镜像
 RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list && \
- sed -i 's/security.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
+    sed -i 's/security.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
 
-# 更新软件包列表
-
-RUN apt-get update
-
-# 安装必要的软件包
-
-RUN apt-get install -y build-essential cmake git \
- libfmt-dev libgtest-dev
-
-RUN apt-get update && apt-get install -y \
-    qtbase5-dev \
-    qtchooser \
-    qt5-qmake \
-    qtbase5-dev-tools
+# 更新apt源并安装必要的软件包和依赖
+RUN apt-get update 
+RUN apt-get install -y build-essential \
+                    qt6-base-dev \
+                    qmake6 \
+                    qt6-charts-dev \
+                    libmysqlclient-dev \
+                    linguist-qt6 \
+                    libqt6sql6-mysql \
+                    qt6-l10n-tools
 
 # 设置工作目录
 
