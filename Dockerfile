@@ -31,8 +31,7 @@ RUN mkdir build && cd build
 # 列出 /app 目录中的文件，以验证文件已被复制
 RUN ls -l /app
 
-# 使用 QMake 生成 Makefile
-RUN qmake .
+
 # 编译项目
 
 RUN make
