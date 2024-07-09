@@ -156,6 +156,29 @@ const QVector<QVector<int> > &GameMap::getmap()
     return map;
 }
 
+
+int GameMap::getCellType(int x, int y) const
+{
+    if (x < 0 || x >= col || y < 0 || y >= row)
+        return -1;  // 超出地图范围，返回无效值
+
+    return map[y][x];
+}
+
+QPointF GameMap::gridToMap(int x, int y) const
+{
+    // 根据格子坐标计算对应的场景坐标
+    return QPointF(x * 50 + 25, y * 50 + 25);  // 假设每个格子大小为50x50，中心点偏移
+}
+
+QPointF GameMap::mapToGrid(const QPointF &pos) const
+{
+    // 根据场景坐标计算对应的格子坐标
+    int x = static_cast<int>(pos.x() / 50);
+    int y = static_cast<int>(pos.y() / 50);
+    return QPointF(x, y);
+}
+
 // void GameMap::setRandomInitialPosition(int &x,int &y)
 // {
 //     QVector<QVector<int>> map = getmap();

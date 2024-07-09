@@ -47,6 +47,9 @@ private:
     FailedWidget* mFailedWidget;//失败界面
 
     QString userName;//用户名
+
+    void initPagePointers();//初始化所有指针
+
     //QStackedWidget *stackedWidget;
     //PlayerScene *playerScene;
 

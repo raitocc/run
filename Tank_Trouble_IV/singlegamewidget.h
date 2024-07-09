@@ -52,6 +52,8 @@ private:
     QTimer* timer;
     int level;//关卡
     int money;//金币数
+    tank* tank1;//创建
+    TankTurret* turret1;
 
     void centerViewOnTank();
 

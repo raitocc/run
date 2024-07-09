@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     //playerScene(new PlayerScene(this))
 {
     ui->setupUi(this);
+    initPagePointers();//初始化所有指针
     mLoginWidget = new LoginWidget(this);
      // 连接登录成功信号到处理槽
     connect(mLoginWidget,&LoginWidget::signalLogin,this,&MainWindow::slotLogin);
@@ -22,7 +23,6 @@ MainWindow::MainWindow(QWidget *parent)
     //stackedWidget->addWidget(mLoginWidget);
     // 设置堆栈窗口为中心窗口
     //setCentralWidget(stackedWidget);
-
 
 }
 
@@ -154,6 +154,15 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     if(mSingleGameWidget!=nullptr) mSingleGameWidget->resize(this->width(),this->height());
     //if(mPauseWidget!=nullptr) mPauseWidget->resize(this->width(),this->height());
     //if(mFailedWidget!=nullptr) mFailedWidget->resize(this->width(),this->height());
+}
+
+void MainWindow::initPagePointers()
+{
+    mLoginWidget = nullptr;
+    mWelcomeWidget = nullptr;
+    mSingleGameWidget = nullptr;
+    mPauseWidget = nullptr;
+    mFailedWidget = nullptr;
 }
 
 // void MainWindow::setupMap()

@@ -16,7 +16,7 @@ class LoginWidget : public QWidget
 public:
     explicit LoginWidget(QWidget *parent = nullptr);
     ~LoginWidget();
-    void paintevent(QPaintEvent * event);
+    void paintEvent(QPaintEvent * event);
 
 private slots:
     void on_pushButton_clicked();

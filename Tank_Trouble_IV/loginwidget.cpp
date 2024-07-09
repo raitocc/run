@@ -30,6 +30,7 @@ LoginWidget::LoginWidget(QWidget *parent)
     } else {
         qDebug() << "数据库连接失败:" << db.lastError().text();
     }
+    //qDebug() << "111";
 }
 
 LoginWidget::~LoginWidget()
@@ -39,7 +40,7 @@ LoginWidget::~LoginWidget()
     delete ui;
 }
 
-void LoginWidget::paintevent(QPaintEvent * event)
+void LoginWidget::paintEvent(QPaintEvent * event)
 {
     QPainter painter(this);
     painter.drawPixmap(0,0,width(),height(),QPixmap(":/login_background.png"));

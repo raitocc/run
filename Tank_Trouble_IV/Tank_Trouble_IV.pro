@@ -6,7 +6,9 @@ CONFIG += c++17
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+# DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+
+
 
 SOURCES += \
     #PlayerScene.cpp \
@@ -23,6 +25,7 @@ SOURCES += \
     pausewidget.cpp \
     #shell.cpp \
     registerdialog.cpp \
+    single_player_rules_dialog.cpp \
     tank.cpp \
     singlegamewidget.cpp \
     #testtank.cpp \
@@ -44,6 +47,7 @@ HEADERS += \
     mainwindow.h \
     registerdialog.h \
     #testtank.h \
+    single_player_rules_dialog.h \
     tankturret.h \
     testsheel.h \
     welcomewidget.h \
@@ -58,6 +62,7 @@ FORMS += \
     mainwindow.ui \
     pausewidget.ui \
     registerdialog.ui \
+    single_player_rules_dialog.ui \
     singlegamewidget.ui \
     welcomewidget.ui
 

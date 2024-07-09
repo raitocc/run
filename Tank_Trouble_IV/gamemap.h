@@ -1,6 +1,7 @@
 #ifndef GAMEMAP_H
 #define GAMEMAP_H
 
+#include<QPointF>
 #include<QVector>
 #include<QRandomGenerator>
 
@@ -14,6 +15,9 @@ public:
     void createMap();
     bool checkConnectivity();
 
+    int getCellType(int x, int y) const;  // 获取指定坐标的格子类型
+    QPointF gridToMap(int x, int y) const;  // 格子坐标转场景坐标
+    QPointF mapToGrid(const QPointF &pos) const;
     int getrow();
     int getcol();
     const QVector<QVector<int>>& getmap();
