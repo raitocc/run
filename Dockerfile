@@ -32,8 +32,7 @@ RUN mkdir build && cd build
 RUN ls -l /app
 
 # 使用 QMake 生成 Makefile
-RUN qmake Tank_Trouble_IV.pro
-
+RUN qmake .
 # 编译项目
 
 RUN make
