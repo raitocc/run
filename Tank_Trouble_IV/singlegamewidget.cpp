@@ -63,6 +63,7 @@ void SingleGameWidget::drawMap()
             }
         }
     }
+    ui->graphicsView->resize(this->width(),this->height()-STATEBAR_HEIGHT);
 }
 
 void SingleGameWidget::on_btnPause_clicked()
@@ -73,4 +74,5 @@ void SingleGameWidget::on_btnPause_clicked()
 void SingleGameWidget::resizeEvent(QResizeEvent *event)
 {
     ui->graphicsView->resize(this->width(),this->height()-STATEBAR_HEIGHT);
+    QWidget::resizeEvent(event);
 }

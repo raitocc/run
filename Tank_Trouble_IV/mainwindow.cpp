@@ -23,6 +23,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     if(mWelcomeWidget!=nullptr) mWelcomeWidget->resize(this->width(),this->height());
     if(mSingleGameWidget!=nullptr) mSingleGameWidget->resize(this->width(),this->height());
     if(mPauseWidget!=nullptr) mPauseWidget->resize(this->width(),this->height());
+    QMainWindow::resizeEvent(event);
 }
 
 void MainWindow::initPointers()
