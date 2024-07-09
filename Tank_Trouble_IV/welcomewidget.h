@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPainter>
 #include"single_player_rules_dialog.h"
+#include"dounle_players_rules_dialog.h"
 namespace Ui {
 class WelcomeWidget;
 }
@@ -24,6 +25,8 @@ private slots:
     void on_btnSingle_clicked();
 
     void on_pushButton_clicked();
+
+    void on_pushButton_2_clicked();
 
 signals:
     void signalBackLogin();

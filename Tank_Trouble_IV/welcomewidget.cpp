@@ -39,3 +39,11 @@ void WelcomeWidget::on_pushButton_clicked()
 
 }
 
+
+void WelcomeWidget::on_pushButton_2_clicked()
+{
+    Dounle_players_rules_Dialog *configWindow = new Dounle_players_rules_Dialog;
+    configWindow->setWindowModality(Qt::ApplicationModal);
+    configWindow->show();
+}
+

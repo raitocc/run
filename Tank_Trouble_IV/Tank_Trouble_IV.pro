@@ -13,6 +13,7 @@ CONFIG += c++17
 SOURCES += \
     #PlayerScene.cpp \
     bullet_s.cpp \
+    dounle_players_rules_dialog.cpp \
     enemytank.cpp \
     failedwidget.cpp \
     gamemap.cpp \
@@ -36,6 +37,7 @@ SOURCES += \
 HEADERS += \
     #PlayerScene.h \
     bullet_s.h \
+    dounle_players_rules_dialog.h \
     enemytank.h \
     failedwidget.h \
     gamemap.h \
@@ -55,6 +57,7 @@ HEADERS += \
     #shell.h \
 
 FORMS += \
+    dounle_players_rules_dialog.ui \
     failedwidget.ui \
     loginwidget.ui \
     mainwindow.ui \
@@ -71,5 +74,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     ../gameimages/gameimages.qrc \
+    accessory_part.qrc \
     login_background.qrc \
     welcome_background.qrc

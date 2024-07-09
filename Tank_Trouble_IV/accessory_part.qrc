@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/"/>
+    <qresource prefix="/new/prefix1">
+        <file>wooden_board.png</file>
+        <file>wooden_pushbotton.png</file>
+        <file>wasd.png</file>
+        <file>mouse.png</file>
+        <file>gold_coin.png</file>
+        <file>hp.png</file>
+        <file>gold_coin (2).png</file>
+        <file>level_icon.png</file>
+    </qresource>
+</RCC>
