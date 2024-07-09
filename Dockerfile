@@ -15,7 +15,11 @@ RUN apt-get update
 RUN apt-get install -y build-essential cmake git \
  libfmt-dev libgtest-dev
 
-RUN apt-get update && apt-get install -y qt5-default
+RUN apt-get update && apt-get install -y \
+    qtbase5-dev \
+    qtchooser \
+    qt5-qmake \
+    qtbase5-dev-tools
 
 # 设置工作目录
 
