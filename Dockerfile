@@ -31,6 +31,9 @@ RUN mkdir build && cd build
 # 列出 /app 目录中的文件，以验证文件已被复制
 RUN ls -l /app
 
+#生成makefile
+RUN qmake6 .
+
 
 # 编译项目
 
