@@ -10,6 +10,7 @@ CONFIG += c++17
 
 SOURCES += \
     bullet.cpp \
+    enemytank.cpp \
     gamedata.cpp \
     gameview.cpp \
     loginwidget.cpp \
@@ -23,6 +24,7 @@ SOURCES += \
 
 HEADERS += \
     bullet.h \
+    enemytank.h \
     gamedata.h \
     gameview.h \
     loginwidget.h \
