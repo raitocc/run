@@ -41,6 +41,8 @@ void LoginWidget::paintEvent(QPaintEvent * event)
 
 void LoginWidget::on_pushButton_clicked()//登录按钮按下
 {
+    emit signalLogin();
+    return;
     QString username = ui->usernameLineEdit->text();
     QString password = ui->passwordLineEdit->text();
 

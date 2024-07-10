@@ -2,32 +2,43 @@
 #define BULLET_H
 
 #include "tank.h"
+#include <QtMath>
 #include <QGraphicsRectItem>
+#include <QBrush>
+#include <QGraphicsScene>
 
 class Bullet : public QGraphicsRectItem
 {
 public:
-    Bullet();//构造函数
+    Bullet(int id,Tank* shooter);//构造函数
+    Bullet(int id,Tank* shooter,QPointF begin,QPointF tar);//构造函数
 
     //get类
     int id() const;
     int damage() const;
     int speed() const;
-    const QLineF &direction() const;
+    const QPointF &direction() const;
     Tank* shooter() const;//发射该子弹的坦克
 
     //设置类
     void setId(int id);
     void setDamage(int damage);
-    void setSpeed(int speed);
-    void setDirection(const QLineF& direction);
+    void setSpeed(double speed);
+    void setDirection(const QPointF &direction);
+
+    void init();//初始化
+    void init(QPointF begin, QPointF tar);//初始化
 
 private:
     int _id;//标识子弹类型id
     int _damage;//伤害
-    int _speed;//移动速度
-    QLineF _direction;//方向向量
+    double _speed;//移动速度
+    QPointF _direction;//方向向量
     Tank* _shooter;
+    void advance(int phase) override;
+    void move();//移动
+    bool checkCollision();//检查碰撞
+    void hitBox(QGraphicsRectItem* box);
 };
 
 #endif // BULLET_H

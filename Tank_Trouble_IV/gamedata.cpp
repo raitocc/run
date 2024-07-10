@@ -132,9 +132,25 @@ int GameData::mapCol() const
     return _map[0].size();
 }
 
+// Bullet *GameData::bullet(int id)
+// {
+//     if(id>=_bullets.size())
+//     {
+//         qDebug()<<"不存在id为: "<<id<<"的子弹";
+//             return nullptr;
+//     }
+//     return _bullets[id];
+// }
+
 PlayerTank* GameData::playerTank() const
 {
     return _playerTank;
+}
+
+Bullet *GameData::addBullet(int id, Tank* shooter,QPointF begin, QPointF tar)
+{
+    Bullet* bullet = new Bullet(id,shooter,begin,tar);
+    return bullet;
 }
 
 bool GameData::checkConnectivity(int row, int col)//检查连通性

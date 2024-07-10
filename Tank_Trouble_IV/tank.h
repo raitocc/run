@@ -24,7 +24,7 @@ public:
     void setShootSpeed(int shootSpeed);
     void setMovingState(int dir, bool state);
     void setTurret(Turret* turret);
-    QPointF centerPoint();//中心点
+    void clearMovingState();//清空移动
 
 protected:
     int _HP;
@@ -33,6 +33,12 @@ protected:
     qreal _shootSpeed;
     bool _movingState[4];
     Turret* _turret;
+
+    void move();//移动
+    bool checkCollision();//检查是否碰撞
+    void adjustPosition();//卡墙调整函数
+    void updateDirection();//旋转坦克
+    void advance(int phase) override;
 
 
 };

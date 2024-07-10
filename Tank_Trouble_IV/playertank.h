@@ -22,7 +22,10 @@ public:
     void addBullet(int id, int amout);
     void removeBullet(int id, int amout);
     void init();//初始化
-    void clearMovingState();//清空移动
+
+
+    void fire(QPointF tarPos);//发射子弹
+
 
 
 
@@ -30,7 +33,7 @@ protected:
     //void keyPressEvent(QKeyEvent* event) override;
     //void keyReleaseEvent(QKeyEvent* event) override;
     //QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    void advance(int phase) override;
+    //void advance(int phase) override;
 
 private:
     QVector<int> _bulletNum;//剩余子弹数（只标识非子弹，由唯一id标识）
@@ -39,10 +42,7 @@ private:
     QPointF _center;
     QPointF _rotationCenter;
 
-    void move();//移动
-    bool checkCollision();//检查是否碰撞
-    void adjustPosition();//卡墙调整函数
-    void updateDirection();//旋转坦克
+
 };
 
 #endif // PLAYERTANK_H
