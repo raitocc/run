@@ -54,6 +54,7 @@ void SingleGameWidget::drawMap()
         for(int j = 0; j < col; ++j)
         {
             QGraphicsRectItem *rect = scene->addRect(j*GRIDSIZE, i*GRIDSIZE, GRIDSIZE, GRIDSIZE);
+            rect->setData(ITEM_TYPE,GRID);
             QPixmap wall(":/sources/wall.png");
             QPixmap resizedwall =wall.scaled(GRIDSIZE, GRIDSIZE);
             QPixmap box(":/sources/box.png");
@@ -64,13 +65,15 @@ void SingleGameWidget::drawMap()
             {
             case WALL: // 不可破坏墙
                 rect->setBrush(QBrush(resizedwall)); // 加载不可破坏墙的贴图
-                rect->setData(GRIDTYPE,WALL);
+                rect->setData(GRID_TYPE,WALL);
                 break;
             case BOX: // 可破坏墙体
                 rect->setBrush(QBrush(resizedbox)); // 加载可破坏墙体的贴图
-                rect->setData(GRIDTYPE,BOX);
+                rect->setData(GRID_TYPE,BOX);
                 break;
             case AIR: // 其他类型的墙体或空白
+                rect->setBrush(QBrush(Qt::white)); // 留白
+                rect->setData(GRID_TYPE,AIR);
                 break;
             }
         }
@@ -80,9 +83,11 @@ void SingleGameWidget::drawMap()
 
 void SingleGameWidget::drawTank()
 {
+    //处理玩家坦克
     QPixmap body(":/sources/TankBody.png");
     QPixmap resizedbody =body.scaled(TANK_WIDTH, TANK_LENGTH);
     data->playerTank()->setBrush(QBrush(resizedbody));
+    data->playerTank()->setData(ITEM_TYPE,PLAYER_TANK);
     scene->addItem(data->playerTank());
 }
 

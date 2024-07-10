@@ -73,4 +73,15 @@ void GameView::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
+void GameView::mousePressEvent(QMouseEvent *event)
+{
+    QPoint viewPos = event->pos();
+    QPointF scenePos = this->mapToScene(viewPos);
+    PlayerTank* tank = data->playerTank();
+    QGraphicsRectItem* rect = data->addBullet(tank->currentBullet(),tank,tank->pos()+tank->rect().center(),scenePos);
+    //qDebug()<<tank->pos();
+    //qDebug()<<tank->pos()+tank->rect().center();
+    this->scene()->addItem(rect);
+}
+
 

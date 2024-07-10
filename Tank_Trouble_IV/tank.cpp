@@ -1,4 +1,6 @@
 #include "tank.h"
+#include "parameter.h"
+#include "qgraphicsscene.h"
 //#include "turret.h" // 还没有有Turret类的头文件
 
 // 构造函数
@@ -103,9 +105,230 @@ void Tank::setTurret(Turret* turret)
     _turret = turret;
 }
 
-QPointF Tank::centerPoint()
+void Tank::clearMovingState()
 {
-    return QPointF(this->rect().center());
+    for(int i =0;i<4;i++)
+    {
+        _movingState[i]=false;
+    }
 }
 
+
+void Tank::move()
+{
+    QPointF oldPos = pos();
+    int oldRotation = this->rotation();
+    bool moved = false;
+    bool movingUp = _movingState[UP];
+    bool movingRight = _movingState[RIGHT];
+    bool movingDown = _movingState[DOWN];
+    bool movingLeft = _movingState[LEFT];
+    int count = (movingDown+movingLeft+movingRight+movingUp);
+    updateDirection();
+    // 尝试主要方向的移动
+    if (!moved && movingUp && movingRight)
+    {
+        moveBy(_moveSpeed/1.414, -_moveSpeed/1.414);
+        if (!checkCollision()) {
+            moved = true;
+        } else {
+            setPos(oldPos);
+        }
+    }
+    if (!moved && movingUp && movingLeft)
+    {
+        moveBy(-_moveSpeed/1.414, -_moveSpeed/1.414);
+        if (!checkCollision()) {
+            moved = true;
+        } else {
+            setPos(oldPos);
+        }
+    }
+    if (!moved && movingDown && movingRight)
+    {
+        moveBy(_moveSpeed / 1.414, _moveSpeed / 1.414);
+        if (!checkCollision()) {
+            moved = true;
+        } else {
+            setPos(oldPos);
+        }
+    }
+    if (!moved && movingDown && movingLeft)
+    {
+        moveBy(-_moveSpeed / 1.414, _moveSpeed / 1.414);
+        if (!checkCollision()) {
+            moved = true;
+        } else {
+            setPos(oldPos);
+        }
+    }
+
+    // 如果主要方向移动受阻，分别尝试各个单独方向的移动
+    if (!moved) {
+        if (movingUp)
+        {
+            if(count>=2)moveBy(0, -_moveSpeed/1.414);
+            else moveBy(0, -_moveSpeed);
+            if (!checkCollision()) {
+                moved = true;
+            } else {
+                setPos(oldPos);
+            }
+        }
+        if (!moved && movingDown)
+        {
+            if(count>=2)moveBy(0, _moveSpeed/1.414);
+            else moveBy(0, _moveSpeed);
+            if (!checkCollision()) {
+                moved = true;
+            } else {
+                setPos(oldPos);
+            }
+        }
+        if (!moved && movingLeft)
+        {
+            if(count>=2)moveBy(-_moveSpeed/1.414, 0);
+            else moveBy(-_moveSpeed, 0);
+            if (!checkCollision()) {
+                moved = true;
+            } else {
+                setPos(oldPos);
+            }
+        }
+        if (!moved && movingRight)
+        {
+            if(count>=2)moveBy(_moveSpeed/1.414, 0);
+            else moveBy(_moveSpeed, 0);
+            if (!checkCollision()) {
+                moved = true;
+            } else {
+                setPos(oldPos);
+            }
+        }
+    }
+
+    // 更新方向
+    if (moved) {
+        updateDirection();
+    } else {
+        setRotation(oldRotation);
+    }
+}
+
+bool Tank::checkCollision()
+{
+    QList<QGraphicsItem *> collidingItems = scene()->collidingItems(this);
+    for (QGraphicsItem *item : collidingItems)
+    {
+        // 检查是否碰到障碍物
+        if (item->data(GRID_TYPE)==WALL||item->data(GRID_TYPE)==BOX)
+        {
+            //qDebug()<<"COLL";
+            return true;
+        }
+    }
+    return false;
+}
+
+void Tank::adjustPosition()
+{
+    qDebug()<<"卡墙";
+    QPointF oldPos = this->pos();
+    const int maxAttempts = 40; // 最大尝试次数
+    const qreal stepSize = 0.4; // 微调步进值
+    for(int i = 0;i<maxAttempts;i++)
+    {
+        moveBy(0,stepSize);
+        if(!checkCollision()) return;
+    }
+    this->setPos(oldPos);
+    for(int i = 0;i<maxAttempts;i++)
+    {
+        moveBy(0,-stepSize);
+        if(!checkCollision()) return;
+    }
+    this->setPos(oldPos);
+    for(int i = 0;i<maxAttempts;i++)
+    {
+        moveBy(-stepSize,0);
+        if(!checkCollision()) return;
+    }
+    this->setPos(oldPos);
+    for(int i = 0;i<maxAttempts;i++)
+    {
+        moveBy(stepSize,0);
+        if(!checkCollision()) return;
+    }
+    this->setPos(oldPos);
+}
+
+void Tank::updateDirection()
+{
+    bool movingUp = _movingState[UP];
+    bool movingRight = _movingState[RIGHT];
+    bool movingDown = _movingState[DOWN];
+    bool movingLeft = _movingState[LEFT];
+    if (movingUp && movingRight) {
+        setRotation(45);
+        if(checkCollision())
+        {
+            adjustPosition();
+        }
+    } else if (movingUp && movingLeft) {
+        setRotation(-45);
+        if(checkCollision())
+        {
+            adjustPosition();
+        }
+    } else if (movingDown && movingRight) {
+        setRotation(135);
+        if(checkCollision())
+        {
+            adjustPosition();
+        }
+    } else if (movingDown && movingLeft) {
+        setRotation(-135);
+        if(checkCollision())
+        {
+            adjustPosition();
+        }
+    } else if (movingUp) {
+        setRotation(0);
+        if(checkCollision())
+        {
+            adjustPosition();
+        }
+    } else if (movingDown) {
+        setRotation(180);
+        if(checkCollision())
+        {
+            adjustPosition();
+        }
+    } else if (movingLeft) {
+        setRotation(-90);
+        if(checkCollision())
+        {
+            adjustPosition();
+        }
+    } else if (movingRight) {
+        setRotation(90);
+        if(checkCollision())
+        {
+            adjustPosition();
+        }
+    }
+}
+
+//会调用2次，在第一个阶段，所有项目都以 phase == 0 调用，表明场景中的项目即将前进，然后所有项目都以 phase == 1 调用
+void Tank::advance(int phase)
+{
+    if(phase == 0)
+    {
+        return;
+    }
+    else
+    {
+        move();
+    }
+}
 

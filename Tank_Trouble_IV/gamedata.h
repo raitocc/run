@@ -1,6 +1,7 @@
 #ifndef GAMEDATA_H
 #define GAMEDATA_H
 
+#include "bullet.h"
 #include "playertank.h"
 #include <QVector>
 #include <QRandomGenerator>
@@ -13,6 +14,7 @@ public:
     void newData();//从第一关开始创建新游戏数据
     void createMap(int row,int col);//创建地图
     void createTank(int n);//创建坦克
+    Bullet* addBullet(int id, Tank *shooter, QPointF begin, QPointF tar);//添加子弹
 
     //get类函数
     int score() const;
@@ -21,8 +23,11 @@ public:
     int gridType(int row, int col) const;
     int mapRow() const;
     int mapCol() const;
+    //Bullet* bullet(int id);
     PlayerTank* playerTank() const;
     //int enermyTank(int id);
+
+
 
 
 
@@ -33,6 +38,7 @@ private:
     int _money;//金钱
     int _level;//当前关卡
     PlayerTank* _playerTank;
+    //QVector<Bullet*> _bullets;
 
     bool checkConnectivity(int row, int col);//创建地图辅助函数，检查连通性
     QVector<QPair<int, int>> generateSpawnPoints(int n);//创建坦克辅助函数，选择出生点
