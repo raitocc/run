@@ -2,6 +2,7 @@
 #define GAMEDATA_H
 
 #include "bullet.h"
+#include "enemytank.h"
 #include "playertank.h"
 #include <QVector>
 #include <QRandomGenerator>
@@ -25,7 +26,15 @@ public:
     int mapCol() const;
     //Bullet* bullet(int id);
     PlayerTank* playerTank() const;
+    EnemyTank *enemyTank(int n) const;
+    int enemyNum() const;
+    bool deadEnemy(int n) const;
     //int enermyTank(int id);
+
+    void addScore(int n);
+    void addMoney(int n);
+    void reduceMoney(int n);
+    void setDeadEnemy(int n,bool f);
 
 
 
@@ -38,6 +47,8 @@ private:
     int _money;//金钱
     int _level;//当前关卡
     PlayerTank* _playerTank;
+    QVector<EnemyTank*> _enemyTanks;
+    QVector<bool> _deadEnemy;
     //QVector<Bullet*> _bullets;
 
     bool checkConnectivity(int row, int col);//创建地图辅助函数，检查连通性

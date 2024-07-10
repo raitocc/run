@@ -1,9 +1,11 @@
 #ifndef TANK_H
 #define TANK_H
 
+
 #include <QGraphicsRectItem>
 
 class Tank;
+class GameData;
 
 class Turret:public QGraphicsRectItem
 {
@@ -26,6 +28,7 @@ public:
     int shootSpeed() const;
     bool movingState(int dir) const;
     Turret* turret() const;
+    GameData *gameData() const;
 
     void setHP(int hp);
     void setMaxHP(int maxHP);
@@ -35,7 +38,9 @@ public:
     void setShootSpeed(int shootSpeed);
     void setMovingState(int dir, bool state);
     void setTurret(Turret* turret);
-    void clearMovingState();//清空移动
+    void setGameData(GameData* data);
+    void clearMovingState();//清空移动数据
+
 
     void creatTurret();
 
@@ -46,6 +51,8 @@ protected:
     qreal _shootSpeed;
     bool _movingState[4];
     Turret* _turret;
+
+    GameData* _data;
 
     void move();//移动
     bool checkCollision();//检查是否碰撞

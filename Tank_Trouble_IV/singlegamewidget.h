@@ -20,6 +20,8 @@ public:
     ~SingleGameWidget();
 
     void newGameData();
+
+    void pauseBack();
 private slots:
     void on_btnPause_clicked();
 
@@ -38,6 +40,8 @@ private:
     void initTimer();//初始化Timer
     void drawMap();//绘制地图
     void drawTank();//绘制坦克
+
+    void advance();//更新显示
 
 signals:
     void signalPause();

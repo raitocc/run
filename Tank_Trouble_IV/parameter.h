@@ -7,7 +7,7 @@
 
 //item类型
 #define PLAYER_TANK 0
-#define ENERMY_TANK 1
+#define ENEMY_TANK 1
 #define GRID 2
 #define BULLET 3
 
@@ -17,9 +17,9 @@
 #define AIR 2
 
 
-#define GRIDSIZE 55//格子宽度
-#define TANK_WIDTH 22//坦克宽度
-#define TANK_LENGTH 27//坦克长度
+#define GRIDSIZE 60//格子宽度
+#define TANK_WIDTH 23//坦克宽度
+#define TANK_LENGTH 30//坦克长度
 
 #define MAX_BULLET_TYPE 16//最大子弹种类数
 #define MAX_PROP_TYPE 16//最大道具种类数

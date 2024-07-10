@@ -1,6 +1,7 @@
 #ifndef PLAYERTANK_H
 #define PLAYERTANK_H
 
+#include "qtimer.h"
 #include "tank.h"
 #include <QVector>
 #include <QPen>
@@ -16,11 +17,13 @@ public:
     int propsNum(int id) const;
     int currentBullet() const;
     QPointF rotationCenter() const;
+    bool shootAble() const;
 
     //设置类
     void switchBullet(int id);
     void addBullet(int id, int amout);
     void removeBullet(int id, int amout);
+    void setShootAble(bool f);
     void init();//初始化
 
 
@@ -41,6 +44,11 @@ private:
     int _currentBullet;//现在携带的子弹
     QPointF _center;
     QPointF _rotationCenter;
+
+    bool _shootAble;
+
+private slots:
+    void reetShootAbleState();
 
 
 };

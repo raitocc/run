@@ -27,6 +27,11 @@ QPointF PlayerTank::rotationCenter() const
     return _rotationCenter;
 }
 
+bool PlayerTank::shootAble() const
+{
+    return _shootAble;
+}
+
 void PlayerTank::switchBullet(int id)
 {
     _currentBullet = id;
@@ -52,6 +57,11 @@ void PlayerTank::removeBullet(int id, int amout)
     _bulletNum[id] -= amout;
 }
 
+void PlayerTank::setShootAble(bool f)
+{
+    _shootAble = f;
+}
+
 void PlayerTank::init()//初始化
 {
     this->setPen(Qt::NoPen);//设置无边框
@@ -60,13 +70,14 @@ void PlayerTank::init()//初始化
     _HP = 20;
     _maxHP = 20;
     _moveSpeed = 0.8;
-    _shootSpeed = 1;
+    _shootSpeed = 4;//频率
     clearMovingState();//清空移动状态标记
     _turret = nullptr;
     _bulletNum.resize(MAX_BULLET_TYPE);
     _propsNum.resize(MAX_PROP_TYPE);
     _bulletNum[0] = INT_MAX;
     _rotationCenter = QPointF(TANK_WIDTH/2,TANK_LENGTH*2/3);
+    _shootAble = true;
 
     //z
     this->setZValue(3);
@@ -85,8 +96,8 @@ void PlayerTank::init()//初始化
 
 
     //使其接收键盘事件
-    this->setFlag(ItemIsFocusable);
-    this->setFocus();
+    // this->setFlag(ItemIsFocusable);
+    // this->setFocus();
 
     //绘制炮筒
     this->creatTurret();

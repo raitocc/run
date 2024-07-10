@@ -39,6 +39,7 @@ private:
     void move();//移动
     bool checkCollision();//检查碰撞
     void hitBox(QGraphicsRectItem* box);
+    void hitTank(Tank* tank);
 };
 
 #endif // BULLET_H

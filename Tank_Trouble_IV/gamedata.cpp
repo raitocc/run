@@ -16,7 +16,7 @@ void GameData::newData()
     this->_level=1;
     this->_money=0;
     this->_score=0;
-    int col = QRandomGenerator::global()->bounded(30,51);
+    int col = QRandomGenerator::global()->bounded(25,41);
     int row = col *3/4;
     createMap(row, col);
     createTank(col/3);
@@ -99,7 +99,19 @@ void GameData::createTank(int n)
     QVector<QPair<int, int>> p = generateSpawnPoints(n);
     //先放置玩家坦克
     _playerTank = new PlayerTank;
+    _playerTank->setGameData(this);
     _playerTank->setPos(p[0].first*GRIDSIZE+GRIDSIZE/2-TANK_WIDTH/2,p[0].second*GRIDSIZE+GRIDSIZE/2-TANK_LENGTH/2);
+    //放置敌方坦克
+    _enemyTanks.resize(n-1);
+    _deadEnemy.resize(n-1);
+    for(int i =1;i<n;i++)
+    {
+        _deadEnemy[i-1] = false;
+        _enemyTanks[i-1] = new EnemyTank(0);
+        _enemyTanks[i-1]->setGameData(this);
+        _enemyTanks[i-1]->setID(i-1);
+        _enemyTanks[i-1]->setPos(p[i].first*GRIDSIZE+GRIDSIZE/2-TANK_WIDTH/2,p[i].second*GRIDSIZE+GRIDSIZE/2-TANK_LENGTH/2);
+    }
 }
 
 int GameData::score() const
@@ -145,6 +157,56 @@ int GameData::mapCol() const
 PlayerTank* GameData::playerTank() const
 {
     return _playerTank;
+}
+
+EnemyTank *GameData::enemyTank(int n) const
+{
+    if(n>=_enemyTanks.size())
+    {
+        qDebug()<<"不存在id为:"<<n<<"的敌方坦克";
+            return nullptr;
+    }
+    return _enemyTanks[n];
+}
+
+int GameData::enemyNum() const
+{
+    return _enemyTanks.size();
+}
+
+bool GameData::deadEnemy(int n) const
+{
+    if(n>=_enemyTanks.size())
+    {
+        qDebug()<<"不存在id为:"<<n<<"的敌方坦克";
+            return false;
+    }
+    return _deadEnemy[n];
+}
+
+void GameData::addScore(int n)
+{
+    _score+=n;
+}
+
+void GameData::addMoney(int n)
+{
+    _money+=n;
+}
+
+void GameData::reduceMoney(int n)
+{
+    _money-=n;
+}
+
+void GameData::setDeadEnemy(int n, bool f)
+{
+    if(n>=_enemyTanks.size())
+    {
+        qDebug()<<"不存在id为:"<<n<<"的敌方坦克";
+            return ;
+    }
+    _deadEnemy[n] = f;
 }
 
 Bullet *GameData::addBullet(int id, Tank* shooter,QPointF begin, QPointF tar)

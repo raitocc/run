@@ -26,6 +26,12 @@ void SingleGameWidget::newGameData()
     data->newData();
 }
 
+void SingleGameWidget::pauseBack()
+{
+    timer->start();
+    ui->graphicsView->setFocus();
+}
+
 
 void SingleGameWidget::initView()
 {
@@ -44,6 +50,7 @@ void SingleGameWidget::initTimer()
     timer->start(1000/120);
     connect(timer,&QTimer::timeout,scene,&QGraphicsScene::advance);
     connect(timer,&QTimer::timeout,ui->graphicsView,&GameView::advance);
+    connect(timer,&QTimer::timeout,this,&SingleGameWidget::advance);
 }
 
 void SingleGameWidget::drawMap()
@@ -90,10 +97,29 @@ void SingleGameWidget::drawTank()
     data->playerTank()->setBrush(QBrush(resizedbody));
     data->playerTank()->setData(ITEM_TYPE,PLAYER_TANK);
     scene->addItem(data->playerTank());
+
+    //处理敌方坦克
+    for(int i=0;i<data->enemyNum();i++)
+    {
+        data->enemyTank(i)->setBrush(QBrush(resizedbody));
+        data->enemyTank(i)->setData(ITEM_TYPE,ENEMY_TANK);
+        scene->addItem(data->enemyTank(i));
+        //qDebug()<<"PLACE"<<i<<data->enemyTank(i)->pos();
+    }
+}
+
+void SingleGameWidget::advance()
+{
+    ui->label_level->setText("关卡 "+QString::number(data->level()));
+    ui->label_money->setText("金钱 "+QString::number(data->money()));
+    ui->label_score->setText("分数 "+QString::number(data->score()));
+    ui->label_HP->setText("生命 "+QString::number(data->playerTank()->HP()));
 }
 
 void SingleGameWidget::on_btnPause_clicked()
 {
+    timer->stop();
+    data->playerTank()->clearMovingState();
     emit signalPause();
 }
 

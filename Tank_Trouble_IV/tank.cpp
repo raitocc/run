@@ -47,6 +47,12 @@ Turret* Tank::turret() const
     return _turret;
 }
 
+GameData *Tank::gameData() const
+{
+    return _data;
+}
+
+
 // 设置血量
 void Tank::setHP(int hp)
 {
@@ -63,7 +69,8 @@ void Tank::setMaxHP(int maxHP)
 void Tank::addHP(int num)
 {
     _HP += num;
-    if (_HP > _maxHP) {
+    if (_HP > _maxHP)
+    {
         _HP = _maxHP;
     }
 }
@@ -72,9 +79,12 @@ void Tank::addHP(int num)
 void Tank::reduceHP(int num)
 {
     _HP -= num;
-    if (_HP < 0) {
+    if (_HP <= 0)
+    {
         _HP = 0;
     }
+    //由view负责处理后事
+    //qDebug()<<"!"<<_HP;
 }
 
 // 设置移动速度
@@ -105,6 +115,11 @@ void Tank::setTurret(Turret* turret)
     _turret = turret;
 }
 
+void Tank::setGameData(GameData *data)
+{
+    _data = data;
+}
+
 void Tank::clearMovingState()
 {
     for(int i =0;i<4;i++)
@@ -112,6 +127,7 @@ void Tank::clearMovingState()
         _movingState[i]=false;
     }
 }
+
 
 void Tank::creatTurret()
 {
@@ -230,6 +246,23 @@ bool Tank::checkCollision()
             //qDebug()<<"COLL";
             return true;
         }
+        //撞到坦克
+        if(item->data(ITEM_TYPE)==ENEMY_TANK||item->data(ITEM_TYPE)==PLAYER_TANK)
+        {
+            return true;
+        }
+        //撞到子弹
+        //改为由子弹类处理
+        // if(item->data(ITEM_TYPE)==BULLET)
+        // {
+        //     Bullet *bullet = dynamic_cast<Bullet *>(item);
+        //     if(bullet->shooter()!=this)
+        //     {
+        //         this->reduceHP(bullet->damage());
+        //         qDebug()<<"坦克扣血"<<bullet->damage()<<"剩余"<<this->HP();
+        //             return true;
+        //     }
+        // }
     }
     return false;
 }
@@ -351,7 +384,7 @@ Turret::Turret(Tank *parent)
 
     this->setTransformOriginPoint(QPointF(this->rect().width()/2,this->rect().height() * 3/4));
     this->setPos(parent->rect().center()-this->transformOriginPoint());
-    qDebug()<<"TURRET"<<this->pos()<<this->brush();
+    //qDebug()<<"TURRET"<<this->pos()<<this->brush();
     this->setZValue(5);
 }
 

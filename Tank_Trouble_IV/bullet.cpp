@@ -71,6 +71,7 @@ void Bullet::init(QPointF begin, QPointF tar)//初始化
     this->setBrush(QBrush(Qt::red));//红色
     setPos(begin-this->rect().center());//设置初始位置
     this->setZValue(2);
+    _damage = 5;
 }
 
 void Bullet::advance(int phase)
@@ -105,6 +106,15 @@ bool Bullet::checkCollision()
             }
             return true;
         }
+        if(rectItem->data(ITEM_TYPE)==PLAYER_TANK||rectItem->data(ITEM_TYPE)==ENEMY_TANK)
+        {
+            Tank *tank = dynamic_cast<Tank *>(item);
+            if(tank!=this->shooter())
+            {
+                hitTank(tank);
+                return true;
+            }
+        }
     }
     return false;
 }
@@ -113,4 +123,9 @@ void Bullet::hitBox(QGraphicsRectItem *box)
 {
     box->setData(GRID_TYPE,AIR);
     box->setBrush(Qt::white);
+}
+
+void Bullet::hitTank(Tank *tank)
+{
+    tank->reduceHP(this->damage());
 }

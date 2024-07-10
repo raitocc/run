@@ -8,11 +8,27 @@ GameView::GameView(QWidget *parent)
     this->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     this->setMouseTracking(true);
+    connect(&playerTankShootableTimer,&QTimer::timeout,this,&GameView::slotSwitchplayerTankShootableState);
 }
 
 void GameView::setGameData(GameData *data)
 {
     this->data=data;
+}
+
+void GameView::clearDeadTank()
+{
+    for(int i =0;i<data->enemyNum();i++)
+    {
+        if(!data->deadEnemy(i)&&data->enemyTank(i)->HP()<=0)
+        {
+            this->scene()->removeItem(data->enemyTank(i));
+            data->addScore(50);
+            data->addMoney(5);
+            //qDebug()<<data->score()<<data->money();
+            data->setDeadEnemy(i,true);
+        }
+    }
 }
 
 void GameView::wheelEvent(QWheelEvent *event)
@@ -95,26 +111,39 @@ void GameView::centerViewOnTank()
 void GameView::advance()
 {
     centerViewOnTank();
+    clearDeadTank();
+}
+
+void GameView::slotSwitchplayerTankShootableState()
+{
+    playerTankShootableTimer.stop();
+    data->playerTank()->setShootAble(true);
 }
 
 void GameView::mousePressEvent(QMouseEvent *event)
 {
-    QPoint viewPos = event->pos();
-    QPointF scenePos = this->mapToScene(viewPos);
+    //左键按下
+    if(data->playerTank()->shootAble()&&event->button() == Qt::LeftButton)
+    {
+        QPoint viewPos = event->pos();
+        QPointF scenePos = this->mapToScene(viewPos);
 
-    data->playerTank()->turret()->setDirection(scenePos);//更新炮筒转向
+        data->playerTank()->turret()->setDirection(scenePos);//更新炮筒转向
 
-    PlayerTank* tank = data->playerTank();
+        PlayerTank* tank = data->playerTank();
 
-    // qreal biasx = std::sin(M_PI*tank->rotation()/360.0) * QLineF(tank->pos()+tank->transformOriginPoint(),tank->pos()+tank->rect().center()).length();
-    // qreal biasy = std::cos(M_PI*tank->rotation()/360.0) * QLineF(tank->pos()+tank->transformOriginPoint(),tank->pos()+tank->rect().center()).length();
+        // qreal biasx = std::sin(M_PI*tank->rotation()/360.0) * QLineF(tank->pos()+tank->transformOriginPoint(),tank->pos()+tank->rect().center()).length();
+        // qreal biasy = std::cos(M_PI*tank->rotation()/360.0) * QLineF(tank->pos()+tank->transformOriginPoint(),tank->pos()+tank->rect().center()).length();
 
-    // qDebug()<<biasx<<biasy;
+        // qDebug()<<biasx<<biasy;
 
-    QGraphicsRectItem* rect = data->addBullet(tank->currentBullet(),tank,tank->pos()+tank->rect().center()/*+QPointF(biasx,biasy)*/,scenePos);
-    //qDebug()<<tank->pos();
-    //qDebug()<<tank->pos()+tank->rect().center();
-    this->scene()->addItem(rect);
+        QGraphicsRectItem* rect = data->addBullet(tank->currentBullet(),tank,tank->pos()+tank->rect().center()/*+QPointF(biasx,biasy)*/,scenePos);
+        //qDebug()<<tank->pos();
+        //qDebug()<<tank->pos()+tank->rect().center();
+        this->scene()->addItem(rect);
+        playerTankShootableTimer.start(1000/tank->shootSpeed());
+        tank->setShootAble(false);
+    }
 }
 
 
