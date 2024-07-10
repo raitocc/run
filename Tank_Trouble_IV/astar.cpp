@@ -3,7 +3,8 @@
 #include <cmath>
 #include <algorithm>
 
-struct Node {
+struct Node
+{
     Point point;
     int f, g, h;
     Node* parent;

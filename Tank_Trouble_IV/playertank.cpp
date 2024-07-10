@@ -1,4 +1,5 @@
 #include "playertank.h"
+#include "gameview.h"
 #include "parameter.h"
 #include "qgraphicsscene.h"
 
@@ -103,6 +104,30 @@ void PlayerTank::init()//初始化
     //绘制炮筒
     this->creatTurret();
 
+}
+
+void PlayerTank::update()
+{
+    handleCollision();
+}
+
+void PlayerTank::handleCollision()//解决吃道具
+{
+    QList<QGraphicsItem *> collidingItems = scene()->collidingItems(this);
+    for (QGraphicsItem *item : collidingItems)
+    {
+        // 子弹补给
+        if (item->data(ITEM_TYPE)==BULLET_SUPLLY)
+        {
+            int id = item->data(BULLET_TYPE).toInt();
+            int amout = item->data(BULLET_AMOUNT).toInt();
+            //qDebug()<<id<<amout;
+            this->addBullet(id,amout);
+            this->scene()->removeItem(item);
+            GameView* view = dynamic_cast<class GameView*>(this->scene()->views()[0]);
+            view->gameData()->setSupplyFlag(item->pos().y()/GRIDSIZE,item->pos().x()/GRIDSIZE,false);
+        }
+    }
 }
 
 

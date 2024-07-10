@@ -36,14 +36,16 @@ void GameView::clearDeadTank()
     }
 }
 
-void GameView::setRandomBullet()
+void GameView::setRandomBullet()//放置随机补给
 {
-    int averageSec = 15;
+    int averageSec = 3;
     int num = 1;
     int ran = QRandomGenerator::global()->bounded(0,120*averageSec*num);
     if(ran<num)
     {
-        qDebug()<<"产生随机子弹掉落物"<<ran+1;
+        int amout = QRandomGenerator::global()->bounded(3,8);
+        qDebug()<<"产生随机子弹掉落物"<<ran+1<<"数量"<<amout;
+        data->addBulletSupply(ran+1,amout,this->scene());
     }
 }
 
@@ -129,6 +131,7 @@ void GameView::advance()
     centerViewOnTank();
     clearDeadTank();
     setRandomBullet();
+    data->playerTank()->update();
 }
 
 void GameView::slotSwitchplayerTankShootableState()
@@ -144,22 +147,32 @@ void GameView::mousePressEvent(QMouseEvent *event)
     {
         QPoint viewPos = event->pos();
         QPointF scenePos = this->mapToScene(viewPos);
-
         data->playerTank()->turret()->setDirection(scenePos);//更新炮筒转向
-
         PlayerTank* tank = data->playerTank();
 
         // qreal biasx = std::sin(M_PI*tank->rotation()/360.0) * QLineF(tank->pos()+tank->transformOriginPoint(),tank->pos()+tank->rect().center()).length();
         // qreal biasy = std::cos(M_PI*tank->rotation()/360.0) * QLineF(tank->pos()+tank->transformOriginPoint(),tank->pos()+tank->rect().center()).length();
 
         // qDebug()<<biasx<<biasy;
-
-        QGraphicsRectItem* rect = data->addBullet(tank->currentBullet(),tank,tank->pos()+tank->rect().center()/*+QPointF(biasx,biasy)*/,scenePos);
-        //qDebug()<<tank->pos();
-        //qDebug()<<tank->pos()+tank->rect().center();
-        this->scene()->addItem(rect);
-        playerTankShootableTimer.start(1000/tank->shootSpeed());
-        tank->setShootAble(false);
+        if(tank->bulletNum(tank->currentBullet()>0))
+        {
+            QGraphicsRectItem* rect = data->addBullet(tank->currentBullet(),tank,tank->pos()+tank->rect().center()/*+QPointF(biasx,biasy)*/,scenePos);
+            tank->addBullet(tank->currentBullet(),-1);//子弹数减一，减到零自动换下一个可用子弹
+            if(tank->bulletNum(tank->currentBullet())==0)
+            {
+                this->data->switchPlayerCurrentBullet();
+            }
+            //qDebug()<<tank->pos();
+            //qDebug()<<tank->pos()+tank->rect().center();
+            this->scene()->addItem(rect);
+            playerTankShootableTimer.start(1000/tank->shootSpeed());
+            tank->setShootAble(false);
+        }
+    }
+    //右键按下，顺序切换子弹
+    if(data->playerTank()->shootAble()&&event->button() == Qt::RightButton)
+    {
+        this->data->switchPlayerCurrentBullet();
     }
 }
 

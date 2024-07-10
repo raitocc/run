@@ -8,12 +8,14 @@
 #define ITEM_TYPE 0
 #define GRID_TYPE 1
 #define BULLET_TYPE 1
+#define BULLET_AMOUNT 2
 
 //item类型
 #define PLAYER_TANK 0
 #define ENEMY_TANK 1
 #define GRID 2
 #define BULLET 3
+#define BULLET_SUPLLY 4
 
 //格子类型
 #define WALL 0

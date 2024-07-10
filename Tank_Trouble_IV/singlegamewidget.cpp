@@ -114,6 +114,8 @@ void SingleGameWidget::advance()
     ui->label_money->setText("金钱 "+QString::number(data->money()));
     ui->label_score->setText("分数 "+QString::number(data->score()));
     ui->label_HP->setText("生命 "+QString::number(data->playerTank()->HP()));
+    ui->label_currBulletent->setText("子弹种类 "+ QString::number(data->playerTank()->currentBullet()));
+    ui->label_bulletLeft->setText("余量 "+QString::number(data->playerTank()->bulletNum(data->playerTank()->currentBullet())));
 }
 
 void SingleGameWidget::on_btnPause_clicked()

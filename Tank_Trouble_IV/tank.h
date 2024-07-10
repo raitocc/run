@@ -51,8 +51,8 @@ protected:
     qreal _shootSpeed;
     bool _movingState[4];
     Turret* _turret;
+    GameData *_data;
 
-    GameData* _data;
 
     void move();//移动
     bool checkCollision();//检查是否碰撞

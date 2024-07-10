@@ -2,6 +2,7 @@
 #define GAMEVIEW_H
 
 #include "gamedata.h"
+#include "qtimer.h"
 #include <QGraphicsView>
 #include <QWidget>
 #include <QtMath>

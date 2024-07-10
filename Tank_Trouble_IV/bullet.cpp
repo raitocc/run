@@ -141,7 +141,7 @@ void Bullet::hitBox(QGraphicsRectItem *box)
     GameView* view = dynamic_cast<class GameView*>(this->scene()->views()[0]);
     int row = box->rect().center().y()/GRIDSIZE;
     int col = box->rect().center().x()/GRIDSIZE;
-    qDebug()<<row<<col;
+    //qDebug()<<row<<col;
     view->gameData()->setMap(row,col,AIR);
 }
 
@@ -161,16 +161,17 @@ BulletSupply::BulletSupply(int id, int num, QPointF pos)
     this->setPos(pos);
 }
 
-BulletSupply::BulletSupply(int id, int num, int row, int col)
+BulletSupply::BulletSupply(int id, int num, int row, int col,GameData* data)
 {
     this->setRect(0,0,GRIDSIZE/3,GRIDSIZE/3);
     _id=id;
     _num=num;
+    _data=data;
     this->setData(ITEM_TYPE,BULLET_SUPLLY);
     this->setPos(col*GRIDSIZE+GRIDSIZE/2-this->rect().center().x(),row*GRIDSIZE+GRIDSIZE/2-this->rect().center().y());
-    QPixmap wall(":/new/prefix1/wall.png");
-    QPixmap resizedwall =wall.scaled(GRIDSIZE/3, GRIDSIZE/3);
-
+    QPixmap pix(":/sources/bulletsupply1.png");
+    QPixmap resizedPix =pix.scaled(GRIDSIZE/3, GRIDSIZE/3);
+    this->setBrush(resizedPix);
 }
 
 int BulletSupply::id() const
