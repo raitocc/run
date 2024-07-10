@@ -9,7 +9,10 @@ public:
     EnemyTank(int initialBulletID,QGraphicsItem* parent = nullptr);
 
     int bulletID() const;
-     void setBulletID(int bulletID);//设置tankID的函数
+    void setBulletID(int bulletID)
+        {
+        this->_bulletID=bulletID;
+    };//设置tankID的函数
 
 private:
     int _bulletID;

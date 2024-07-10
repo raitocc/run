@@ -142,7 +142,7 @@ void PlayerTank::move()
         }
     }
 
-    // 如果主要方向移动受阻，分别尝试各个单独方向的移动
+    // 如果主要方向移动受阻，分别尝试各个单独方向的移动,向下向右移动的向量为正方向
     if (!moved) {
         if (movingUp)
         {
@@ -211,35 +211,48 @@ bool PlayerTank::checkCollision()
 
 void PlayerTank::adjustPosition()
 {
-    qDebug()<<"卡墙";
+    qDebug() << "尝试解决卡住的问题";
     QPointF oldPos = this->pos();
-    const int maxAttempts = 40; // 最大尝试次数
-    const qreal stepSize = 0.4; // 微调步进值
-    for(int i = 0;i<maxAttempts;i++)
-    {
-        moveBy(0,stepSize);
-        if(!checkCollision()) return;
+    const int maxAttempts = 20;
+    qreal initialStepSize = 0.4;
+    qreal stepSize = initialStepSize;
+
+    for (int attempt = 0; attempt < maxAttempts; ++attempt) {
+        bool moved = false;
+
+        for (int direction = 0; direction < 4; ++direction) {
+            qreal dx = 0, dy = 0;
+            switch (direction) {
+            case 0: dy = -stepSize; break; // 向上移动
+            case 1: dy = stepSize; break; // 向下移动
+            case 2: dx = -stepSize; break; // 向左移动
+            case 3: dx = stepSize; break; // 向右移动
+            }
+
+            moveBy(dx, dy);
+            if (!checkCollision()) {
+                moved = true;
+                break; // 成功移动，跳出内循环
+            }
+            moveBy(-dx, -dy); // 没有成功移动，回到原来位置
+        }
+
+        if (moved) {
+            break; // 成功移动，跳出外循环
+        } else {
+            // 逐步增加步进值
+            stepSize += initialStepSize;
+        }
     }
-    this->setPos(oldPos);
-    for(int i = 0;i<maxAttempts;i++)
-    {
-        moveBy(0,-stepSize);
-        if(!checkCollision()) return;
+
+    // 如果尝试了多次仍然无法解决，回到原始位置
+    if (!checkCollision()) {
+        return; // 已经成功移动到目标位置
+    } else {
+        this->setPos(oldPos); // 回到原始位置
     }
-    this->setPos(oldPos);
-    for(int i = 0;i<maxAttempts;i++)
-    {
-        moveBy(-stepSize,0);
-        if(!checkCollision()) return;
-    }
-    this->setPos(oldPos);
-    for(int i = 0;i<maxAttempts;i++)
-    {
-        moveBy(stepSize,0);
-        if(!checkCollision()) return;
-    }
-    this->setPos(oldPos);
 }
+
 
 void PlayerTank::updateDirection()
 {
