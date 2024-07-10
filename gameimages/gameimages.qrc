@@ -2,7 +2,7 @@
     <qresource prefix="/sources">
         <file>box.png</file>
         <file>wall.png</file>
-        <file>Tank1000.png</file>
+        <file>TankBody.png</file>
         <file>TankTurret.png</file>
     </qresource>
     <qresource prefix="/background">

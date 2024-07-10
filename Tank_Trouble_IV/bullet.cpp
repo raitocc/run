@@ -24,7 +24,7 @@ const QLineF &Bullet::direction() const
 
 Tank *Bullet::shooter() const
 {
-
+    return _shooter;
 }
 
 void Bullet::setId(int id)

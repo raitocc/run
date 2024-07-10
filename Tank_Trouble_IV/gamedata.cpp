@@ -16,9 +16,10 @@ void GameData::newData()
     this->_level=1;
     this->_money=0;
     this->_score=0;
-    int col = QRandomGenerator::global()->bounded(30,51);
+    int col = QRandomGenerator::global()->bounded(10,16);
     int row = col *3/4;
     createMap(row, col);
+    createTank(col/3);
 }
 
 void GameData::createMap(int row, int col)//创建地图
@@ -95,8 +96,10 @@ void GameData::createMap(int row, int col)//创建地图
 
 void GameData::createTank(int n)
 {
-    QVector<QPair<int, int>> points = generateSpawnPoints(n);
-
+    QVector<QPair<int, int>> p = generateSpawnPoints(n);
+    //先放置玩家坦克
+    _playerTank = new PlayerTank;
+    _playerTank->setPos(p[0].first*GRIDSIZE+GRIDSIZE/2-TANK_WIDTH/2,p[0].second*GRIDSIZE+GRIDSIZE/2-TANK_LENGTH/2);
 }
 
 int GameData::score() const
@@ -127,6 +130,11 @@ int GameData::mapRow() const
 int GameData::mapCol() const
 {
     return _map[0].size();
+}
+
+PlayerTank* GameData::playerTank() const
+{
+    return _playerTank;
 }
 
 bool GameData::checkConnectivity(int row, int col)//检查连通性
@@ -189,14 +197,14 @@ bool GameData::checkConnectivity(int row, int col)//检查连通性
     return true;
 }
 
-QVector<QPair<int, int>> GameData::generateSpawnPoints(int n)
+QVector<QPair<int, int>> GameData::generateSpawnPoints(int n)//产生随机出生点
 {
     QVector<QPair<int, int>> whiteCells;
 
     // 遍历地图以找到所有白色块的位置
     for (int i = 0; i < _map.size(); ++i) {
         for (int j = 0; j < _map[i].size(); ++j) {
-            if (_map[i][j] == 2) {
+            if (_map[i][j] == AIR) {
                 whiteCells.append(qMakePair(i, j));
             }
         }
@@ -213,9 +221,7 @@ QVector<QPair<int, int>> GameData::generateSpawnPoints(int n)
             int col = pos.second;
 
             // 将坦克放在白色块的中心
-            //setPos(col * gridSize + gridSize / 2 - rect().width() / 2, row * gridSize + gridSize / 2 - rect().height() / 2);
-            //gridSize宏定义在"singlegamewidget.h"中，因此#include "singlegamewidget.h"
-            spawnPoints.append(qMakePair(col * GRIDSIZE + GRIDSIZE / 2, row * GRIDSIZE + GRIDSIZE / 2));
+            spawnPoints.append(qMakePair(col, row));
 
             // 移除已选中的白色块以防止重复选择
             whiteCells.removeAt(selectedNum);
@@ -223,5 +229,10 @@ QVector<QPair<int, int>> GameData::generateSpawnPoints(int n)
     }
 
     return spawnPoints;
+}
+
+void GameData::advance()
+{
+
 }
 

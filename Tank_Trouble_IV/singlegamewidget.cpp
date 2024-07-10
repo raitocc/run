@@ -11,6 +11,7 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     ui->setupUi(this);
     newGameData();//从第一关新建游戏数据
     initView();//初始化视图
+    initTimer();//初始化Timer
 }
 
 SingleGameWidget::~SingleGameWidget()
@@ -28,9 +29,20 @@ void SingleGameWidget::newGameData()
 
 void SingleGameWidget::initView()
 {
+    ui->graphicsView->setGameData(data);
     scene = new QGraphicsScene(this);
     ui->graphicsView->setScene(scene);
+    ui->graphicsView->setFocusPolicy(Qt::StrongFocus);//强聚焦
+    ui->graphicsView->setFocus();
     drawMap();//绘制地图
+    drawTank();//绘制坦克
+}
+
+void SingleGameWidget::initTimer()
+{
+    timer = new QTimer(this);
+    timer->start(1000/120);
+    connect(timer,&QTimer::timeout,scene,&QGraphicsScene::advance);
 }
 
 void SingleGameWidget::drawMap()
@@ -66,6 +78,14 @@ void SingleGameWidget::drawMap()
     ui->graphicsView->resize(this->width(),this->height()-STATEBAR_HEIGHT);
 }
 
+void SingleGameWidget::drawTank()
+{
+    QPixmap body(":/sources/TankBody.png");
+    QPixmap resizedbody =body.scaled(TANK_WIDTH, TANK_LENGTH);
+    data->playerTank()->setBrush(QBrush(resizedbody));
+    scene->addItem(data->playerTank());
+}
+
 void SingleGameWidget::on_btnPause_clicked()
 {
     emit signalPause();
@@ -76,3 +96,13 @@ void SingleGameWidget::resizeEvent(QResizeEvent *event)
     ui->graphicsView->resize(this->width(),this->height()-STATEBAR_HEIGHT);
     QWidget::resizeEvent(event);
 }
+
+// void SingleGameWidget::keyPressEvent(QKeyEvent *event)
+// {
+//     qDebug()<<"WidgetPress";
+// }
+
+// void SingleGameWidget::keyReleaseEvent(QKeyEvent *event)
+// {
+//     qDebug()<<"WidegtRelease";
+// }
