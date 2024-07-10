@@ -50,9 +50,35 @@ void EnemyTank::init()
 
     //绘制炮筒
     this->creatTurret();
+
+    //设置血条
+    _hpRect = new QGraphicsRectItem(this);
+    _hpRect->setRect(0,0,TANK_WIDTH*4/3,HPRECT_HEIGHT);//血条长度TANK_WIDTH*4/3
+    _hpRect->setBrush(QColor(Qt::red));
+    _hpRect->setPos(-TANK_WIDTH/6,TANK_LENGTH+HPRECT_HEIGHT+3);
 }
 
 void EnemyTank::fire()
 {
 
+}
+
+void EnemyTank::setHpRect()
+{
+    QRectF rect = _hpRect->rect();
+    rect.setWidth(_HP / (_maxHP * 1.0) * TANK_WIDTH*4/3.0);
+    _hpRect->setRect(rect);
+}
+
+void EnemyTank::advance(int phase)
+{
+    if(phase == 0)
+    {
+        return;
+    }
+    else
+    {
+        move();
+        setHpRect();
+    }
 }

@@ -23,6 +23,12 @@ private:
     QPointF _rotationCenter;
     int _id;
 
+    QGraphicsRectItem* _hpRect;//血条
+
+    void setHpRect();
+    void advance(int phase);
+
+
 };
 
 #endif // ENEMYTANK_H

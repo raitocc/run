@@ -78,7 +78,7 @@ void PlayerTank::init()//初始化
     _bulletNum.resize(MAX_BULLET_TYPE);
     _propsNum.resize(MAX_PROP_TYPE);
     _bulletNum[0] = INT_MAX;
-    _rotationCenter = QPointF(TANK_WIDTH/2,TANK_LENGTH*2/3);
+    _rotationCenter = QPointF(TANK_WIDTH/2,TANK_LENGTH/2);
     _shootAble = true;
 
     //z

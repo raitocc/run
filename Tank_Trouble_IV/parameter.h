@@ -23,15 +23,16 @@
 #define AIR 2
 
 
-#define GRIDSIZE 60//格子宽度
-#define TANK_WIDTH 23//坦克宽度
-#define TANK_LENGTH 30//坦克长度
-
 #define MAX_BULLET_TYPE 16//最大子弹种类数
 #define MAX_PROP_TYPE 16//最大道具种类数
 
-//游戏状态栏高度
-#define STATEBAR_HEIGHT 70
+
+//图形显示
+#define GRIDSIZE 60//格子宽度
+#define TANK_WIDTH 23//坦克宽度
+#define TANK_LENGTH 30//坦克长度
+#define STATEBAR_HEIGHT 70//游戏状态栏高度
+#define HPRECT_HEIGHT 6//血条高度
 
 
 
