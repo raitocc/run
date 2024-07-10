@@ -154,5 +154,31 @@ void Bullet::hitTank(Tank *tank)
 
 BulletSupply::BulletSupply(int id, int num, QPointF pos)
 {
+    this->setRect(0,0,GRIDSIZE/3,GRIDSIZE/3);
+    _id=id;
+    _num=num;
+    this->setData(ITEM_TYPE,BULLET_SUPLLY);
+    this->setPos(pos);
+}
 
+BulletSupply::BulletSupply(int id, int num, int row, int col)
+{
+    this->setRect(0,0,GRIDSIZE/3,GRIDSIZE/3);
+    _id=id;
+    _num=num;
+    this->setData(ITEM_TYPE,BULLET_SUPLLY);
+    this->setPos(col*GRIDSIZE+GRIDSIZE/2-this->rect().center().x(),row*GRIDSIZE+GRIDSIZE/2-this->rect().center().y());
+    QPixmap wall(":/new/prefix1/wall.png");
+    QPixmap resizedwall =wall.scaled(GRIDSIZE/3, GRIDSIZE/3);
+
+}
+
+int BulletSupply::id() const
+{
+    return _id;
+}
+
+int BulletSupply::num() const
+{
+    return _num;
 }
