@@ -16,7 +16,7 @@ void GameData::newData()
     this->_level=1;
     this->_money=0;
     this->_score=0;
-    int col = QRandomGenerator::global()->bounded(10,16);
+    int col = QRandomGenerator::global()->bounded(30,51);
     int row = col *3/4;
     createMap(row, col);
     createTank(col/3);

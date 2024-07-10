@@ -67,6 +67,10 @@ void PlayerTank::init()//初始化
     _propsNum.resize(MAX_PROP_TYPE);
     _bulletNum[0] = INT_MAX;
     _rotationCenter = QPointF(TANK_WIDTH/2,TANK_LENGTH*2/3);
+
+    //z
+    this->setZValue(3);
+
     for(int i=1;i<_bulletNum.size();i++)
     {
         _bulletNum[i]=0;
@@ -84,12 +88,11 @@ void PlayerTank::init()//初始化
     this->setFlag(ItemIsFocusable);
     this->setFocus();
 
-}
-
-void PlayerTank::fire(QPointF tarPos)
-{
+    //绘制炮筒
+    this->creatTurret();
 
 }
+
 
 
 

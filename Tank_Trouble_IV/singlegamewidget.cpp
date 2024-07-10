@@ -43,6 +43,7 @@ void SingleGameWidget::initTimer()
     timer = new QTimer(this);
     timer->start(1000/120);
     connect(timer,&QTimer::timeout,scene,&QGraphicsScene::advance);
+    connect(timer,&QTimer::timeout,ui->graphicsView,&GameView::advance);
 }
 
 void SingleGameWidget::drawMap()

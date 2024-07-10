@@ -70,6 +70,7 @@ void Bullet::init(QPointF begin, QPointF tar)//初始化
     this->setData(ITEM_TYPE,BULLET);
     this->setBrush(QBrush(Qt::red));//红色
     setPos(begin-this->rect().center());//设置初始位置
+    this->setZValue(2);
 }
 
 void Bullet::advance(int phase)

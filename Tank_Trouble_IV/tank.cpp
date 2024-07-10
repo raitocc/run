@@ -113,6 +113,11 @@ void Tank::clearMovingState()
     }
 }
 
+void Tank::creatTurret()
+{
+    _turret = new Turret(this);
+}
+
 
 void Tank::move()
 {
@@ -124,7 +129,6 @@ void Tank::move()
     bool movingDown = _movingState[DOWN];
     bool movingLeft = _movingState[LEFT];
     int count = (movingDown+movingLeft+movingRight+movingUp);
-    updateDirection();
     // 尝试主要方向的移动
     if (!moved && movingUp && movingRight)
     {
@@ -332,3 +336,33 @@ void Tank::advance(int phase)
     }
 }
 
+
+Turret::Turret(Tank *parent)
+{
+    this->setParentItem(parent);
+    this->setRect(0,0,TANK_WIDTH/2,TANK_LENGTH);
+
+    _parentTank = parent;
+
+    QPixmap pix(":/sources/TankTurret.png");
+    QPixmap scaledPix =pix.scaled(TANK_WIDTH/2,TANK_LENGTH);
+    this->setBrush(QBrush(scaledPix));
+    this->setPen(Qt::NoPen);
+
+    this->setTransformOriginPoint(QPointF(this->rect().width()/2,this->rect().height() * 3/4));
+    this->setPos(parent->rect().center()-this->transformOriginPoint());
+    qDebug()<<"TURRET"<<this->pos()<<this->brush();
+    this->setZValue(5);
+}
+
+void Turret::setDirection(const QPointF &target)
+{
+    QPointF begin = _parentTank->pos()+_parentTank->rect().center();
+    qreal angle = std::atan2(target.y()-begin.y(), target.x()-begin.x()) * 180 / M_PI;
+    this->setRotation(angle- _parentTank->rotation() +90);
+}
+
+Tank *Turret::parentTank() const
+{
+    return _parentTank;
+}

@@ -3,7 +3,18 @@
 
 #include <QGraphicsRectItem>
 
-class Turret; // 假设有Turret类
+class Tank;
+
+class Turret:public QGraphicsRectItem
+{
+public:
+    Turret(Tank *parent = nullptr);
+    void setDirection(const QPointF &target);
+    Tank* parentTank() const;
+
+private:
+    Tank* _parentTank;
+};
 
 class Tank : public QGraphicsRectItem
 {
@@ -25,6 +36,8 @@ public:
     void setMovingState(int dir, bool state);
     void setTurret(Turret* turret);
     void clearMovingState();//清空移动
+
+    void creatTurret();
 
 protected:
     int _HP;

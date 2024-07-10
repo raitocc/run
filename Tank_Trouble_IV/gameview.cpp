@@ -21,11 +21,12 @@ void GameView::wheelEvent(QWheelEvent *event)
     event->ignore();
 }
 
-// void GameView::mouseMoveEvent(QMouseEvent *event)
-// {
-//     SingleGameWidget *itsParent = dynamic_cast<SingleGameWidget *>(this->parent());
-//     itsParent->setTurretRotation(event);
-// }
+void GameView::mouseMoveEvent(QMouseEvent *event)
+{
+    QPoint viewPos = event->pos();
+    QPointF scenePos = this->mapToScene(viewPos);
+    data->playerTank()->turret()->setDirection(scenePos);
+}
 
 void GameView::keyPressEvent(QKeyEvent *event)
 {
@@ -73,12 +74,44 @@ void GameView::keyReleaseEvent(QKeyEvent *event)
     }
 }
 
+void GameView::centerViewOnTank()
+{
+    // 获取坦克的中心位置
+    QPointF tankCenter = data->playerTank()->pos() + QPointF(TANK_WIDTH/2, TANK_LENGTH / 2);
+
+    // 计算视图的边界
+    QRectF sceneRect = scene()->sceneRect();
+    qreal halfWidth = this->viewport()->width() / 2;
+    qreal halfHeight = this->viewport()->height() / 2;
+
+    // 计算新的中心位置，确保不超出边界
+    qreal newCenterX = qMin(sceneRect.right() - halfWidth, qMax(sceneRect.left() + halfWidth, tankCenter.x()));
+    qreal newCenterY = qMin(sceneRect.bottom() - halfHeight, qMax(sceneRect.top() + halfHeight, tankCenter.y()));
+
+    // 设置视图的中心
+    this->centerOn(newCenterX, newCenterY);
+}
+
+void GameView::advance()
+{
+    centerViewOnTank();
+}
+
 void GameView::mousePressEvent(QMouseEvent *event)
 {
     QPoint viewPos = event->pos();
     QPointF scenePos = this->mapToScene(viewPos);
+
+    data->playerTank()->turret()->setDirection(scenePos);//更新炮筒转向
+
     PlayerTank* tank = data->playerTank();
-    QGraphicsRectItem* rect = data->addBullet(tank->currentBullet(),tank,tank->pos()+tank->rect().center(),scenePos);
+
+    // qreal biasx = std::sin(M_PI*tank->rotation()/360.0) * QLineF(tank->pos()+tank->transformOriginPoint(),tank->pos()+tank->rect().center()).length();
+    // qreal biasy = std::cos(M_PI*tank->rotation()/360.0) * QLineF(tank->pos()+tank->transformOriginPoint(),tank->pos()+tank->rect().center()).length();
+
+    // qDebug()<<biasx<<biasy;
+
+    QGraphicsRectItem* rect = data->addBullet(tank->currentBullet(),tank,tank->pos()+tank->rect().center()/*+QPointF(biasx,biasy)*/,scenePos);
     //qDebug()<<tank->pos();
     //qDebug()<<tank->pos()+tank->rect().center();
     this->scene()->addItem(rect);

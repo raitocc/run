@@ -24,7 +24,7 @@ public:
     void init();//初始化
 
 
-    void fire(QPointF tarPos);//发射子弹
+    //void fire(QPointF tarPos);//发射子弹
 
 
 
