@@ -42,4 +42,19 @@ private:
     void hitTank(Tank* tank);
 };
 
+class BulletSupply :public QGraphicsRectItem
+{
+public:
+    BulletSupply(int id, int num, QPointF pos);
+
+    // int id() const;
+    // int num() const;
+
+    // void setId(int id);
+    // void setNum(int num);
+private:
+    int _id;
+    int _num;
+};
+
 #endif // BULLET_H

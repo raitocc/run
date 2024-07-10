@@ -16,6 +16,11 @@ void GameView::setGameData(GameData *data)
     this->data=data;
 }
 
+GameData* GameView::gameData() const
+{
+    return data;
+}
+
 void GameView::clearDeadTank()
 {
     for(int i =0;i<data->enemyNum();i++)
@@ -28,6 +33,17 @@ void GameView::clearDeadTank()
             //qDebug()<<data->score()<<data->money();
             data->setDeadEnemy(i,true);
         }
+    }
+}
+
+void GameView::setRandomBullet()
+{
+    int averageSec = 15;
+    int num = 1;
+    int ran = QRandomGenerator::global()->bounded(0,120*averageSec*num);
+    if(ran<num)
+    {
+        qDebug()<<"产生随机子弹掉落物"<<ran+1;
     }
 }
 
@@ -112,6 +128,7 @@ void GameView::advance()
 {
     centerViewOnTank();
     clearDeadTank();
+    setRandomBullet();
 }
 
 void GameView::slotSwitchplayerTankShootableState()
@@ -122,7 +139,7 @@ void GameView::slotSwitchplayerTankShootableState()
 
 void GameView::mousePressEvent(QMouseEvent *event)
 {
-    //左键按下
+    //左键按下，增添子弹
     if(data->playerTank()->shootAble()&&event->button() == Qt::LeftButton)
     {
         QPoint viewPos = event->pos();

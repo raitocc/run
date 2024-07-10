@@ -209,6 +209,11 @@ void GameData::setDeadEnemy(int n, bool f)
     _deadEnemy[n] = f;
 }
 
+void GameData::setMap(int row, int col, int type)
+{
+    _map[row][col] = type;
+}
+
 Bullet *GameData::addBullet(int id, Tank* shooter,QPointF begin, QPointF tar)
 {
     Bullet* bullet = new Bullet(id,shooter,begin,tar);

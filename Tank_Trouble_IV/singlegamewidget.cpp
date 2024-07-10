@@ -49,8 +49,8 @@ void SingleGameWidget::initTimer()
     timer = new QTimer(this);
     timer->start(1000/120);
     connect(timer,&QTimer::timeout,scene,&QGraphicsScene::advance);
-    connect(timer,&QTimer::timeout,ui->graphicsView,&GameView::advance);
-    connect(timer,&QTimer::timeout,this,&SingleGameWidget::advance);
+    connect(timer,&QTimer::timeout,ui->graphicsView,&GameView::advance);//通过view联系到gameData
+    connect(timer,&QTimer::timeout,this,&SingleGameWidget::advance);//更新界面显示
 }
 
 void SingleGameWidget::drawMap()

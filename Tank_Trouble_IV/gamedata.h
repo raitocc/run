@@ -35,6 +35,7 @@ public:
     void addMoney(int n);
     void reduceMoney(int n);
     void setDeadEnemy(int n,bool f);
+    void setMap(int row, int col, int type);
 
 
 
@@ -54,7 +55,7 @@ private:
     bool checkConnectivity(int row, int col);//创建地图辅助函数，检查连通性
     QVector<QPair<int, int>> generateSpawnPoints(int n);//创建坦克辅助函数，选择出生点
 
-private slots:
+public slots:
     void advance();//由SingleGameWidget的timer调用
 };
 

@@ -1,4 +1,5 @@
 #include "bullet.h"
+#include "gameview.h"
 #include "parameter.h"
 
 Bullet::Bullet(int id, Tank *shooter) :_id(id),_shooter(shooter)
@@ -56,22 +57,35 @@ void Bullet::setDirection(const QPointF &direction)
     _direction = direction;
 }
 
+
 void Bullet::init()
 {
 
 }
 
+
+//0为普通子弹，1为高速子弹
 void Bullet::init(QPointF begin, QPointF tar)//初始化
 {
     this->setRect(0,0,5,5);
     QLineF line(begin, tar);
     _direction = line.unitVector().p2() - line.unitVector().p1();
-    _speed = 2.0;
     this->setData(ITEM_TYPE,BULLET);
-    this->setBrush(QBrush(Qt::red));//红色
     setPos(begin-this->rect().center());//设置初始位置
     this->setZValue(2);
-    _damage = 5;
+    switch (_id)
+    {
+    case 0://普通基础子弹
+        _speed = 2.0;
+        this->setBrush(QBrush(Qt::black));//黑色
+        _damage = 5;
+        break;
+    case 1://高速子弹
+        _speed = 5.0;
+        this->setBrush(QBrush(Qt::red));//红色
+        _damage = 7;
+        break;
+    }
 }
 
 void Bullet::advance(int phase)
@@ -121,11 +135,24 @@ bool Bullet::checkCollision()
 
 void Bullet::hitBox(QGraphicsRectItem *box)
 {
+    //消除箱子，这个格子的map置为AIR
     box->setData(GRID_TYPE,AIR);
     box->setBrush(Qt::white);
+    GameView* view = dynamic_cast<class GameView*>(this->scene()->views()[0]);
+    int row = box->rect().center().y()/GRIDSIZE;
+    int col = box->rect().center().x()/GRIDSIZE;
+    qDebug()<<row<<col;
+    view->gameData()->setMap(row,col,AIR);
 }
 
 void Bullet::hitTank(Tank *tank)
 {
     tank->reduceHP(this->damage());
+}
+
+////////////////////BULLET_SUPPLY////////////////////////////
+
+BulletSupply::BulletSupply(int id, int num, QPointF pos)
+{
+
 }

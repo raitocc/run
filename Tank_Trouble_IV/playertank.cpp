@@ -70,6 +70,7 @@ void PlayerTank::init()//初始化
     _HP = 20;
     _maxHP = 20;
     _moveSpeed = 0.8;
+    _currentBullet = 0;
     _shootSpeed = 4;//频率
     clearMovingState();//清空移动状态标记
     _turret = nullptr;

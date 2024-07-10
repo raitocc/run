@@ -1,9 +1,13 @@
 #ifndef PARAMETER_H
 #define PARAMETER_H
 
+//TankTurret类在tank.h中
+//BulletSupply类在bullet.h中
+
 //给item加的data的key
 #define ITEM_TYPE 0
 #define GRID_TYPE 1
+#define BULLET_TYPE 1
 
 //item类型
 #define PLAYER_TANK 0

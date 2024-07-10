@@ -5,6 +5,7 @@
 #include <QGraphicsView>
 #include <QWidget>
 #include <QtMath>
+#include <QRandomGenerator>
 
 class GameView : public QGraphicsView
 {
@@ -12,8 +13,10 @@ class GameView : public QGraphicsView
 public:
     explicit GameView(QWidget *parent = nullptr);
     void setGameData(GameData* data);
+    GameData *gameData() const;
 
     void clearDeadTank();
+    void setRandomBullet();
 
 protected:
     void wheelEvent(QWheelEvent *event) override;
