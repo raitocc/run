@@ -110,7 +110,7 @@ background-color: rgba(255, 255, 255, 127);</string>
 background-color: rgba(255, 255, 255, 127);</string>
           </property>
           <property name="text">
-           <string>password</string>
+           <string>password </string>
           </property>
          </widget>
         </item>

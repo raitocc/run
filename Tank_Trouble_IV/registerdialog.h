@@ -1,4 +1,4 @@
-#ifndef REGISTERDIALOG_H
+﻿#ifndef REGISTERDIALOG_H
 #define REGISTERDIALOG_H
 
 #include <QDialog>
@@ -10,6 +10,7 @@
 #include <QSqlQuery>
 #include <QDebug>
 #include <QSqlError>
+#include <QPainter>
 
 namespace Ui {
 class RegisterDialog;
@@ -22,6 +23,7 @@ class RegisterDialog : public QDialog
 public:
     explicit RegisterDialog(QWidget *parent = nullptr);
     ~RegisterDialog();
+    void paintEvent(QPaintEvent * event);
 
 protected:
     void closeEvent(QCloseEvent *event) override; // 添加 closeEvent 函数
