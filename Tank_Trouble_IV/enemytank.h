@@ -76,6 +76,7 @@ private:
     int _aiTimerCounter;//120帧过高，利用计时器降低到30帧来更新ai
     int _aiUpdateFrequency;
     int wanderingCounter;
+    int chasingCounter;
     QPair<int,int> wanderGoal;
 
     void aiTimerCount();//计数并且调用状态更新
@@ -88,8 +89,9 @@ private:
 
     int currentStep;
     QVector<Point> path;
-    void setMovingStateOfWonder();
+    //void setMovingStateOfWonder();
     bool isCollision(int x, int y);
+    bool isPathClear(QPointF start, QPointF end);
 
 
     QVector<Point> findPath(Point start, Point goal);//寻路

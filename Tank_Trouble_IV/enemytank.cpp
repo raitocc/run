@@ -42,7 +42,8 @@ void EnemyTank::init()
     //设置数值
     wanderGoal = QPair<int,int>(-1,-1);
     wanderingCounter = 32767;
-    _aiTimerCounter = 0;
+    chasingCounter = 0;
+    _aiTimerCounter = 30;
     _aiUpdateFrequency = 30;
 
     _HP = 20;
@@ -112,13 +113,17 @@ void EnemyTank::aiTimerCount()
 void EnemyTank::updateState()
 {
     //qDebug()<<this<<"UPDATE"<<wanderingCounter;
-    wanderingCounter ++;
+    wanderingCounter++;
+    chasingCounter++;
 
-    _state = wandering;
+    _state = Chasing;
     switch (_state)
     {
     case wandering:
         wander();
+        break;
+    case Chasing:
+        chase();
         break;
     default:
         break;
@@ -181,6 +186,7 @@ void EnemyTank::wander()
 
 void EnemyTank::headToGoal()
 {
+    qDebug()<<"CHASE";
     if (currentStep >= path.size())
     {
         // 如果已经到达路径终点，停止移动
@@ -241,60 +247,87 @@ void EnemyTank::headToGoal()
 
 
 
-void EnemyTank::setMovingStateOfWonder()
+bool EnemyTank::isPathClear(QPointF start, QPointF end)
 {
-    if (currentStep >= path.size())
+    // 检查从start到end的直线路径是否没有障碍物
+    GameView* view = dynamic_cast<class GameView*>(this->scene()->views()[0]);
+    int x1 = start.x();
+    int y1 = start.y();
+    int x2 = end.x();
+    int y2 = end.y();
+
+    // 使用DDA算法或Bresenham算法检查直线路径上的每一个格子
+    int dx = abs(x2 - x1);
+    int dy = abs(y2 - y1);
+    int sx = (x1 < x2) ? 1 : -1;
+    int sy = (y1 < y2) ? 1 : -1;
+    int err = dx - dy;
+
+    while (true)
     {
-        // 如果已经到达路径终点，停止移动
-        clearMovingState();
-        return;
+        // 检查当前位置是否为墙
+        if (view->gameData()->gridType(y1 / GRIDSIZE, x1 / GRIDSIZE) == BOX || view->gameData()->gridType(y1 / GRIDSIZE, x1 / GRIDSIZE) == WALL)
+        {
+            return false;
+        }
+        if (x1 == x2 && y1 == y2)
+        {
+            break;
+        }
+        int e2 = 2 * err;
+        if (e2 > -dy)
+        {
+            err -= dy;
+            x1 += sx;
+        }
+        if (e2 < dx)
+        {
+            err += dx;
+            y1 += sy;
+        }
     }
-
-    // 获取当前坦克的中心位置
-    int currentX = (this->pos() + this->rect().center()).x();
-    int currentY = (this->pos() + this->rect().center()).y();
-
-    // 获取目标位置（路径中的下一个点）
-    int goalX = path[currentStep].col * GRIDSIZE + GRIDSIZE / 2;
-    int goalY = path[currentStep].row * GRIDSIZE + GRIDSIZE / 2;
-
-    // 重置移动状态
-    clearMovingState();
-
-    // 根据当前位置与目标位置的关系设置移动状态
-    if (currentX < goalX)
-    {
-        _movingState[RIGHT] = true;
-    }
-    else if (currentX > goalX)
-    {
-        _movingState[LEFT] = true;
-    }
-
-    if (currentY < goalY)
-    {
-        _movingState[DOWN] = true;
-    }
-    else if (currentY > goalY)
-    {
-        _movingState[UP] = true;
-    }
-
-    // 如果坦克已经到达目标点（格子中心），则更新到下一个路径点
-    if (abs(currentX - goalX) < GRIDSIZE / 2 && abs(currentY - goalY) < GRIDSIZE / 2)
-    {
-        currentStep++;
-    }
-
-    qDebug() << "Current Position:" << currentX << currentY;
-    qDebug() << "Goal Position:" << goalX << goalY;
-    qDebug() << "Current Step:" << currentStep;
+    return true;
 }
 
 
 void EnemyTank::chase()
 {
+    qreal resetSec = 3;
+    //qDebug()<<chasingCounter<<"/"<<_aiUpdateFrequency*resetSec;
+    if(chasingCounter>_aiUpdateFrequency*resetSec)
+    {
+        //qDebug()<<"!";
+        GameView* view = dynamic_cast<class GameView*>(this->scene()->views()[0]);
+        QPointF playerPos = view->gameData()->playerTank()->pos() + QPointF(TANK_WIDTH / 2, TANK_LENGTH / 2);
+        PlayerTank* playerTank = view->gameData()->playerTank();
 
+        int tcol = (this->pos() + this->rect().center()).x() / GRIDSIZE;
+        int trow = (this->pos() + this->rect().center()).y() / GRIDSIZE;
+        int pcol = (playerTank->pos() + playerTank->rect().center()).x() / GRIDSIZE;
+        int prow = (playerTank->pos() + playerTank->rect().center()).y() / GRIDSIZE;
+
+        // 更新目标点为玩家坦克的位置，并且每次追击调用时重新规划路径
+        QVector<Point> newPath = findPath(Point(trow, tcol), Point(prow, pcol));
+
+        if (!newPath.empty())
+        {
+            path = newPath;
+            currentStep = 0;
+        }
+
+        // 检查与玩家坦克之间是否有障碍物
+        if (isPathClear(this->pos() + this->rect().center(), playerPos))
+        {
+            qDebug() << "ATTACK";
+            attack();
+        }
+        chasingCounter = 0;
+    }
+    else
+    {
+        // 保证路径被设置后持续调用 headToGoal 来保持敌方坦克的移动状态
+        headToGoal();
+    }
 }
 
 void EnemyTank::attack()
