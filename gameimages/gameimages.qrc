@@ -8,6 +8,12 @@
         <file>heart2.png</file>
         <file>bullet.png</file>
         <file>bulletsupply1.png</file>
+        <file>bullet.png</file>
+    </qresource>
+    <qresource prefix="/background">
+        <file>login_background.png</file>
+    </qresource>
+</RCC>
     </qresource>
     <qresource prefix="/background">
         <file>login_background.png</file>
