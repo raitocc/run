@@ -120,10 +120,63 @@ void EnemyTank::updateState()
     case wandering:
         wander();
         break;
+    case Chasing:
+        chase();
+        break;
     default:
         break;
     }
+
+    if (playerDetected())
+    {
+        _state = Chasing;
+    }else
+    {
+         _state = wandering;
+    }
+
 }
+
+bool EnemyTank::playerDetected()
+{
+    // 假设敌方坦克的当前位置是 tankX，tankY
+    int tankX = ((this->pos().x() + this->rect().center().x()) / GRIDSIZE);
+    int tankY = ((this->pos().y() + this->rect().center().y()) / GRIDSIZE);
+
+    // 获取游戏视图
+    GameView* view = dynamic_cast<GameView*>(this->scene()->views()[0]);
+
+    // 假设玩家的位置是 (playerX, playerY)，根据游戏逻辑获取玩家的位置信息
+    int playerX = ((view->gameData()->playerTank()->pos().x() + view->gameData()->playerTank()->rect().center().x()) / GRIDSIZE);
+    int playerY = ((view->gameData()->playerTank()->pos().y() + view->gameData()->playerTank()->rect().center().y()) / GRIDSIZE);
+
+    // 假设检测的范围是6格内（包括当前位置）
+    int detectionRange = 6;
+
+    // 根据坐标差值来判断玩家是否在指定范围内
+    for (int dx = -detectionRange; dx <= detectionRange; ++dx)
+    {
+        for (int dy = -detectionRange; dy <= detectionRange; ++dy)
+        {
+            if (dx * dx + dy * dy <= detectionRange * detectionRange)
+            {
+                // 计算目标位置
+                int targetX = tankX + dx;
+                int targetY = tankY + dy;
+
+                // 假设 playerX 和 playerY 是玩家的坐标
+                if (targetX == playerX && targetY == playerY)
+                {
+                    return true; // 玩家在范围内，检测到玩家
+                }
+            }
+        }
+    }
+
+    return false; // 未检测到玩家
+}
+
+
 
 //游走状态可用转换为其他任何状态，每次回到游走状态的时候重新切换目标点
 //找到目标点后则若干秒不再切换目标点
