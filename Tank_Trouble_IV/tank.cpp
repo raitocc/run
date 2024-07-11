@@ -182,7 +182,6 @@ void Tank::move()
             setPos(oldPos);
         }
     }
-
     // 如果主要方向移动受阻，分别尝试各个单独方向的移动
     if (!moved) {
         if (movingUp)
@@ -248,11 +247,11 @@ bool Tank::checkCollision()
             return true;
         }
         //撞到坦克
-        else if(item->data(ITEM_TYPE)==ENEMY_TANK||item->data(ITEM_TYPE)==PLAYER_TANK)
-        {
-            //qDebug()<<"TYPE"<<item->data(ITEM_TYPE).toInt();
-            return true;
-        }
+        // else if(item->data(ITEM_TYPE)==ENEMY_TANK||item->data(ITEM_TYPE)==PLAYER_TANK)
+        // {
+        //     //qDebug()<<"TYPE"<<item->data(ITEM_TYPE).toInt();
+        //     return true;
+        // }
     }
     return false;
 }

@@ -1,5 +1,7 @@
 #include "enemytank.h"
+#include "gameview.h"
 #include "parameter.h"
+#include <queue>
 
 EnemyTank::EnemyTank(int initialBulletID,QGraphicsItem* parent)
     : Tank(parent) // 初始化 _bulletID 为 0
@@ -18,6 +20,11 @@ int EnemyTank::id() const
     return _id;
 }
 
+aiState EnemyTank::state() const
+{
+    return _state;
+}
+
 void EnemyTank::setBulletID(int bulletID)
 {
     _bulletID = bulletID;
@@ -33,10 +40,16 @@ void EnemyTank::init()
     this->setPen(Qt::NoPen);//设置无边框
 
     //设置数值
+    wanderGoal = QPair<int,int>(-1,-1);
+    wanderingCounter = 32767;
+    _aiTimerCounter = 0;
+    _aiUpdateFrequency = 30;
+
     _HP = 20;
     _maxHP = 20;
     _moveSpeed = 0.8;
     _shootSpeed = 1;
+    _state = wandering;
     clearMovingState();//清空移动状态标记
     _turret = nullptr;
     _rotationCenter = QPointF(TANK_WIDTH/2,TANK_LENGTH*2/3);
@@ -56,6 +69,7 @@ void EnemyTank::init()
     _hpRect->setRect(0,0,TANK_WIDTH*4/3,HPRECT_HEIGHT);//血条长度TANK_WIDTH*4/3
     _hpRect->setBrush(QColor(Qt::red));
     _hpRect->setPos(-TANK_WIDTH/6,TANK_LENGTH+HPRECT_HEIGHT+3);
+    //_hpRect->ItemIgnoresTransformations;
 }
 
 void EnemyTank::fire()
@@ -63,11 +77,12 @@ void EnemyTank::fire()
 
 }
 
-void EnemyTank::setHpRect()
+void EnemyTank::setHpRect()//设置血条
 {
     QRectF rect = _hpRect->rect();
     rect.setWidth(_HP / (_maxHP * 1.0) * TANK_WIDTH*4/3.0);
     _hpRect->setRect(rect);
+
 }
 
 void EnemyTank::advance(int phase)
@@ -80,5 +95,282 @@ void EnemyTank::advance(int phase)
     {
         move();
         setHpRect();
+        aiTimerCount();
     }
+}
+
+void EnemyTank::aiTimerCount()
+{
+    _aiTimerCounter = (_aiTimerCounter+1)%(120/_aiUpdateFrequency);
+    //qDebug()<<_aiTimerCounter;
+    if(_aiTimerCounter==0)
+    {
+        updateState();
+    }
+}
+
+void EnemyTank::updateState()
+{
+    //qDebug()<<this<<"UPDATE"<<wanderingCounter;
+    wanderingCounter ++;
+
+    _state = wandering;
+    switch (_state)
+    {
+    case wandering:
+        wander();
+        break;
+    default:
+        break;
+    }
+}
+
+//游走状态可用转换为其他任何状态，每次回到游走状态的时候重新切换目标点
+//找到目标点后则若干秒不再切换目标点
+//随机游走状态，检查目标点是否为空，如果为空，则随机选取周围n可用的目标点,如果n个点均不可到达，则goal置为空，不移动。有goal则向goal移动
+void EnemyTank::wander()
+{
+    GameView* view = dynamic_cast<class GameView*>(this->scene()->views()[0]);
+    int goalPointNum = 10;
+    int wanderSec = 10;
+    int randomSec = 5;
+    if(wanderingCounter>wanderSec*_aiUpdateFrequency)//新的目标点，找到后若干秒才能再次执行
+    {
+        if(QRandomGenerator::global()->bounded(0,randomSec*_aiUpdateFrequency)==0)
+        {
+            path.clear();
+            int tcol = (this->pos()+this->rect().center()).x()/GRIDSIZE;
+            int trow = (this->pos()+this->rect().center()).y()/GRIDSIZE;
+            QVector<QPair<int,int>> goals = view->gameData()->randomSpacePoint(goalPointNum,trow-7,tcol-7,trow+7,tcol+7);
+            // for(int i =0;i<goals.size();i++)
+            // {
+            //     qDebug()<<goals[i];
+            // }
+            int i = 0;
+            do
+            {
+                path = findPath(Point(trow,tcol),Point(goals[i].first,goals[i].second));
+                i++;
+            }
+            while(path.empty()&&i<goalPointNum);
+            if(path.empty())//目标点均不可用,用-1，-1标记
+            {
+                wanderGoal = QPair<int,int>(-1,-1);
+                clearMovingState();
+                qDebug()<<"NoGoal"<<wanderGoal;
+            }
+            else//找到一个可用目标点
+            {
+                currentStep = 0;
+                wanderGoal.first = path[path.size()-1].row;
+                wanderGoal.second = path[path.size()-1].col;
+                qDebug()<<"FindGoal"<<wanderGoal;
+                // for(int i =0;i<path.size();i++)
+                // {
+                //     qDebug()<<path[i].row<<path[i].col;
+                // }
+            }
+            wanderingCounter = 0;//计时器置为0
+        }
+    }
+    else
+    {
+        headToGoal();
+    }
+}
+
+void EnemyTank::headToGoal()
+{
+    if (currentStep >= path.size())
+    {
+        // 如果已经到达路径终点，停止移动
+        clearMovingState();
+        return;
+    }
+
+    // 获取当前坦克的中心位置
+    int currentX = (this->pos() + this->rect().center()).x();
+    int currentY = (this->pos() + this->rect().center()).y();
+
+    // 获取目标位置（路径中的下一个点）
+    int goalX = path[currentStep].col * GRIDSIZE + GRIDSIZE / 2;
+    int goalY = path[currentStep].row * GRIDSIZE + GRIDSIZE / 2;
+
+    // 计算与目标点的距离
+    int deltaX = goalX - currentX;
+    int deltaY = goalY - currentY;
+
+    // 如果已经接近目标点，则更新到下一个路径点
+    if (abs(deltaX) < 5 && abs(deltaY) < 5)
+    {
+        currentStep++;
+        clearMovingState();
+        return;
+    }
+
+    // 更新移动状态，优先选择横向或纵向移动
+    clearMovingState();
+
+    if (abs(deltaX) > abs(deltaY))
+    {
+        if (deltaX > 0)
+        {
+            _movingState[RIGHT] = true;
+        }
+        else
+        {
+            _movingState[LEFT] = true;
+        }
+    }
+    else
+    {
+        if (deltaY > 0)
+        {
+            _movingState[DOWN] = true;
+        }
+        else
+        {
+            _movingState[UP] = true;
+        }
+    }
+
+    qDebug() << "Current Position:" << currentX << currentY;
+    qDebug() << "Goal Position:" << goalX << goalY;
+    qDebug() << "Current Step:" << currentStep;
+}
+
+
+
+void EnemyTank::setMovingStateOfWonder()
+{
+    if (currentStep >= path.size())
+    {
+        // 如果已经到达路径终点，停止移动
+        clearMovingState();
+        return;
+    }
+
+    // 获取当前坦克的中心位置
+    int currentX = (this->pos() + this->rect().center()).x();
+    int currentY = (this->pos() + this->rect().center()).y();
+
+    // 获取目标位置（路径中的下一个点）
+    int goalX = path[currentStep].col * GRIDSIZE + GRIDSIZE / 2;
+    int goalY = path[currentStep].row * GRIDSIZE + GRIDSIZE / 2;
+
+    // 重置移动状态
+    clearMovingState();
+
+    // 根据当前位置与目标位置的关系设置移动状态
+    if (currentX < goalX)
+    {
+        _movingState[RIGHT] = true;
+    }
+    else if (currentX > goalX)
+    {
+        _movingState[LEFT] = true;
+    }
+
+    if (currentY < goalY)
+    {
+        _movingState[DOWN] = true;
+    }
+    else if (currentY > goalY)
+    {
+        _movingState[UP] = true;
+    }
+
+    // 如果坦克已经到达目标点（格子中心），则更新到下一个路径点
+    if (abs(currentX - goalX) < GRIDSIZE / 2 && abs(currentY - goalY) < GRIDSIZE / 2)
+    {
+        currentStep++;
+    }
+
+    qDebug() << "Current Position:" << currentX << currentY;
+    qDebug() << "Goal Position:" << goalX << goalY;
+    qDebug() << "Current Step:" << currentStep;
+}
+
+
+void EnemyTank::chase()
+{
+
+}
+
+void EnemyTank::attack()
+{
+
+}
+
+void EnemyTank::avoid()
+{
+
+}
+
+
+QVector<Point> EnemyTank::findPath(Point start, Point goal) {
+    // 获取地图数据
+    GameView* view = dynamic_cast<class GameView*>(this->scene()->views()[0]);
+    QVector<QVector<int>> map = view->gameData()->map();
+
+    int rows = map.size();
+    if (rows == 0) return QVector<Point>();
+    int cols = map[0].size();
+    if (cols == 0) return QVector<Point>();
+
+    // 定义移动方向
+    const std::vector<Point> directions = { {0, 1}, {1, 0}, {0, -1}, {-1, 0} };
+
+    // 检查坐标是否在地图范围内且是可通行区域
+    auto isValid = [&](int r, int c) {
+        return r >= 0 && r < rows && c >= 0 && c < cols && map[r][c] == AIR;
+    };
+
+    // 初始化队列
+    std::queue<Point> queue;
+    // 记录每个节点的父节点，用于回溯路径
+    std::vector<std::vector<Point>> cameFrom(rows, std::vector<Point>(cols, {-1, -1}));
+
+    // 将起点加入队列
+    queue.push(start);
+    // 将起点标记为已访问
+    cameFrom[start.row][start.col] = start;
+
+    // BFS 算法主循环
+    while (!queue.empty()) {
+        // 从队列中取出第一个节点
+        Point current = queue.front();
+        queue.pop();
+
+        // 如果找到目标节点
+        if (current.row == goal.row && current.col == goal.col) {
+            // 回溯路径
+            QVector<Point> path;
+            Point parent = current;
+            while (parent != start) {
+                path.prepend(parent);
+                parent = cameFrom[parent.row][parent.col];
+            }
+            path.prepend(start);
+            return path;
+        }
+
+        // 遍历当前节点的邻居节点
+        for (const auto& dir : directions) {
+            int newRow = current.row + dir.row;
+            int newCol = current.col + dir.col;
+            Point neighbor(newRow, newCol);
+
+            // 检查邻居节点是否有效且未访问过
+            if (isValid(newRow, newCol) && cameFrom[newRow][newCol] == Point(-1, -1)) {
+                // 将邻居节点加入队列
+                queue.push(neighbor);
+                // 设置邻居节点的父节点
+                cameFrom[newRow][newCol] = current;
+            }
+        }
+    }
+
+    // 没有找到路径
+    return QVector<Point>();
 }

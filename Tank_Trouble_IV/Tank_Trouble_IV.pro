@@ -22,7 +22,8 @@ SOURCES += \
     singlegamewidget.cpp \
     tank.cpp \
     welcomewidget.cpp \
-    registerdialog.cpp
+    registerdialog.cpp \
+    winwidget.cpp
 
 HEADERS += \
     astar.h \
@@ -38,7 +39,8 @@ HEADERS += \
     singlegamewidget.h \
     tank.h \
     welcomewidget.h \
-    registerdialog.h
+    registerdialog.h \
+    winwidget.h
 
 FORMS += \
     loginwidget.ui \
@@ -46,7 +48,8 @@ FORMS += \
     pausewidget.ui \
     singlegamewidget.ui \
     welcomewidget.ui \
-    registerdialog.ui
+    registerdialog.ui \
+    winwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

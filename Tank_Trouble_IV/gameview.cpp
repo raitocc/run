@@ -44,7 +44,7 @@ void GameView::setRandomBullet()//放置随机补给
     if(ran<num)
     {
         int amout = QRandomGenerator::global()->bounded(3,8);
-        qDebug()<<"产生随机子弹掉落物"<<ran+1<<"数量"<<amout;
+        //qDebug()<<"产生随机子弹掉落物"<<ran+1<<"数量"<<amout;
         data->addBulletSupply(ran+1,amout,this->scene());
     }
 }

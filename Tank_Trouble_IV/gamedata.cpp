@@ -16,7 +16,7 @@ void GameData::newData()
     this->_level=1;
     this->_money=0;
     this->_score=0;
-    int col = QRandomGenerator::global()->bounded(30,51);
+    int col = QRandomGenerator::global()->bounded(15,20);
     int row = col *3/4;
     createMap(row, col);
     createTank(col/3);
@@ -144,6 +144,11 @@ int GameData::gridType(int row, int col) const
     return _map[row][col];
 }
 
+const QVector<QVector<int> > &GameData::map()
+{
+    return _map;
+}
+
 int GameData::mapRow() const
 {
     return _map.size();
@@ -235,7 +240,7 @@ void GameData::addBulletSupply(int id, int num, QGraphicsScene *scene)
     while(_hasSupply[pair.first][pair.second]);
     //检验该位置是否已经生成道具
 
-    qDebug()<<"生成位置"<<pair.first<<pair.second;
+    //qDebug()<<"生成位置"<<pair.first<<pair.second;
     if(pair.first == -1)
     {
         return;
@@ -393,6 +398,46 @@ QPair<int, int> GameData::randomSpacePoint()
     // 随机选择一个AIR点
     int randomIndex = QRandomGenerator::global()->bounded(airPoints.size());
     return airPoints[randomIndex];
+}
+
+inline int max(int a, int b)
+{
+    return a > b ? a:b;
+}
+
+inline int min(int a, int b)
+{
+    return a > b ? b:a;
+}
+
+QVector<QPair<int, int>> GameData::randomSpacePoint(int num, int beginRow, int beginCol, int EndRow, int EndCol)
+{
+    QVector<QPair<int, int>> result;
+    QVector<QPair<int, int>> candidates;
+
+    // 1. 遍历指定范围内的所有点，将空白点加入 candidates 列表
+    for (int row = max(0,beginRow); row <= min(EndRow,_map.size()-1); ++row) {
+        for (int col = max(0,beginCol); col <= min(EndCol,_map[0].size()-1); ++col) {
+            if (_map[row][col] == AIR) {
+                candidates.append(QPair<int, int>(row, col));
+            }
+        }
+    }
+
+    // 2. 如果 candidates 列表为空，则返回空列表
+    if (candidates.isEmpty()) {
+        return result;
+    }
+
+    // 3. 随机从 candidates 列表中选取 num 个点
+    QRandomGenerator* randomGenerator = QRandomGenerator::global();
+    while (result.size() < num && !candidates.isEmpty()) {
+        int index = randomGenerator->bounded(candidates.size());
+        result.append(candidates[index]);
+        candidates.removeAt(index); // 从候选列表中移除已选择的点
+    }
+
+    return result;
 }
 
 void GameData::advance()

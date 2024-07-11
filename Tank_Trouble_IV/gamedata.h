@@ -22,6 +22,7 @@ public:
     int money() const;
     int level() const;
     int gridType(int row, int col) const;
+    const QVector<QVector<int>>& map();
     int mapRow() const;
     int mapCol() const;
     //Bullet* bullet(int id);
@@ -30,6 +31,8 @@ public:
     int enemyNum() const;
     bool deadEnemy(int n) const;
     //int enermyTank(int id);
+    QPair<int,int> randomSpacePoint();//随机一个空白点
+    QVector<QPair<int, int> > randomSpacePoint(int num, int beginRow, int beginCol, int EndRow, int EndCol);//随机n个空白点，指定范围
 
 
     //删改
@@ -62,7 +65,6 @@ private:
 
     bool checkConnectivity(int row, int col);//创建地图辅助函数，检查连通性
     QVector<QPair<int, int>> generateSpawnPoints(int n);//创建坦克辅助函数，选择出生点
-    QPair<int,int> randomSpacePoint();
 
 public slots:
     void advance();//由SingleGameWidget的timer调用
