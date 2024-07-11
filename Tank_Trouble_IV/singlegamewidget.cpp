@@ -12,6 +12,8 @@ SingleGameWidget::SingleGameWidget(QWidget *parent)
     newGameData();//从第一关新建游戏数据
     initView();//初始化视图
     initTimer();//初始化Timer
+
+    //QRandomGenerator::global()->seed();
 }
 
 SingleGameWidget::~SingleGameWidget()

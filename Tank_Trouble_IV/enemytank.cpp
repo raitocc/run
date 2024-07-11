@@ -50,7 +50,7 @@ void EnemyTank::init()
     _HP = 20;
     _maxHP = 20;
     _moveSpeed = 0.6;
-    _shootSpeed = 1;
+    _shootSpeed = 1.5;
     _state = wandering;
     clearMovingState();//清空移动状态标记
     _turret = nullptr;
@@ -104,6 +104,7 @@ void EnemyTank::advance(int phase)
 void EnemyTank::aiTimerCount()
 {
     _aiTimerCounter = (_aiTimerCounter+1)%(120/_aiUpdateFrequency);
+    shootBulletCounter++;
     //qDebug()<<_aiTimerCounter;
     if(_aiTimerCounter==0)
     {
@@ -118,11 +119,11 @@ void EnemyTank::updateState()
     chasingCounter++;
     if (playerDetected())
     {
-        qDebug()<<"CHASE";
+        //qDebug()<<"CHASE";
         _state = Chasing;
     }else
     {
-        qDebug()<<"WANDERING";
+        //qDebug()<<"WANDERING";
         _state = wandering;
     }
     //_state = Chasing;
@@ -179,8 +180,6 @@ bool EnemyTank::playerDetected()
 
     return false; // 未检测到玩家
 }
-
-
 
 //游走状态可用转换为其他任何状态，每次回到游走状态的时候重新切换目标点
 //找到目标点后则若干秒不再切换目标点
@@ -297,8 +296,6 @@ void EnemyTank::headToGoal()
     //qDebug() << "Current Step:" << currentStep;
 }
 
-
-
 bool EnemyTank::isPathClear(QPointF start, QPointF end)
 {
     // 检查从start到end的直线路径是否没有障碍物
@@ -341,7 +338,6 @@ bool EnemyTank::isPathClear(QPointF start, QPointF end)
     return true;
 }
 
-
 void EnemyTank::chase()
 {
     qreal resetSec = 3;
@@ -351,8 +347,12 @@ void EnemyTank::chase()
     // 检查与玩家坦克之间是否有障碍物
     if (isPathClear(this->pos() + this->rect().center(), playerPos))
     {
-        qDebug() << "ATTACK";
-        view->createBullet(this->_bulletID,this,this->pos()+this->rect().center(),playerPos);
+        //qDebug() << "ATTACK";
+        if(shootBulletCounter>120/_shootSpeed)
+        {
+            view->createBullet(this->_bulletID,this,this->pos()+this->rect().center(),playerPos);
+            shootBulletCounter=0;
+        }
     }
     //qDebug()<<chasingCounter<<"/"<<_aiUpdateFrequency*resetSec;
     if(chasingCounter>_aiUpdateFrequency*resetSec)
