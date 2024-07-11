@@ -67,6 +67,8 @@ void SingleGameWidget::drawMap()
             QPixmap resizedwall =wall.scaled(GRIDSIZE, GRIDSIZE);
             QPixmap box(":/sources/box.png");
             QPixmap resizedbox =box.scaled(GRIDSIZE, GRIDSIZE);
+            QPixmap air(":/sources/air.png");
+            QPixmap resizedair =air.scaled(GRIDSIZE, GRIDSIZE);
             rect->setPen(Qt::NoPen); // 确保没有边框
             // Load pixmap based on map element
             switch (data->gridType(i,j))
@@ -80,7 +82,7 @@ void SingleGameWidget::drawMap()
                 rect->setData(GRID_TYPE,BOX);
                 break;
             case AIR: // 其他类型的墙体或空白
-                rect->setBrush(QBrush(Qt::white)); // 留白
+                rect->setBrush(QBrush(resizedair)); // 留白
                 rect->setData(GRID_TYPE,AIR);
                 break;
             }

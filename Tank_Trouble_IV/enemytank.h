@@ -80,6 +80,8 @@ private:
     int shootBulletCounter;
     QPair<int,int> wanderGoal;
 
+    bool playerDetected();//判断是否发现玩家
+
     void aiTimerCount();//计数并且调用状态更新
     void updateState();//状态更新
     void wander();//游走

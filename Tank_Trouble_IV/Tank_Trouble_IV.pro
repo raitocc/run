@@ -11,6 +11,7 @@ CONFIG += c++17
 SOURCES += \
     astar.cpp \
     bullet.cpp \
+    double_players_game_rules_dialog.cpp \
     enemytank.cpp \
     gamedata.cpp \
     gameview.cpp \
@@ -19,6 +20,7 @@ SOURCES += \
     mainwindow.cpp \
     pausewidget.cpp \
     playertank.cpp \
+    single_player_game_rules_dialog.cpp \
     singlegamewidget.cpp \
     tank.cpp \
     welcomewidget.cpp \
@@ -28,6 +30,7 @@ SOURCES += \
 HEADERS += \
     astar.h \
     bullet.h \
+    double_players_game_rules_dialog.h \
     enemytank.h \
     gamedata.h \
     gameview.h \
@@ -36,6 +39,7 @@ HEADERS += \
     parameter.h \
     pausewidget.h \
     playertank.h \
+    single_player_game_rules_dialog.h \
     singlegamewidget.h \
     tank.h \
     welcomewidget.h \
@@ -43,9 +47,11 @@ HEADERS += \
     winwidget.h
 
 FORMS += \
+    double_players_game_rules_dialog.ui \
     loginwidget.ui \
     mainwindow.ui \
     pausewidget.ui \
+    single_player_game_rules_dialog.ui \
     singlegamewidget.ui \
     welcomewidget.ui \
     registerdialog.ui \

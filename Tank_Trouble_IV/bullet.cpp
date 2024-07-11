@@ -138,7 +138,9 @@ void Bullet::hitBox(QGraphicsRectItem *box)
 {
     //消除箱子，这个格子的map置为AIR
     box->setData(GRID_TYPE,AIR);
-    box->setBrush(Qt::white);
+    QPixmap air(":/sources/air.png");
+    QPixmap resizedair =air.scaled(GRIDSIZE, GRIDSIZE);
+    box->setBrush(QBrush(resizedair));
     GameView* view = dynamic_cast<class GameView*>(this->scene()->views()[0]);
     int row = box->rect().center().y()/GRIDSIZE;
     int col = box->rect().center().x()/GRIDSIZE;
