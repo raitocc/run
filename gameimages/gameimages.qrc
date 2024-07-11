@@ -6,6 +6,7 @@
         <file>TankTurret.png</file>
         <file>heart1.png</file>
         <file>heart2.png</file>
+        <file>bullet.png</file>
     </qresource>
     <qresource prefix="/background">
         <file>login_background.png</file>
