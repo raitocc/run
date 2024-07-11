@@ -243,7 +243,7 @@ bool Tank::checkCollision()
         if (item == this) continue; // Skip self
 
         // Check collision with walls or other obstacles
-        if (item->data(ITEM_TYPE)==GRID && (item->data(GRID_TYPE)==WALL||item->data(GRID_TYPE)==BOX)) {
+        if ((item->data(ITEM_TYPE)==GRID && (item->data(GRID_TYPE)==WALL||item->data(GRID_TYPE)==BOX))||item->data(ITEM_TYPE)==PLAYER_TANK||item->data(ITEM_TYPE)==ENEMY_TANK) {
             // Determine the side of collision
             QRectF tankRect = mapToScene(boundingRect()).boundingRect();
             QRectF itemRect = item->mapToScene(item->boundingRect()).boundingRect();

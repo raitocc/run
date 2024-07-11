@@ -49,7 +49,7 @@ void EnemyTank::init()
 
     _HP = 20;
     _maxHP = 20;
-    _moveSpeed = 0.8;
+    _moveSpeed = 0.6;
     _shootSpeed = 1;
     _state = wandering;
     clearMovingState();//清空移动状态标记
@@ -116,8 +116,16 @@ void EnemyTank::updateState()
     //qDebug()<<this<<"UPDATE"<<wanderingCounter;
     wanderingCounter++;
     chasingCounter++;
-
-    _state = Chasing;
+    if (playerDetected())
+    {
+        qDebug()<<"CHASE";
+        _state = Chasing;
+    }else
+    {
+        qDebug()<<"WANDERING";
+        _state = wandering;
+    }
+    //_state = Chasing;
     switch (_state)
     {
     case wandering:
@@ -129,19 +137,12 @@ void EnemyTank::updateState()
     default:
         break;
     }
-
-    if (playerDetected())
-    {
-        _state = Chasing;
-    }else
-    {
-         _state = wandering;
-    }
-
 }
 
 bool EnemyTank::playerDetected()
 {
+    int detectionRange = 7;//检测半径
+
     // 假设敌方坦克的当前位置是 tankX，tankY
     int tankX = ((this->pos().x() + this->rect().center().x()) / GRIDSIZE);
     int tankY = ((this->pos().y() + this->rect().center().y()) / GRIDSIZE);
@@ -154,7 +155,6 @@ bool EnemyTank::playerDetected()
     int playerY = ((view->gameData()->playerTank()->pos().y() + view->gameData()->playerTank()->rect().center().y()) / GRIDSIZE);
 
     // 假设检测的范围是6格内（包括当前位置）
-    int detectionRange = 6;
 
     // 根据坐标差值来判断玩家是否在指定范围内
     for (int dx = -detectionRange; dx <= detectionRange; ++dx)
@@ -170,7 +170,8 @@ bool EnemyTank::playerDetected()
                 // 假设 playerX 和 playerY 是玩家的坐标
                 if (targetX == playerX && targetY == playerY)
                 {
-                    return true; // 玩家在范围内，检测到玩家
+                    if(!findPath(Point(tankY,tankX),Point(playerY,playerX)).empty())
+                    {return true;} // 玩家在范围内且能到达
                 }
             }
         }

@@ -121,10 +121,29 @@ bool Bullet::checkCollision()
             return true;
         }
         //撞到坦克
+        // if(rectItem->data(ITEM_TYPE)==PLAYER_TANK||rectItem->data(ITEM_TYPE)==ENEMY_TANK)
+        // {
+        //     Tank *tank = dynamic_cast<Tank *>(item);
+        //     if(tank!=this->shooter())
+        //     {
+        //         hitTank(tank);
+        //         return true;
+        //     }
+        // }
+        //撞到坦克
         if(rectItem->data(ITEM_TYPE)==PLAYER_TANK||rectItem->data(ITEM_TYPE)==ENEMY_TANK)
         {
             Tank *tank = dynamic_cast<Tank *>(item);
-            if(tank!=this->shooter())
+            if(tank==this->shooter())
+            {
+                return false;
+            }
+            if(_shooter->data(ITEM_TYPE)==ENEMY_TANK&&rectItem->data(ITEM_TYPE)==PLAYER_TANK)//敌方不能误伤
+            {
+                hitTank(tank);
+                return true;
+            }
+            if(_shooter->data(ITEM_TYPE)==PLAYER_TANK)
             {
                 hitTank(tank);
                 return true;
