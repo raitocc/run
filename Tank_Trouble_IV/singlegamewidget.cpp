@@ -49,8 +49,8 @@ void SingleGameWidget::initTimer()
     timer = new QTimer(this);
     timer->start(1000/120);
     connect(timer,&QTimer::timeout,scene,&QGraphicsScene::advance);
-    connect(timer,&QTimer::timeout,ui->graphicsView,&GameView::advance);
-    connect(timer,&QTimer::timeout,this,&SingleGameWidget::advance);
+    connect(timer,&QTimer::timeout,ui->graphicsView,&GameView::advance);//通过view联系到gameData
+    connect(timer,&QTimer::timeout,this,&SingleGameWidget::advance);//更新界面显示
 }
 
 void SingleGameWidget::drawMap()
@@ -114,6 +114,8 @@ void SingleGameWidget::advance()
     ui->label_money->setText("金钱 "+QString::number(data->money()));
     ui->label_score->setText("分数 "+QString::number(data->score()));
     ui->label_HP->setText("生命 "+QString::number(data->playerTank()->HP()));
+    ui->label_currBulletent->setText("子弹种类 "+ QString::number(data->playerTank()->currentBullet()));
+    ui->label_bulletLeft->setText("余量 "+QString::number(data->playerTank()->bulletNum(data->playerTank()->currentBullet())));
 }
 
 void SingleGameWidget::on_btnPause_clicked()

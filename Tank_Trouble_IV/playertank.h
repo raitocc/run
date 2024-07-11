@@ -1,7 +1,6 @@
 #ifndef PLAYERTANK_H
 #define PLAYERTANK_H
 
-#include "qtimer.h"
 #include "tank.h"
 #include <QVector>
 #include <QPen>
@@ -29,6 +28,8 @@ public:
 
     //void fire(QPointF tarPos);//发射子弹
 
+    void update();//由View定时器调用
+
 
 
 
@@ -46,6 +47,8 @@ private:
     QPointF _rotationCenter;
 
     bool _shootAble;
+
+    void handleCollision();//解决吃道具
 
 private slots:
     void reetShootAbleState();

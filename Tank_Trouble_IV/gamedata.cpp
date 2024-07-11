@@ -16,7 +16,7 @@ void GameData::newData()
     this->_level=1;
     this->_money=0;
     this->_score=0;
-    int col = QRandomGenerator::global()->bounded(25,41);
+    int col = QRandomGenerator::global()->bounded(30,51);
     int row = col *3/4;
     createMap(row, col);
     createTank(col/3);
@@ -28,6 +28,16 @@ void GameData::createMap(int row, int col)//创建地图
     for(auto& i : _map)
     {
         i.resize(col);
+    }
+
+    _hasSupply.resize(row);
+    for(auto& i : _hasSupply)
+    {
+        i.resize(col);
+        for(int j=0;j<i.size();j++)
+        {
+            i[j]=0;
+        }
     }
 
     // 随机放置方块（不包括外圈的墙）
@@ -209,6 +219,59 @@ void GameData::setDeadEnemy(int n, bool f)
     _deadEnemy[n] = f;
 }
 
+void GameData::setMap(int row, int col, int type)
+{
+    _map[row][col] = type;
+}
+
+void GameData::addBulletSupply(int id, int num, QGraphicsScene *scene)
+{
+    //随机选取一个可用位置
+    QPair<int,int> pair;
+    do
+    {
+        pair = randomSpacePoint();
+    }
+    while(_hasSupply[pair.first][pair.second]);
+    //检验该位置是否已经生成道具
+
+    qDebug()<<"生成位置"<<pair.first<<pair.second;
+    if(pair.first == -1)
+    {
+        return;
+    }
+    BulletSupply* supply = new BulletSupply(id, num,pair.first,pair.second,this);
+    _hasSupply[pair.first][pair.second] = true;
+    supply->setData(ITEM_TYPE,BULLET_SUPLLY);
+    supply->setData(BULLET_TYPE,id);
+    supply->setData(BULLET_AMOUNT,num);
+    supply->setZValue(1);
+    scene->addItem(supply);
+}
+
+void GameData::switchPlayerCurrentBullet()
+{
+    //qDebug()<<"?";
+    int current = this->playerTank()->currentBullet();
+    int i = current;
+    do
+    {
+        i = (i+1)%MAX_BULLET_TYPE;
+    }
+    while(this->playerTank()->bulletNum(i)==0);
+    this->playerTank()->switchBullet(i);
+}
+
+void GameData::switchBullet(int id)
+{
+    this->playerTank()->switchBullet(id);
+}
+
+void GameData::setSupplyFlag(int row, int col, bool f)
+{
+    _hasSupply[row][col] = f;
+}
+
 Bullet *GameData::addBullet(int id, Tank* shooter,QPointF begin, QPointF tar)
 {
     Bullet* bullet = new Bullet(id,shooter,begin,tar);
@@ -307,6 +370,29 @@ QVector<QPair<int, int>> GameData::generateSpawnPoints(int n)//产生随机出�
     }
 
     return spawnPoints;
+}
+
+QPair<int, int> GameData::randomSpacePoint()
+{
+    QVector<QPair<int, int>> airPoints;
+
+    // 遍历地图，找到所有AIR点的位置
+    for (int i = 0; i < _map.size(); ++i) {
+        for (int j = 0; j < _map[i].size(); ++j) {
+            if (_map[i][j] == AIR) {
+                airPoints.append(QPair<int, int>(i, j));
+            }
+        }
+    }
+
+    // 如果没有找到AIR点，返回一个无效点
+    if (airPoints.empty()) {
+        return QPair<int, int>(-1, -1);  // 无效点
+    }
+
+    // 随机选择一个AIR点
+    int randomIndex = QRandomGenerator::global()->bounded(airPoints.size());
+    return airPoints[randomIndex];
 }
 
 void GameData::advance()

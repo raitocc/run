@@ -31,10 +31,17 @@ public:
     bool deadEnemy(int n) const;
     //int enermyTank(int id);
 
+
+    //删改
     void addScore(int n);
     void addMoney(int n);
     void reduceMoney(int n);
     void setDeadEnemy(int n,bool f);
+    void setMap(int row, int col, int type);
+    void addBulletSupply(int id, int num, QGraphicsScene* scene);
+    void switchPlayerCurrentBullet();//顺序切换子弹
+    void switchBullet(int id);//顺序切换子弹
+    void setSupplyFlag(int row, int col, bool f);//设置位置补给标记
 
 
 
@@ -43,18 +50,21 @@ public:
 
 private:
     QVector<QVector<int>> _map;//0代表不可破坏墙体，1代表可破坏墙体，2代表空
+    QVector<QVector<bool>> _hasSupply;//true代表该位置已经有补给
     int _score;//分数
     int _money;//金钱
     int _level;//当前关卡
     PlayerTank* _playerTank;
     QVector<EnemyTank*> _enemyTanks;
-    QVector<bool> _deadEnemy;
+    //QList<BulletSupply*> _bulletSupply;
+    QVector<bool> _deadEnemy;//记录对应位置敌人是否死亡，死亡为true
     //QVector<Bullet*> _bullets;
 
     bool checkConnectivity(int row, int col);//创建地图辅助函数，检查连通性
     QVector<QPair<int, int>> generateSpawnPoints(int n);//创建坦克辅助函数，选择出生点
+    QPair<int,int> randomSpacePoint();
 
-private slots:
+public slots:
     void advance();//由SingleGameWidget的timer调用
 };
 

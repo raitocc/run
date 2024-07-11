@@ -241,28 +241,18 @@ bool Tank::checkCollision()
     for (QGraphicsItem *item : collidingItems)
     {
         // 检查是否碰到障碍物
-        if (item->data(GRID_TYPE)==WALL||item->data(GRID_TYPE)==BOX)
+        if (item->data(ITEM_TYPE)==GRID && (item->data(GRID_TYPE)==WALL||item->data(GRID_TYPE)==BOX))
         {
             //qDebug()<<"COLL";
+            //qDebug()<<"TYPE"<<item->data(ITEM_TYPE).toInt();
             return true;
         }
         //撞到坦克
-        if(item->data(ITEM_TYPE)==ENEMY_TANK||item->data(ITEM_TYPE)==PLAYER_TANK)
+        else if(item->data(ITEM_TYPE)==ENEMY_TANK||item->data(ITEM_TYPE)==PLAYER_TANK)
         {
+            //qDebug()<<"TYPE"<<item->data(ITEM_TYPE).toInt();
             return true;
         }
-        //撞到子弹
-        //改为由子弹类处理
-        // if(item->data(ITEM_TYPE)==BULLET)
-        // {
-        //     Bullet *bullet = dynamic_cast<Bullet *>(item);
-        //     if(bullet->shooter()!=this)
-        //     {
-        //         this->reduceHP(bullet->damage());
-        //         qDebug()<<"坦克扣血"<<bullet->damage()<<"剩余"<<this->HP();
-        //             return true;
-        //     }
-        // }
     }
     return false;
 }

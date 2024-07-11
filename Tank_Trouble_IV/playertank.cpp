@@ -1,4 +1,5 @@
 #include "playertank.h"
+#include "gameview.h"
 #include "parameter.h"
 #include "qgraphicsscene.h"
 
@@ -70,13 +71,14 @@ void PlayerTank::init()//初始化
     _HP = 20;
     _maxHP = 20;
     _moveSpeed = 0.8;
+    _currentBullet = 0;
     _shootSpeed = 4;//频率
     clearMovingState();//清空移动状态标记
     _turret = nullptr;
     _bulletNum.resize(MAX_BULLET_TYPE);
     _propsNum.resize(MAX_PROP_TYPE);
     _bulletNum[0] = INT_MAX;
-    _rotationCenter = QPointF(TANK_WIDTH/2,TANK_LENGTH*2/3);
+    _rotationCenter = QPointF(TANK_WIDTH/2,TANK_LENGTH/2);
     _shootAble = true;
 
     //z
@@ -102,6 +104,30 @@ void PlayerTank::init()//初始化
     //绘制炮筒
     this->creatTurret();
 
+}
+
+void PlayerTank::update()
+{
+    handleCollision();
+}
+
+void PlayerTank::handleCollision()//解决吃道具
+{
+    QList<QGraphicsItem *> collidingItems = scene()->collidingItems(this);
+    for (QGraphicsItem *item : collidingItems)
+    {
+        // 子弹补给
+        if (item->data(ITEM_TYPE)==BULLET_SUPLLY)
+        {
+            int id = item->data(BULLET_TYPE).toInt();
+            int amout = item->data(BULLET_AMOUNT).toInt();
+            //qDebug()<<id<<amout;
+            this->addBullet(id,amout);
+            this->scene()->removeItem(item);
+            GameView* view = dynamic_cast<class GameView*>(this->scene()->views()[0]);
+            view->gameData()->setSupplyFlag(item->pos().y()/GRIDSIZE,item->pos().x()/GRIDSIZE,false);
+        }
+    }
 }
 
 

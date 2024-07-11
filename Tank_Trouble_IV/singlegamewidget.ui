@@ -46,7 +46,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>money</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_score">
@@ -59,7 +59,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>score</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_level">
@@ -67,12 +67,12 @@
     <rect>
      <x>30</x>
      <y>30</y>
-     <width>53</width>
-     <height>15</height>
+     <width>61</width>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>level</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_HP">
@@ -85,7 +85,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>TextLabel</string>
+    <string>HP</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -102,6 +102,32 @@
    </property>
    <property name="text">
     <string/>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_currBulletent">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>30</y>
+     <width>61</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>bullet</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_bulletLeft">
+   <property name="geometry">
+    <rect>
+     <x>230</x>
+     <y>30</y>
+     <width>111</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>bulletLeft</string>
    </property>
   </widget>
  </widget>
