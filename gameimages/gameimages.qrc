@@ -1,7 +1,5 @@
 <RCC>
     <qresource prefix="/sources">
-        <file>box.png</file>
-        <file>wall.png</file>
         <file>TankBody.png</file>
         <file>TankTurret.png</file>
         <file>heart1.png</file>
@@ -11,6 +9,9 @@
         <file>mouse.png</file>
         <file>wasd.png</file>
         <file>key.png</file>
+        <file>box.png</file>
+        <file>wall.png</file>
+        <file>air.png</file>
     </qresource>
     <qresource prefix="/background">
         <file>login_background.png</file>
