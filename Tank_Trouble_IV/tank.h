@@ -56,7 +56,7 @@ protected:
 
     void move();//移动
     bool checkCollision();//检查是否碰撞
-    void adjustPosition();//卡墙调整函数
+    void adjustPosition(QPointF oldPos);//卡墙调整函数
     void updateDirection();//旋转坦克
     void advance(int phase) override;
 

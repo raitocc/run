@@ -137,7 +137,7 @@ void Tank::creatTurret()
 
 void Tank::move()
 {
-    QPointF oldPos = pos();
+    QPointF oldPos = this->pos();
     int oldRotation = this->rotation();
     bool moved = false;
     bool movingUp = _movingState[UP];
@@ -237,32 +237,52 @@ void Tank::move()
 
 bool Tank::checkCollision()
 {
-    QList<QGraphicsItem *> collidingItems = scene()->collidingItems(this);
-    for (QGraphicsItem *item : collidingItems)
-    {
-        // 检查是否碰到障碍物
-        if (item->data(ITEM_TYPE)==GRID && (item->data(GRID_TYPE)==WALL||item->data(GRID_TYPE)==BOX))
-        {
-            //qDebug()<<"COLL";
-            //qDebug()<<"TYPE"<<item->data(ITEM_TYPE).toInt();
-            return true;
-        }
-        //撞到坦克
-        else if(item->data(ITEM_TYPE)==ENEMY_TANK||item->data(ITEM_TYPE)==PLAYER_TANK)
-        {
-            //qDebug()<<"TYPE"<<item->data(ITEM_TYPE).toInt();
-            return true;
+    QList<QGraphicsItem *> collisions = collidingItems(Qt::IntersectsItemBoundingRect);
+
+    // Iterate through colliding items
+    foreach (QGraphicsItem *item, collisions) {
+        if (item == this) continue; // Skip self
+
+        // Check collision with walls or other obstacles
+        if (item->data(ITEM_TYPE)==GRID && (item->data(GRID_TYPE)==WALL||item->data(GRID_TYPE)==BOX)) {
+            // Determine the side of collision
+            QRectF tankRect = mapToScene(boundingRect()).boundingRect();
+            QRectF itemRect = item->mapToScene(item->boundingRect()).boundingRect();
+
+            qreal dx = tankRect.center().x() - itemRect.center().x();
+            qreal dy = tankRect.center().y() - itemRect.center().y();
+
+            qreal overlapX = (tankRect.width() + itemRect.width()) / 2 - qAbs(dx);
+            qreal overlapY = (tankRect.height() + itemRect.height()) / 2 - qAbs(dy);
+
+            // If overlap on both axes, adjust tank position
+            if (overlapX > 0 && overlapY > 0) {
+                if (overlapX < overlapY) {
+                    // Adjust tank position horizontally
+                    if (dx > 0)
+                        setPos(x() + overlapX, y());
+                    else
+                        setPos(x() - overlapX, y());
+                } else {
+                    // Adjust tank position vertically
+                    if (dy > 0)
+                        setPos(x(), y() + overlapY);
+                    else
+                        setPos(x(), y() - overlapY);
+                }
+                return true; // Collision detected
+            }
         }
     }
-    return false;
+    return false; // No collision detected
 }
 
-void Tank::adjustPosition()
+
+void Tank::adjustPosition(QPointF oldPos)
 {
-    qDebug()<<"卡墙";
-    QPointF oldPos = this->pos();
-    const int maxAttempts = 40; // 最大尝试次数
-    const qreal stepSize = 0.4; // 微调步进值
+
+    const int maxAttempts = 30; // 最大尝试次数
+    const qreal stepSize = 0.9; // 微调步进值
     for(int i = 0;i<maxAttempts;i++)
     {
         moveBy(0,stepSize);
@@ -289,8 +309,10 @@ void Tank::adjustPosition()
     this->setPos(oldPos);
 }
 
+
 void Tank::updateDirection()
 {
+    QPointF oldPos = this->pos(); // 保存碰撞前的位置
     bool movingUp = _movingState[UP];
     bool movingRight = _movingState[RIGHT];
     bool movingDown = _movingState[DOWN];
@@ -299,49 +321,49 @@ void Tank::updateDirection()
         setRotation(45);
         if(checkCollision())
         {
-            adjustPosition();
+            adjustPosition(oldPos);
         }
     } else if (movingUp && movingLeft) {
         setRotation(-45);
         if(checkCollision())
         {
-            adjustPosition();
+            adjustPosition(oldPos);
         }
     } else if (movingDown && movingRight) {
         setRotation(135);
         if(checkCollision())
         {
-            adjustPosition();
+            adjustPosition(oldPos);
         }
     } else if (movingDown && movingLeft) {
         setRotation(-135);
         if(checkCollision())
         {
-            adjustPosition();
+            adjustPosition(oldPos);
         }
     } else if (movingUp) {
         setRotation(0);
         if(checkCollision())
         {
-            adjustPosition();
+            adjustPosition(oldPos);
         }
     } else if (movingDown) {
         setRotation(180);
         if(checkCollision())
         {
-            adjustPosition();
+            adjustPosition(oldPos);
         }
     } else if (movingLeft) {
         setRotation(-90);
         if(checkCollision())
         {
-            adjustPosition();
+            adjustPosition(oldPos);
         }
     } else if (movingRight) {
         setRotation(90);
         if(checkCollision())
         {
-            adjustPosition();
+            adjustPosition(oldPos);
         }
     }
 }
