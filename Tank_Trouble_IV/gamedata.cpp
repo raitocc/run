@@ -19,7 +19,7 @@ void GameData::newData()
     int col = QRandomGenerator::global()->bounded(18,19);
     int row = col *3/4;
     createMap(row, col);
-    createTank(3);
+    createTank(col/3);
 }
 
 void GameData::createMap(int row, int col)//创建地图
