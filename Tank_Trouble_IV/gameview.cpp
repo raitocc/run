@@ -49,6 +49,13 @@ void GameView::setRandomBullet()//放置随机补给
     }
 }
 
+void GameView::createBullet(int id, Tank* shooter,QPointF begin, QPointF tar)
+{
+    shooter->turret()->setDirection(tar);//更新炮筒转向
+    QGraphicsRectItem* rect = data->addBullet(id,shooter,begin,tar);
+    this->scene()->addItem(rect);
+}
+
 void GameView::wheelEvent(QWheelEvent *event)
 {
     // 禁止鼠标滚轮移动视图

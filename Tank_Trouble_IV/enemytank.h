@@ -77,6 +77,7 @@ private:
     int _aiUpdateFrequency;
     int wanderingCounter;
     int chasingCounter;
+    int shootBulletCounter;
     QPair<int,int> wanderGoal;
 
     void aiTimerCount();//计数并且调用状态更新

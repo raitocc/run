@@ -43,6 +43,7 @@ void EnemyTank::init()
     wanderGoal = QPair<int,int>(-1,-1);
     wanderingCounter = 32767;
     chasingCounter = 0;
+    shootBulletCounter = 0;
     _aiTimerCounter = 30;
     _aiUpdateFrequency = 30;
 
@@ -162,14 +163,14 @@ void EnemyTank::wander()
             {
                 wanderGoal = QPair<int,int>(-1,-1);
                 clearMovingState();
-                qDebug()<<"NoGoal"<<wanderGoal;
+                //qDebug()<<"NoGoal"<<wanderGoal;
             }
             else//找到一个可用目标点
             {
                 currentStep = 0;
                 wanderGoal.first = path[path.size()-1].row;
                 wanderGoal.second = path[path.size()-1].col;
-                qDebug()<<"FindGoal"<<wanderGoal;
+                //qDebug()<<"FindGoal"<<wanderGoal;
                 // for(int i =0;i<path.size();i++)
                 // {
                 //     qDebug()<<path[i].row<<path[i].col;
@@ -186,7 +187,7 @@ void EnemyTank::wander()
 
 void EnemyTank::headToGoal()
 {
-    qDebug()<<"CHASE";
+    //qDebug()<<"CHASE";
     if (currentStep >= path.size())
     {
         // 如果已经到达路径终点，停止移动
@@ -240,9 +241,9 @@ void EnemyTank::headToGoal()
         }
     }
 
-    qDebug() << "Current Position:" << currentX << currentY;
-    qDebug() << "Goal Position:" << goalX << goalY;
-    qDebug() << "Current Step:" << currentStep;
+    //qDebug() << "Current Position:" << currentX << currentY;
+    //qDebug() << "Goal Position:" << goalX << goalY;
+    //qDebug() << "Current Step:" << currentStep;
 }
 
 
@@ -293,13 +294,19 @@ bool EnemyTank::isPathClear(QPointF start, QPointF end)
 void EnemyTank::chase()
 {
     qreal resetSec = 3;
+    GameView* view = dynamic_cast<class GameView*>(this->scene()->views()[0]);
+    QPointF playerPos = view->gameData()->playerTank()->pos() + QPointF(TANK_WIDTH / 2, TANK_LENGTH / 2);
+    PlayerTank* playerTank = view->gameData()->playerTank();
+    // 检查与玩家坦克之间是否有障碍物
+    if (isPathClear(this->pos() + this->rect().center(), playerPos))
+    {
+        qDebug() << "ATTACK";
+        view->createBullet(this->_bulletID,this,this->pos()+this->rect().center(),playerPos);
+    }
     //qDebug()<<chasingCounter<<"/"<<_aiUpdateFrequency*resetSec;
     if(chasingCounter>_aiUpdateFrequency*resetSec)
     {
         //qDebug()<<"!";
-        GameView* view = dynamic_cast<class GameView*>(this->scene()->views()[0]);
-        QPointF playerPos = view->gameData()->playerTank()->pos() + QPointF(TANK_WIDTH / 2, TANK_LENGTH / 2);
-        PlayerTank* playerTank = view->gameData()->playerTank();
 
         int tcol = (this->pos() + this->rect().center()).x() / GRIDSIZE;
         int trow = (this->pos() + this->rect().center()).y() / GRIDSIZE;
@@ -315,12 +322,6 @@ void EnemyTank::chase()
             currentStep = 0;
         }
 
-        // 检查与玩家坦克之间是否有障碍物
-        if (isPathClear(this->pos() + this->rect().center(), playerPos))
-        {
-            qDebug() << "ATTACK";
-            attack();
-        }
         chasingCounter = 0;
     }
     else

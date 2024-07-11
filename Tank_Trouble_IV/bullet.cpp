@@ -120,6 +120,7 @@ bool Bullet::checkCollision()
             }
             return true;
         }
+        //撞到坦克
         if(rectItem->data(ITEM_TYPE)==PLAYER_TANK||rectItem->data(ITEM_TYPE)==ENEMY_TANK)
         {
             Tank *tank = dynamic_cast<Tank *>(item);

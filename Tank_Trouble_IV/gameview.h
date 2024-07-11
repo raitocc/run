@@ -18,6 +18,7 @@ public:
 
     void clearDeadTank();
     void setRandomBullet();
+    void createBullet(int id, Tank* shooter,QPointF begin, QPointF tar);
 
 protected:
     void wheelEvent(QWheelEvent *event) override;
