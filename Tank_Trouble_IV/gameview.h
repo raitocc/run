@@ -31,6 +31,8 @@ protected:
 private:
     GameData* data;
 
+      int numItemsSpawned = 0; // 已经刷新的物品数量
+
     QTimer playerTankShootableTimer;
 
 public slots:

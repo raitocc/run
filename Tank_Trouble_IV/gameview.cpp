@@ -35,17 +35,22 @@ void GameView::clearDeadTank()
         }
     }
 }
-
-void GameView::setRandomBullet()//放置随机补给
+void GameView::setRandomBullet() // 放置随机补给
 {
     int averageSec = 3;
     int num = 1;
-    int ran = QRandomGenerator::global()->bounded(0,120*averageSec*num);
-    if(ran<num)
+    int maxItems =((data->mapRow())*(data->mapCol()))/8; // 设定一个刷新的上限
+
+    if (numItemsSpawned < maxItems)
     {
-        int amout = QRandomGenerator::global()->bounded(3,8);
-        //qDebug()<<"产生随机子弹掉落物"<<ran+1<<"数量"<<amout;
-        data->addBulletSupply(ran+1,amout,this->scene());
+        int ran = QRandomGenerator::global()->bounded(0, 120 * averageSec * num);
+        if (ran < num)
+        {
+            int amount = QRandomGenerator::global()->bounded(3, 8);
+            // qDebug() << "产生随机子弹掉落物" << ran + 1 << "数量" << amount;
+            data->addBulletSupply(ran + 1, amount, this->scene());
+            numItemsSpawned++; // 每次刷新成功后增加计数器
+        }
     }
 }
 
